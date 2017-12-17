@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour {
 
-    public float mouseSensitivity = 10;
+    public float mouseSensitivity = 5;
     public Transform player;              
     public float rotationSmoothTime = 0.12f;
 
@@ -12,7 +12,7 @@ public class ThirdPersonCamera : MonoBehaviour {
     //min and max limit camera rotation so it doesn't look weird e.g. rotating underneath floor
     public float pitchMin = 10f;
     public float pitchMax = 120f;
-    public float distanceFromPlayer = 2f;
+    public float distanceFromPlayer = 0.5f;
 
     float yaw;
     float pitch;

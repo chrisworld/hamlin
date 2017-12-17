@@ -1,0 +1,1 @@
+Use W/A/S/D or Up/Left/Down/Right arrow keys to move, Left Shift to run, Space to jump.

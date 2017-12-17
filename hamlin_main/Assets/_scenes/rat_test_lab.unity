@@ -186,11 +186,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86510772d87c00439ad125dd8843fc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 2
-  runSpeed: 6
+  walkSpeed: 1
+  runSpeed: 3
   turnSmoothTime: 0.2
   speedSmoothTime: 0.1
   gravity: -12
+  jumpHeight: 0.5
+  inAirControl: 1
 --- !u!1001 &233846395
 Prefab:
   m_ObjectHideFlags: 0
@@ -455,7 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf738681f01f2964886892ea4c846b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 10
+  mouseSensitivity: 5
   player: {fileID: 959485195}
   rotationSmoothTime: 0.12
   pitchMin: 10
