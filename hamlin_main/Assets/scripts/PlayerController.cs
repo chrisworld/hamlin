@@ -8,17 +8,22 @@ public class PlayerController : MonoBehaviour {
     public float runSpeed = 6;
     public float turnSmoothTime = 0.2f;
     public float speedSmoothTime = 0.1f;
+    public float gravity = -12f;
 
     float turnSmoothVelocity;
     float speedSmoothVelocity;
     float currentSpeed;
+    float velocityY;
+
     Animator animator;
     Transform cameraT;
+    CharacterController controller;
 
 	// Use this for initialization
 	void Start () {
         animator = GetComponentInChildren<Animator>();
         cameraT = Camera.main.transform;
+        controller = GetComponent<CharacterController>();
     }
 	
 	// Update is called once per frame
@@ -41,10 +46,18 @@ public class PlayerController : MonoBehaviour {
         float targetSpeed = (running ? runSpeed : walkSpeed) * inputDirection.magnitude;
         currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, speedSmoothTime);
 
-        transform.Translate(transform.forward * currentSpeed * Time.deltaTime, Space.World);
+        velocityY += Time.deltaTime * gravity;
+        Vector3 velocity = transform.forward * currentSpeed + Vector3.up * velocityY;
+        controller.Move(velocity * Time.deltaTime);
+        currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
+
+        if (controller.isGrounded)
+        {
+            velocityY = 0;
+        }
 
         //this is how we tell the animation controller which state we're in
-        float animationSpeedPercent = (running ? 1f : 0.5f) * inputDirection.magnitude;
+        float animationSpeedPercent = (running ? currentSpeed / runSpeed : currentSpeed/walkSpeed * 0.5f);
         //Debug.Log("setting animator var to: " + animationSpeedPercent);    //don't think this is working properly
         animator.SetFloat("speedPercent", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
 
