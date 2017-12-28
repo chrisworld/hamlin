@@ -107,7 +107,7 @@ public class ScaleListener : MonoBehaviour {
 
 
 	int randomKey(int min, int max){
-		Random random = new Random ();
+		//Random random = new Random ();
 		int randomNumber = Random.Range (min, max);
 		return randomNumber;
 	}
