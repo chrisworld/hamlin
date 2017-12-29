@@ -14,12 +14,10 @@ public class Health : MonoBehaviour {
 	private int curHealth;
 	private int maxHealth;
 
-	// Use this for initialization
 	void Start () {
 		curHealth = heart_amount * health_perHeart;
 		maxHealth = curHealth;
 		checkHealthAmount();
-		Debug.Log("HEalth");
 	}
 	
 	void checkHealthAmount()
@@ -36,28 +34,32 @@ public class Health : MonoBehaviour {
 
 	void updateHearts()
 	{
-		bool empty = false;
-
+		int i = 0;
 		foreach (Image image in health_images){
-			if(empty){
-				image.sprite = health_sprites[1];
-			}
-			else{
+			// full hearts
+			if(curHealth > i){
 				image.sprite = health_sprites[0];
 			}
+			// empty hearts
+			else{
+				image.sprite = health_sprites[1];
+			}
+			i++;
 		}
 	}
 
-	int getMaxHealth (){
-		return maxHealth;
+	public void takeDamage (int damage) {
+		curHealth = curHealth - damage;
+		curHealth = Mathf.Clamp (curHealth, 0, maxHealth);
+		Debug.Log("Health: " + curHealth);
+		updateHearts();
 	}
 
-	int getCurHealth (){
-		return curHealth;
-	}
-
-	public void TakeDamage () {
-		Debug.Log("Damage");
+	public void healHearts (int heal) {
+		curHealth = curHealth + heal;
+		curHealth = Mathf.Clamp (curHealth, 0, maxHealth);
+		Debug.Log("Health: " + curHealth);
+		updateHearts();
 	}
 }
 
