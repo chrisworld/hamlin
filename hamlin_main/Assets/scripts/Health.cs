@@ -19,6 +19,7 @@ public class Health : MonoBehaviour {
 		curHealth = heart_amount * health_perHeart;
 		maxHealth = curHealth;
 		checkHealthAmount();
+		Debug.Log("HEalth");
 	}
 	
 	void checkHealthAmount()
@@ -31,6 +32,20 @@ public class Health : MonoBehaviour {
 				health_images[i].enabled = true;
 			}
     }
+	}
+
+	void updateHearts()
+	{
+		bool empty = false;
+
+		foreach (Image image in health_images){
+			if(empty){
+				image.sprite = health_sprites[1];
+			}
+			else{
+				image.sprite = health_sprites[0];
+			}
+		}
 	}
 
 	int getMaxHealth (){
