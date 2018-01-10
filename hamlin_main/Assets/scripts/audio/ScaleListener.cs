@@ -40,8 +40,7 @@ public class ScaleListener : MonoBehaviour {
 		H
 	};
 
-
-	public AudioSource ApplauseSound;
+    public AudioSource ApplauseSound;
 	public AudioSource FailSound;
 
 	int[] fightScale;
@@ -49,6 +48,7 @@ public class ScaleListener : MonoBehaviour {
 	int expectedNote;
 	int expectedNoteCounter = 0;
 	int playedNote;
+    Dictionary<int, string> noteKeys = new Dictionary<int, string>();  
 
     //used by CombatManager
     private bool playerHasWon;
@@ -117,20 +117,43 @@ public class ScaleListener : MonoBehaviour {
 
         inCombat = false;
         playerHasWon = false;
+        
+        //populate dictionary for converting note numbers to the keyboard keys
+        noteKeys.Add(48, "Y");
+        noteKeys.Add(49, "S");
+        noteKeys.Add(50, "X");
+        noteKeys.Add(51, "D");
+        noteKeys.Add(52, "C");
+        noteKeys.Add(53, "V");
+        noteKeys.Add(54, "G");
+        noteKeys.Add(55, "B");
+        noteKeys.Add(56, "H");
+        noteKeys.Add(57, "N");
+        noteKeys.Add(58, "J");
+        noteKeys.Add(59, "M");
+        noteKeys.Add(60, "comma or E");
+        noteKeys.Add(61, "4");
+        noteKeys.Add(62, "R");
+        noteKeys.Add(63, "5");
+        noteKeys.Add(64, "T");
+        noteKeys.Add(65, "Z");
+        noteKeys.Add(66, "7");
+        noteKeys.Add(67, "U");
+        noteKeys.Add(68, "8");
+        noteKeys.Add(69, "I");
+        noteKeys.Add(70, "9");
+        noteKeys.Add(71, "O");
+        noteKeys.Add(72, "P");
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         //wait until values set by CombatManager
         if(fightScale == null)
         {
             fightScale = ScaleByKey(fightBaseKey, allScales[scale]);  // Generate Fight Scale by Random Keys
-            for(int i=0; i < fightScale.Length; i++)
-            {
-                Debug.Log(fightScale[i].ToString());
-            }
         }
 
         if (fightScale.Length > 0 && Input.anyKeyDown){
@@ -287,15 +310,18 @@ public class ScaleListener : MonoBehaviour {
     //used by CombatManager
     public string GetScaleInfo()
     {
-        // Debugging
-        //expectedNote = fightScale[expectedNoteCounter];
-        //print("EXPECTED NOTE");
-        //print(expectedNote.ToString());
 
-        return GetScaleName(scale);
-        //print("StartNote: " + fightBaseKey);
-        //print("BaseKey: " + GetBaseNoteName(fightBaseKey));
-        //print("Octave: " + GetOctave(fightBaseKey));
+        string scaleString = GetScaleName(scale) + ": play ";
+        for (int i = 0; i < fightScale.Length; i++)
+        {
+            scaleString += noteKeys[fightScale[i]];
+            if (i != (fightScale.Length - 1))
+            {
+               scaleString += ", ";
+            }
+        }
+
+        return scaleString;
     }
 
     public void SetInCombat(bool value)

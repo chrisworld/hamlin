@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667a5a1eab780744cb8bbb0be6c68a98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heart_amount: 4
+  heart_amount: 5
   health_images:
   - {fileID: 113979741}
   - {fileID: 1583299940}
