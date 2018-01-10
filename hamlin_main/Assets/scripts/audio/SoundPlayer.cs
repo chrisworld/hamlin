@@ -69,5 +69,44 @@ public class SoundPlayer : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.J)) {
 			a_sh.Play ();
 		}
+		if (Input.GetKeyDown(KeyCode.E)) {
+			c.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha4)) {
+			c_sh.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.P)) {
+			c1.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.R)) {
+			d.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha5)) {
+			d_sh.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.T)) {
+			e.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.Z)) {
+			f.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha7)) {
+			f_sh.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.U)) {
+			g.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha8)) {
+			g_sh.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.O)) {
+			h.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.I)) {
+			a.Play ();
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha9)) {
+			a_sh.Play ();
+		}
 	}
 }
