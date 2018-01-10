@@ -49,21 +49,14 @@ public class ScaleListener : MonoBehaviour {
 	int expectedNote;
 	int expectedNoteCounter = 0;
 	int playedNote;
-    private bool playerHasWon = false;  //used in SkeletonController
-    private SkeletonController skeleton;
 
-    // Used in SkeletonController - monster runs away if player wins
-    public bool GetWinState()
-    {
-        return playerHasWon;
-    }
+    //used by CombatManager
+    public bool playerHasWon;
 
-    // Used in SkeletonController - reset win state if player moves out of monster view field
-    public void ResetWinState()
-    {
-        playerHasWon = false;
-    }
-
+    //managed by CombatManager
+    public bool inCombat;
+    public int fightBaseKey;
+    public int scale;
 
     string GetScaleName(int index){  // Cast Scale Name
 		ScaleNames enumValue = (ScaleNames)index;
@@ -119,54 +112,41 @@ public class ScaleListener : MonoBehaviour {
 		return scale;
 	}
 
+    //TODO: modify this so it returns a string with all the info the player needs about the scale to display in GUI
+    //used by CombatManager
+    public string GetScaleInfo()
+    {
+        // Debugging
+        //expectedNote = fightScale[expectedNoteCounter];
+        //print("EXPECTED NOTE");
+        //print(expectedNote.ToString());
 
-	int randomKey(int min, int max){
-		//Random random = new Random ();
-		int randomNumber = Random.Range (min, max);
-		return randomNumber;
-	}
-
+        return GetScaleName(scale);
+        //print("StartNote: " + fightBaseKey);
+        //print("BaseKey: " + GetBaseNoteName(fightBaseKey));
+        //print("Octave: " + GetOctave(fightBaseKey));
+    }
 
 	// Use this for initialization
 	void Start () {
 
-
-		int fightBaseKey = randomKey (48, 55);  // Picking Random Base Key
-		int scale = randomKey (0, 5);			// Picking Random Scale
-        skeleton = GetComponent<SkeletonController>();
-
-		//fightScale = scaleByKey (randomKey (), MAJOR_SCALE);  // Generate Fight Scale by Random Keys
-			fightScale = ScaleByKey (fightBaseKey, allScales[scale]);  // Generate Fight Scale by Random Keys
-
-		foreach(var item in fightScale)
-		{
-			print(item.ToString());
-		}
-
-
-		// Debugging
-
-		expectedNote = fightScale [expectedNoteCounter];
-		print ("EXPECTED NOTE");
-		print(expectedNote.ToString());
-
-		print(GetScaleName (scale));
-
-
-		// Printing Scale and Base Key Information
-
-		print ("StartNote: " + fightBaseKey);
-		print ("BaseKey: " + GetBaseNoteName (fightBaseKey));
-		print ("Octave: " + GetOctave (fightBaseKey));
-
+        inCombat = false;
+        playerHasWon = false;
+        fightBaseKey = -1;
+        scale = -1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        if(skeleton.)
+        //wait until values set by CombatManager
+        if(fightScale.Length == 0 && fightBaseKey != -1 && scale != -1)
+        {
+            print("Debug: this should run once at start and only once");
+            fightScale = ScaleByKey(fightBaseKey, allScales[scale]);  // Generate Fight Scale by Random Keys
+        }
 
-		if (Input.anyKeyDown){
+        if (fightScale.Length > 0 && Input.anyKeyDown){
 
             bool musicKeyPressed = false;
 
@@ -223,7 +203,7 @@ public class ScaleListener : MonoBehaviour {
                 musicKeyPressed = true;
             }
 
-            if (skeleton.IsInCombat())
+            if (inCombat)
             {
                 if (musicKeyPressed && (playedNote == expectedNote))
                 {
