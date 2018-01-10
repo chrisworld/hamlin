@@ -15,26 +15,35 @@ public class CombatManager : MonoBehaviour {
 
     private int damage;
     private bool gameOver;
+    private bool startedPlaying;
 
 	void Start () {
-        //int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
-        //int scale = Random.Range(0, 5);           // Picking Random Scale           NOTE: currently between 0 and 5 to keep it easier
-        int fightBaseKey = 53;
-        int scale = 0;
+        int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
+        int scale = Random.Range(0, 5);           // Picking Random Scale           NOTE: currently between 0 and 5 to keep it easier
+        
+        //uncomment to test win condition
+        //fightBaseKey = 53;        
+        //scale = 0;
+        //print("DEBUG: to test win condition, press V, B, N, J, comma, R, T, Z");
         scaleListener.SetFightBaseKey (fightBaseKey);
         scaleListener.SetScale (scale);
-        string scaleInfo = scaleListener.GetScaleInfo();
-        print(scaleInfo); //debug
-        //TODO: show scaleInfo in GUI so player knows which scale to play
         monster.SetAttackDistance (monsterAttackDistance);
         monster.SetViewDistance (monsterViewDistance);
         monster.SetViewAngle (monsterViewAngle);
         damage = 0;
         gameOver = false;
+        startedPlaying = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+        if(!startedPlaying && Input.anyKey)                            //player has started playing
+        {
+            string scaleInfo = scaleListener.GetScaleInfo();
+            print(scaleInfo);  //TODO: this should be displayed in GUI e.g. musical notes on stave
+            startedPlaying = true;
+        }
 
         //monster determines if we are in combat or not
         if ( !gameOver && monster.GetInCombat() )
@@ -45,7 +54,7 @@ public class CombatManager : MonoBehaviour {
                damage++;
                monster.ResetPlayerHealthDamaged();
             }
-            if(damage != 0 && damage % 180 == 0)
+            if(damage != 0 && damage % 120 == 0)
             {
                 player.takeDamage(1);
                 damage = 0; //reset count
