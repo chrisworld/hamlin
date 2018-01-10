@@ -20,6 +20,7 @@ public class SkeletonController : MonoBehaviour
     private float attackDistance;
     private int viewDistance;
     private int viewAngle;
+    private bool gameOver;
 
 
     void Start()
@@ -29,6 +30,7 @@ public class SkeletonController : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         inCombat = false;
         playerHealthDamaged = false;
+        gameOver = false;
     }
 
     // Update is called once per frame
@@ -42,24 +44,24 @@ public class SkeletonController : MonoBehaviour
             //print(Vector3.Distance(player.position, this.transform.position));
             //print(angle);
 
-        //Now, with NavMesh it's even easier. Every second just do a raycast to see if you can see the player and then set the target position to the player's position and NavMesh will take care of object avoidance automatically.
-            if (Vector3.Distance(player.position, this.transform.position) < viewDistance && angle < viewAngle)
+            if (!gameOver && Vector3.Distance(player.position, this.transform.position) < viewDistance && angle < viewAngle)
             {
 
                 direction.y = 0;
                 //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.05f);
                 anim.SetBool("isIdle", false);
+
                 if (playerHasWon)                                       //player has won, monster runs away
                 {
-                    //need a translate here to make it change direction
                     transform.LookAt(new Vector3(player.transform.position.x, 0, player.transform.position.z));
                     nav.destination = -direction;
                     anim.SetBool("isRunning", true);
                     anim.SetBool("isWalking", false);
                     anim.SetBool("isAttacking", false);
                     inCombat = false;
+                    gameOver = true;
                 }
-                if (direction.magnitude > attackDistance)               //detected player but too far away to attack, walk towards
+                else if (direction.magnitude > attackDistance)               //detected player but too far away to attack, walk towards
                 {
                     inCombat = true;
                     //this.transform.Translate(0, 0, 0.1f);
@@ -80,7 +82,6 @@ public class SkeletonController : MonoBehaviour
             else                                                         //not in combat, idle
             {
                 inCombat = false;
-                //TODO: win state needs to be reset
                 anim.SetBool("isIdle", true);
                 anim.SetBool("isWalking", false);
                 anim.SetBool("isAttacking", false);
@@ -124,6 +125,5 @@ public class SkeletonController : MonoBehaviour
     {
         viewAngle = value;
     }
-
 
 }
