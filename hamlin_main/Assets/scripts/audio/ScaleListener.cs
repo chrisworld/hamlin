@@ -51,12 +51,13 @@ public class ScaleListener : MonoBehaviour {
 	int playedNote;
 
     //used by CombatManager
-    public bool playerHasWon;
+    private bool playerHasWon;
 
     //managed by CombatManager
-    public bool inCombat;
-    public int fightBaseKey;
-    public int scale;
+    private bool inCombat;
+    private bool initialised;
+    private int fightBaseKey;
+    private int scale;
 
     string GetScaleName(int index){  // Cast Scale Name
 		ScaleNames enumValue = (ScaleNames)index;
@@ -112,41 +113,26 @@ public class ScaleListener : MonoBehaviour {
 		return scale;
 	}
 
-    //TODO: modify this so it returns a string with all the info the player needs about the scale to display in GUI
-    //used by CombatManager
-    public string GetScaleInfo()
-    {
-        // Debugging
-        //expectedNote = fightScale[expectedNoteCounter];
-        //print("EXPECTED NOTE");
-        //print(expectedNote.ToString());
-
-        return GetScaleName(scale);
-        //print("StartNote: " + fightBaseKey);
-        //print("BaseKey: " + GetBaseNoteName(fightBaseKey));
-        //print("Octave: " + GetOctave(fightBaseKey));
-    }
-
 	// Use this for initialization
 	void Start () {
 
         inCombat = false;
         playerHasWon = false;
-        fightBaseKey = -1;
-        scale = -1;
+        initialised = false;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
         //wait until values set by CombatManager
-        if(fightScale.Length == 0 && fightBaseKey != -1 && scale != -1)
+        if(initialised && fightScale == null)
         {
             print("Debug: this should run once at start and only once");
             fightScale = ScaleByKey(fightBaseKey, allScales[scale]);  // Generate Fight Scale by Random Keys
         }
 
-        if (fightScale.Length > 0 && Input.anyKeyDown){
+        if (initialised && (fightScale.Length > 0 && Input.anyKeyDown)){
 
             bool musicKeyPressed = false;
 
@@ -256,7 +242,7 @@ public class ScaleListener : MonoBehaviour {
 			}
 
 
-            if (inCombat)
+            if (initialised && inCombat)
             {
                 if (musicKeyPressed && (playedNote == expectedNote))
                 {
@@ -288,4 +274,43 @@ public class ScaleListener : MonoBehaviour {
 
 		}
 	}
+
+    //Getters and setters for CombatManager
+
+    public bool GetPlayerHasWon()
+    {
+        return playerHasWon;
+    }
+
+    //TODO: modify this so it returns a string with all the info the player needs about the scale to display in GUI
+    //used by CombatManager
+    public string GetScaleInfo()
+    {
+        // Debugging
+        //expectedNote = fightScale[expectedNoteCounter];
+        //print("EXPECTED NOTE");
+        //print(expectedNote.ToString());
+
+        return GetScaleName(scale);
+        //print("StartNote: " + fightBaseKey);
+        //print("BaseKey: " + GetBaseNoteName(fightBaseKey));
+        //print("Octave: " + GetOctave(fightBaseKey));
+    }
+
+    public void SetInCombat(bool value)
+    {
+        inCombat = value;
+    }
+
+    public void SetFightBaseKey(int value)
+    {
+        fightBaseKey = value;
+    }
+
+    public void SetScale(int value)
+    {
+        scale = value;
+    }
+
+
 }
