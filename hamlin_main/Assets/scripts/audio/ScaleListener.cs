@@ -52,13 +52,13 @@ public class ScaleListener : MonoBehaviour {
     private bool playerHasWon = false;
 
     //used in chase
-    public bool getWinState()
+    public bool GetWinState()
     {
         return playerHasWon;
     }
 
     //used in chase
-    public void resetWinState()
+    public void ResetWinState()
     {
         playerHasWon = false;
     }
@@ -233,7 +233,7 @@ public class ScaleListener : MonoBehaviour {
 			if (expectedNoteCounter == fightScale.Length) {
 				print ("You WIN");
 				ApplauseSound.Play ();
-                winState = true;
+                playerHasWon = true;
                 //reset
                 expectedNoteCounter = 0;
                 expectedNote = fightScale[expectedNoteCounter];
