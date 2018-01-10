@@ -49,9 +49,22 @@ public class ScaleListener : MonoBehaviour {
 	int expectedNote;
 	int expectedNoteCounter = 0;
 	int playedNote;
+    private bool playerHasWon = false;
+
+    //used in chase
+    public bool getWinState()
+    {
+        return playerHasWon;
+    }
+
+    //used in chase
+    public void resetWinState()
+    {
+        playerHasWon = false;
+    }
 
 
-	string GetScaleName(int index){  // Cast Scale Name
+    string GetScaleName(int index){  // Cast Scale Name
 		ScaleNames enumValue = (ScaleNames)index;
 		string stringName = enumValue.ToString(); 
 		return stringName;
@@ -220,6 +233,7 @@ public class ScaleListener : MonoBehaviour {
 			if (expectedNoteCounter == fightScale.Length) {
 				print ("You WIN");
 				ApplauseSound.Play ();
+                winState = true;
                 //reset
                 expectedNoteCounter = 0;
                 expectedNote = fightScale[expectedNoteCounter];
