@@ -55,7 +55,6 @@ public class ScaleListener : MonoBehaviour {
 
     //managed by CombatManager
     private bool inCombat;
-    private bool initialised;
     private int fightBaseKey;
     private int scale;
 
@@ -118,7 +117,6 @@ public class ScaleListener : MonoBehaviour {
 
         inCombat = false;
         playerHasWon = false;
-        initialised = false;
 
 	}
 	
@@ -126,13 +124,17 @@ public class ScaleListener : MonoBehaviour {
 	void Update () {
 
         //wait until values set by CombatManager
-        if(initialised && fightScale == null)
+        if(fightScale == null)
         {
             print("Debug: this should run once at start and only once");
             fightScale = ScaleByKey(fightBaseKey, allScales[scale]);  // Generate Fight Scale by Random Keys
+            for(int i=0; i < fightScale.Length; i++)
+            {
+                Debug.Log(fightScale[i].ToString());
+            }
         }
 
-        if (initialised && (fightScale.Length > 0 && Input.anyKeyDown)){
+        if (fightScale.Length > 0 && Input.anyKeyDown){
 
             bool musicKeyPressed = false;
 
@@ -242,7 +244,7 @@ public class ScaleListener : MonoBehaviour {
 			}
 
 
-            if (initialised && inCombat)
+            if (inCombat)
             {
                 if (musicKeyPressed && (playedNote == expectedNote))
                 {
@@ -268,6 +270,7 @@ public class ScaleListener : MonoBehaviour {
                 }
                 else
                 {
+                    print("expected notes: " + expectedNoteCounter.ToString() + " fight scale length is: " + fightScale.Length.ToString() );
                     expectedNote = fightScale[expectedNoteCounter];
                 }
             }

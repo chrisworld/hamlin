@@ -12,6 +12,7 @@ public class SkeletonController : MonoBehaviour
 
     //used by CombatManager
     private bool inCombat = false;
+    private bool playerHealthDamaged = false;
 
     //managed by CombatManager
     private bool playerHasWon;
@@ -36,38 +37,41 @@ public class SkeletonController : MonoBehaviour
             Vector3 direction = player.position - this.transform.position;
             float angle = Vector3.Angle(direction, this.transform.forward);
 
-            print(Vector3.Distance(player.position, this.transform.position));
-            print(angle);
+            //print(Vector3.Distance(player.position, this.transform.position));
+            //print(angle);
 
         //Now, with NavMesh it's even easier. Every second just do a raycast to see if you can see the player and then set the target position to the player's position and NavMesh will take care of object avoidance automatically.
             if (Vector3.Distance(player.position, this.transform.position) < viewDistance && angle < viewAngle)
             {
 
                 direction.y = 0;
-
-                this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.05f);
-                
-
+                //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.05f);
                 anim.SetBool("isIdle", false);
                 if (playerHasWon)                                       //player has won, monster runs away
                 {
                     //need a translate here to make it change direction
+                    transform.LookAt(new Vector3(player.transform.position.x, 0, player.transform.position.z));
+                    nav.destination = -direction;
                     anim.SetBool("isRunning", true);
+                    anim.SetBool("isWalking", false);
+                    anim.SetBool("isAttacking", false);
+                    inCombat = false;
                 }
                 if (direction.magnitude > attackDistance)               //detected player but too far away to attack, walk towards
                 {
                     inCombat = true;
                     //this.transform.Translate(0, 0, 0.1f);
-                    nav.destination = player.position;
+                    nav.destination = player.position; //TODO: translate this position slightly so skeleton doesn't end up on top of player 
                     anim.SetBool("isWalking", true);
                     anim.SetBool("isAttacking", false);
 
                 }
                 else
-                {                                                        //detected player nearby, attack
+                {                                                        //detected player nearby, attack, player takes damage
                     inCombat = true;
                     anim.SetBool("isWalking", false);
                     anim.SetBool("isAttacking", true);
+                    playerHealthDamaged = true;
                 }
             }
 
@@ -87,6 +91,16 @@ public class SkeletonController : MonoBehaviour
 
     public bool GetInCombat() {
         return inCombat;
+    }
+
+    public bool GetPlayerHealthDamaged()
+    {
+        return playerHealthDamaged;
+    }
+
+    public void ResetPlayerHealthDamaged()
+    {
+        playerHealthDamaged = false;
     }
 
     public void SetPlayerHasWon(bool value)
