@@ -19,6 +19,10 @@ public class Health : MonoBehaviour {
 		maxHealth = curHealth;
 		checkHealthAmount();
 	}
+
+    public int GetHealthAmount() {
+        return curHealth;
+    }
 	
 	void checkHealthAmount()
 	{
@@ -52,7 +56,7 @@ public class Health : MonoBehaviour {
 		curHealth = curHealth - damage;
 		curHealth = Mathf.Clamp (curHealth, 0, maxHealth);
 		Debug.Log("Health: " + curHealth);
-		updateHearts();
+        updateHearts();
 	}
 
 	public void healHearts (int heal) {

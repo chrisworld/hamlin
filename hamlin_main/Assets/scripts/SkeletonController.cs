@@ -11,8 +11,8 @@ public class SkeletonController : MonoBehaviour
     NavMeshAgent nav;
 
     //used by CombatManager
-    private bool inCombat = false;
-    private bool playerHealthDamaged = false;
+    private bool inCombat;
+    private bool playerHealthDamaged;
 
     //managed by CombatManager
     private bool playerHasWon;
@@ -27,6 +27,8 @@ public class SkeletonController : MonoBehaviour
         anim = GetComponent<Animator>();
         playerHasWon = false;
         nav = GetComponent<NavMeshAgent>();
+        inCombat = false;
+        playerHealthDamaged = false;
     }
 
     // Update is called once per frame
