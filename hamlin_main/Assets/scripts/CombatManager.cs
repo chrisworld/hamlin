@@ -14,6 +14,7 @@ public class CombatManager : MonoBehaviour {
     public int monsterViewAngle = 60;
 
     private int damage;
+    private bool gameOver;
 
 	void Start () {
         //int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
@@ -29,13 +30,14 @@ public class CombatManager : MonoBehaviour {
         monster.SetViewDistance (monsterViewDistance);
         monster.SetViewAngle (monsterViewAngle);
         damage = 0;
+        gameOver = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
 
         //monster determines if we are in combat or not
-        if ( monster.GetInCombat() )
+        if ( !gameOver && monster.GetInCombat() )
         {
             scaleListener.SetInCombat (true);                         //when in combat, activate scaleListener hit/miss/win mechanics; can still play notes at any time
             if ( monster.GetPlayerHealthDamaged() )
@@ -43,14 +45,22 @@ public class CombatManager : MonoBehaviour {
                damage++;
                monster.ResetPlayerHealthDamaged();
             }
-            if(damage % 60 == 0)
+            if(damage != 0 && damage % 180 == 0)
             {
                 player.takeDamage(1);
+                damage = 0; //reset count
+            }
+            if(player.GetHealthAmount() == 0)
+            {
+                print("YOU LOSE");
+                gameOver = true;
+                //TODO: show end game screen
+                //TODO: disable input
             }
         }
 
         //scale listener determines if player has won or not
-        if ( scaleListener.GetPlayerHasWon() )
+        if ( !!gameOver && scaleListener.GetPlayerHasWon() )
         {
             monster.SetPlayerHasWon (true);
         }
