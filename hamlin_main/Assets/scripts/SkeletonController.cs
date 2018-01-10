@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SkeletonController : MonoBehaviour
 {
 
     public Transform player;
     static Animator anim;
+    NavMeshAgent nav;
 
     //used by CombatManager
     private bool inCombat = false;
@@ -23,7 +25,7 @@ public class SkeletonController : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         playerHasWon = false;
-        //initialised = false;
+        nav = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -44,7 +46,7 @@ public class SkeletonController : MonoBehaviour
                 direction.y = 0;
 
                 this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.05f);
-            
+                
 
                 anim.SetBool("isIdle", false);
                 if (playerHasWon)                                       //player has won, monster runs away
@@ -55,7 +57,8 @@ public class SkeletonController : MonoBehaviour
                 if (direction.magnitude > attackDistance)               //detected player but too far away to attack, walk towards
                 {
                     inCombat = true;
-                    this.transform.Translate(0, 0, 0.1f);
+                    //this.transform.Translate(0, 0, 0.1f);
+                    nav.destination = player.position;
                     anim.SetBool("isWalking", true);
                     anim.SetBool("isAttacking", false);
 
