@@ -69,9 +69,12 @@ public class CombatManager : MonoBehaviour {
         }
 
         //scale listener determines if player has won or not
-        if ( !!gameOver && scaleListener.GetPlayerHasWon() )
+        if ( !gameOver && scaleListener.GetPlayerHasWon() )
         {
             monster.SetPlayerHasWon (true);
+            gameOver = true;
+            //TODO: show win end game screen
+            //TODO: disable input
         }
 
 	}
