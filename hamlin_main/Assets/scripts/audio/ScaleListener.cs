@@ -49,15 +49,16 @@ public class ScaleListener : MonoBehaviour {
 	int expectedNote;
 	int expectedNoteCounter = 0;
 	int playedNote;
-    private bool playerHasWon = false;
+    private bool playerHasWon = false;  //used in SkeletonController
+    private SkeletonController skeleton;
 
-    //used in chase
+    // Used in SkeletonController - monster runs away if player wins
     public bool GetWinState()
     {
         return playerHasWon;
     }
 
-    //used in chase
+    // Used in SkeletonController - reset win state if player moves out of monster view field
     public void ResetWinState()
     {
         playerHasWon = false;
@@ -132,6 +133,7 @@ public class ScaleListener : MonoBehaviour {
 
 		int fightBaseKey = randomKey (48, 55);  // Picking Random Base Key
 		int scale = randomKey (0, 5);			// Picking Random Scale
+        skeleton = GetComponent<SkeletonController>();
 
 		//fightScale = scaleByKey (randomKey (), MAJOR_SCALE);  // Generate Fight Scale by Random Keys
 			fightScale = ScaleByKey (fightBaseKey, allScales[scale]);  // Generate Fight Scale by Random Keys
@@ -161,6 +163,8 @@ public class ScaleListener : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if(skeleton.)
 
 		if (Input.anyKeyDown){
 
@@ -219,28 +223,36 @@ public class ScaleListener : MonoBehaviour {
                 musicKeyPressed = true;
             }
 
-			if (musicKeyPressed && (playedNote == expectedNote)) {
-				print ("HIT");
-				expectedNoteCounter++;
-			} 
-			else if(musicKeyPressed){
-				print ("MISS");
-				expectedNoteCounter = 0;
-				FailSound.Play ();
-			}
-            //do nothing if non-music key pressed, player should still be able to move and non-piano keys should not produce a sound
+            if (skeleton.IsInCombat())
+            {
+                if (musicKeyPressed && (playedNote == expectedNote))
+                {
+                    print("HIT");
+                    expectedNoteCounter++;
+                }
+                else if (musicKeyPressed)
+                {
+                    print("MISS");
+                    expectedNoteCounter = 0;
+                    FailSound.Play();
+                }
+                //do nothing if non-music key pressed, player should still be able to move and non-piano keys should not produce a sound
 
-			if (expectedNoteCounter == fightScale.Length) {
-				print ("You WIN");
-				ApplauseSound.Play ();
-                playerHasWon = true;
-                //reset
-                expectedNoteCounter = 0;
-                expectedNote = fightScale[expectedNoteCounter];
-            } 
-			else {
-				expectedNote = fightScale [expectedNoteCounter];
-			}
+                if (expectedNoteCounter == fightScale.Length)
+                {
+                    print("You WIN");
+                    ApplauseSound.Play();
+                    playerHasWon = true;
+                    //reset
+                    expectedNoteCounter = 0;
+                    expectedNote = fightScale[expectedNoteCounter];
+                }
+                else
+                {
+                    expectedNote = fightScale[expectedNoteCounter];
+                }
+            }
+
 		}
 	}
 }
