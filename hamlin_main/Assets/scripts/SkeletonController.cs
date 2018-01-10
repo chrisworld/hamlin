@@ -9,32 +9,27 @@ public class SkeletonController : MonoBehaviour
     static Animator anim;
 
     //used by CombatManager
-    public bool inCombat = false;
+    private bool inCombat = false;
 
-    //managed by CombatManager        
-    public bool playerHasWon = false;
-    public int attackDistance;
-    public int viewDistance;
-    public int viewAngle;
-
+    //managed by CombatManager
+    private bool playerHasWon;
+    //private bool initialised;
+    private float attackDistance;
+    private int viewDistance;
+    private int viewAngle;
 
 
     void Start()
     {
         anim = GetComponent<Animator>();
-
-        //"not initialised" values, initialised by CombatManager
-        attackDistance = -1;
-        viewDistance = -1;
-        viewAngle = -1;
+        playerHasWon = false;
+        //initialised = false;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if(attackDistance != -1 && viewDistance != -1 && viewAngle != -1)
-        {
 
             Vector3 direction = player.position - this.transform.position;
             float angle = Vector3.Angle(direction, this.transform.forward);
@@ -42,12 +37,14 @@ public class SkeletonController : MonoBehaviour
             print(Vector3.Distance(player.position, this.transform.position));
             print(angle);
 
+        //Now, with NavMesh it's even easier. Every second just do a raycast to see if you can see the player and then set the target position to the player's position and NavMesh will take care of object avoidance automatically.
             if (Vector3.Distance(player.position, this.transform.position) < viewDistance && angle < viewAngle)
             {
 
                 direction.y = 0;
 
                 this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.05f);
+            
 
                 anim.SetBool("isIdle", false);
                 if (playerHasWon)                                       //player has won, monster runs away
@@ -81,8 +78,33 @@ public class SkeletonController : MonoBehaviour
 
             }
 
-        }
-
     }
+
+    //Getters and Setters for CombatManager
+
+    public bool GetInCombat() {
+        return inCombat;
+    }
+
+    public void SetPlayerHasWon(bool value)
+    {
+        playerHasWon = value;
+    }
+
+    public void SetAttackDistance(float value)
+    {
+        attackDistance = value;
+    }
+
+    public void SetViewDistance(int value)
+    {
+        viewDistance = value;
+    }
+
+    public void SetViewAngle(int value)
+    {
+        viewAngle = value;
+    }
+
 
 }
