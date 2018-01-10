@@ -27,6 +27,10 @@ public class chase : MonoBehaviour {
 			this.transform.rotation = Quaternion.Slerp (this.transform.rotation, Quaternion.LookRotation (direction), 0.05f);
 
 			anim.SetBool ("isIdle", false);
+            //if(direction.magnitude > 10 && ScaleListener.GetWinState())
+            //{
+                //monster should run away
+            //}
 			if (direction.magnitude > 10) {
 				this.transform.Translate (0, 0, 0.1f);
 				anim.SetBool ("isWalking", true);
