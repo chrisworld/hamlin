@@ -205,6 +205,62 @@ public class ScaleListener : MonoBehaviour {
 				playedNote = 60;
                 musicKeyPressed = true;
             }
+			else if(Input.GetKeyDown(KeyCode.E)) {
+				playedNote = 61;
+				musicKeyPressed = false;
+			}
+			else if(Input.GetKeyDown(KeyCode.Alpha4)) {
+				playedNote = 62;
+				musicKeyPressed = true;
+			}
+			else if(Input.GetKeyDown(KeyCode.R)) {
+				playedNote = 63;
+				musicKeyPressed = true;
+			}
+			else if(Input.GetKeyDown(KeyCode.Alpha5)) {
+				playedNote = 64;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.T)) {
+				playedNote = 65;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.Z)) {
+				playedNote = 66;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.Alpha7)) {
+				playedNote = 67;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.U)) {
+				playedNote = 68;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.Alpha8)) {
+				playedNote = 69;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.I)) {
+				playedNote = 70;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.Alpha9)) {
+				playedNote = 71;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.O)) {
+				playedNote = 72;
+				musicKeyPressed = true;
+			}
+			else if (Input.GetKeyDown(KeyCode.P)) {
+				playedNote = 73;
+				musicKeyPressed = true;
+			}
+
+
+
+
 
 			if (musicKeyPressed && (playedNote == expectedNote)) {
 				print ("HIT");
