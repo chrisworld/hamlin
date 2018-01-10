@@ -150,66 +150,81 @@ public class ScaleListener : MonoBehaviour {
 	void Update () {
 
 		if (Input.anyKeyDown){
-			if (Input.GetKeyDown(KeyCode.Y)) {
+
+            bool musicKeyPressed = false;
+
+            if(Input.GetKeyDown(KeyCode.Y)) {
 				playedNote = 48;
-			}
-			if (Input.GetKeyDown(KeyCode.S)) {
+                musicKeyPressed = false;
+            }
+			else if(Input.GetKeyDown(KeyCode.S)) {
 				playedNote = 49;
-			}
-			if (Input.GetKeyDown(KeyCode.X)) {
+                musicKeyPressed = true;
+            }
+			else if(Input.GetKeyDown(KeyCode.X)) {
 				playedNote = 50;
-			}
-			if (Input.GetKeyDown(KeyCode.D)) {
+                musicKeyPressed = true;
+            }
+			else if(Input.GetKeyDown(KeyCode.D)) {
 				playedNote = 51;
-			}
-			if (Input.GetKeyDown(KeyCode.C)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.C)) {
 				playedNote = 52;
-			}
-			if (Input.GetKeyDown(KeyCode.V)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.V)) {
 				playedNote = 53;
-			}
-			if (Input.GetKeyDown(KeyCode.G)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.G)) {
 				playedNote = 54;
-			}
-			if (Input.GetKeyDown(KeyCode.B)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.B)) {
 				playedNote = 55;
-			}
-			if (Input.GetKeyDown(KeyCode.H)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.H)) {
 				playedNote = 56;
-			}
-			if (Input.GetKeyDown(KeyCode.N)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.N)) {
 				playedNote = 57;
-			}
-			if (Input.GetKeyDown(KeyCode.J)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.J)) {
 				playedNote = 58;
-			}
-			if (Input.GetKeyDown(KeyCode.M)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.M)) {
 				playedNote = 59;
-				print ("M");
-			}
-			if (Input.GetKeyDown(KeyCode.Comma)) {
+                musicKeyPressed = true;
+            }
+			else if (Input.GetKeyDown(KeyCode.Comma)) {
 				playedNote = 60;
-				print ("COMMA");
-			}
-			if (playedNote == expectedNote) {
+                musicKeyPressed = true;
+            }
+
+			if (musicKeyPressed && (playedNote == expectedNote)) {
 				print ("HIT");
 				expectedNoteCounter++;
-
 			} 
-			else {
+			else if(musicKeyPressed){
 				print ("MISS");
 				expectedNoteCounter = 0;
 				FailSound.Play ();
-
 			}
+            //do nothing if non-music key pressed, player should still be able to move and non-piano keys should not produce a sound
+
 			if (expectedNoteCounter == fightScale.Length) {
 				print ("You WIN");
-				expectedNoteCounter = 0;
-				expectedNote = fightScale [expectedNoteCounter];
 				ApplauseSound.Play ();
-			} 
+                //reset
+                expectedNoteCounter = 0;
+                expectedNote = fightScale[expectedNoteCounter];
+            } 
 			else {
-
 				expectedNote = fightScale [expectedNoteCounter];
 			}
 		}
