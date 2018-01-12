@@ -28,8 +28,9 @@ public class SettingsManager : MonoBehaviour {
 		
 		resolutions = Screen.resolutions;
 		foreach(Resolution resolution in resolutions){
-			resolutionDropdown.options.Add(new Dropdown.OptionData(resolution.ToString()));
-		}
+            Dropdown.OptionData data = new Dropdown.OptionData(resolution.ToString());
+            resolutionDropdown.options.Add(data);
+        }
 	}
 	
 	public void OnFullScreenToggle(){
@@ -53,11 +54,13 @@ public class SettingsManager : MonoBehaviour {
 	}
 	
 	public void OnMusicVolumeChange(){
-		
-		musicSource.volume = gameSettings.musicVolume = musicVolumeSlider.value;
-	}
-	
-	public void SaveSettings(){
+
+        AudioListener.volume = musicVolumeSlider.value;
+        gameSettings.musicVolume = musicVolumeSlider.value;
+
+    }
+
+    public void SaveSettings(){
 		
 	}
 	

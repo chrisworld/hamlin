@@ -2503,11 +2503,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d33bd2b0c74a64eac52d93b3a29859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullscreenToggle: {fileID: 0}
-  resolutionDropdown: {fileID: 0}
-  antialiasingDropdown: {fileID: 0}
-  vSyncDropdown: {fileID: 0}
-  musicVolumeSlider: {fileID: 0}
+  fullscreenToggle: {fileID: 1333682512}
+  resolutionDropdown: {fileID: 1380054475}
+  antialiasingDropdown: {fileID: 450657728}
+  vSyncDropdown: {fileID: 1203934991}
+  musicVolumeSlider: {fileID: 1824060454}
   musicSource: {fileID: 0}
   gameSettings: {fileID: 0}
 --- !u!114 &543025164
@@ -3326,7 +3326,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.4
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
