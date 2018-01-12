@@ -12,5 +12,7 @@ public class buttons : MonoBehaviour {
 	public void ExitButton(){
 		
 		Application.Quit();
+        //NOTE: this is ignored when testing in the editor. It will work when the game is built.
+
 	}
 }
