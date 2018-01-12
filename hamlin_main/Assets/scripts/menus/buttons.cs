@@ -6,7 +6,7 @@ public class buttons : MonoBehaviour {
 	
 	public void PlayButton(){
 		
-		SceneManager.LoadScene("GameScene");
+		SceneManager.LoadScene("rat_test_lab");
 	}
 	
 	public void ExitButton(){
