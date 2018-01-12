@@ -9,6 +9,7 @@ public class CombatManager : MonoBehaviour {
     public ScaleListener scaleListener;
     public SkeletonController monster;     //TODO: make this generic for all monsters
     public Health player;
+    public ContainerManager container;
     public GameObject infowindow;
     public Text infobox;
 
@@ -45,6 +46,8 @@ public class CombatManager : MonoBehaviour {
 
         if(!startedPlaying && Input.anyKey)                            //player has started playing
         {
+            int[] fightScale = scaleListener.GetFightScale();
+            container.setScale(fightScale);
             string scaleInfo = scaleListener.GetScaleInfo();
             print(scaleInfo);  //TODO: this should be displayed in GUI e.g. musical notes on stave
             startedPlaying = true;

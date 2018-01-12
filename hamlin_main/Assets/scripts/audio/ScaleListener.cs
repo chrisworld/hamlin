@@ -306,6 +306,11 @@ public class ScaleListener : MonoBehaviour {
         return playerHasWon;
     }
 
+    public int[] GetFightScale()
+    {
+        return fightScale;
+    }
+
     //TODO: modify this so it returns a string with all the info the player needs about the scale to display in GUI
     //used by CombatManager
     public string GetScaleInfo()
