@@ -2826,12 +2826,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d33bd2b0c74a64eac52d93b3a29859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullscreenToggle: {fileID: 0}
-  resolutionDropdown: {fileID: 0}
-  antialiasingDropdown: {fileID: 0}
-  vSyncDropdown: {fileID: 0}
-  musicVolumeSlider: {fileID: 0}
-  musicSource: {fileID: 0}
+  fullscreenToggle: {fileID: 1661045524}
+  resolutionDropdown: {fileID: 1563569114}
+  antialiasingDropdown: {fileID: 1719210975}
+  vSyncDropdown: {fileID: 1747580865}
+  musicVolumeSlider: {fileID: 58573257}
+  musicSource: {fileID: 722984450}
   gameSettings: {fileID: 0}
 --- !u!114 &543025164
 MonoBehaviour:

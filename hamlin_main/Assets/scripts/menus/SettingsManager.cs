@@ -12,7 +12,6 @@ public class SettingsManager : MonoBehaviour {
 	public Dropdown vSyncDropdown;
 	public Slider musicVolumeSlider;
 	
-	public AudioSource musicSource;
 	public Resolution[] resolutions;
 	public GameSettings gameSettings;
 	
@@ -26,10 +25,10 @@ public class SettingsManager : MonoBehaviour {
 		vSyncDropdown.onValueChanged.AddListener(delegate{ OnVSyncChange(); });
 		musicVolumeSlider.onValueChanged.AddListener(delegate{ OnMusicVolumeChange(); });
 		
-        //TODO: fix, this doesn't work - is it just in the editor it fails and will work in build?
 		resolutions = Screen.resolutions;
 		foreach(Resolution resolution in resolutions){
-			resolutionDropdown.options.Add(new Dropdown.OptionData(resolution.ToString()));
+            Dropdown.OptionData data = new Dropdown.OptionData(resolution.ToString());
+            resolutionDropdown.options.Add(data);
 		}
 	}
 	
@@ -55,8 +54,10 @@ public class SettingsManager : MonoBehaviour {
 	
 	public void OnMusicVolumeChange(){
 		
-		musicSource.volume = gameSettings.musicVolume = musicVolumeSlider.value;
-	}
+		AudioListener.volume = musicVolumeSlider.value;
+        gameSettings.musicVolume = musicVolumeSlider.value;
+
+    }
 	
 	public void SaveSettings(){
 		
