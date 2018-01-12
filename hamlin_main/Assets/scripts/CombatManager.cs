@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CombatManager : MonoBehaviour {
 
     public ScaleListener scaleListener;
     public SkeletonController monster;     //TODO: make this generic for all monsters
     public Health player;
+    public GameObject infowindow;
+    public Text infobox;
 
     //NOTE: these values will need tweaking for each map!!! test them out in game
     public float monsterAttackDistance = 1;  //walk towards player if player detected and further away from this distance, else attack player
@@ -33,6 +37,7 @@ public class CombatManager : MonoBehaviour {
         damage = 0;
         gameOver = false;
         startedPlaying = false;
+        infowindow.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -61,10 +66,11 @@ public class CombatManager : MonoBehaviour {
             }
             if(player.GetHealthAmount() == 0)
             {
-                print("YOU LOSE");
                 gameOver = true;
-                //TODO: show end game screen
-                //TODO: disable input
+                infowindow.SetActive(true);
+                infobox.text = "You lose :(";
+                //yield WaitForSeconds 2.0f;
+                SceneManager.LoadScene("MainMenu");
             }
         }
 
@@ -73,8 +79,10 @@ public class CombatManager : MonoBehaviour {
         {
             monster.SetPlayerHasWon (true);
             gameOver = true;
-            //TODO: show win end game screen
-            //TODO: disable input
+            infowindow.SetActive(true);
+            infobox.text = "You win!";
+            //yield WaitForSeconds 2.0f;
+            SceneManager.LoadScene("MainMenu");
         }
 
 	}

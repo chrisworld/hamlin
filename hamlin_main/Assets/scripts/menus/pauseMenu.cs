@@ -25,16 +25,19 @@ public class pauseMenu : MonoBehaviour {
 	public void Pause(){
 		
 		PauseMenu.gameObject.SetActive(!PauseMenu.gameObject.activeInHierarchy);
+
+        //TODO: stop hearts going down while paused
+
 		if(Time.timeScale == 1){
 			//Canvas.gameObject.SetActive(true);
 			Time.timeScale = 0;
-			Player.GetComponent<CharacterController>().enabled = false;   //DEBUG changed from FirstPersonController, test if this still works
+			Player.GetComponent<CharacterController>().enabled = false;   
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 		}else if(Time.timeScale == 0){
 			//Canvas.gameObject.SetActive(false);
 			Time.timeScale = 1;
-			Player.GetComponent<CharacterController>().enabled = true;    //DEBUG changed from FirstPersonController, test if this still works
+			Player.GetComponent<CharacterController>().enabled = true;   
         }
 	}
 	
