@@ -7,8 +7,8 @@ public class ContainerManager : MonoBehaviour {
 
 	int counter = 0;
 
-	public int[] fightScale = {48,49,52,54,56,68,60};
-
+	int[] f_scale = {48, 50, 52, 53, 55, 57, 59, 60};
+	public Sprite[] note_sprites;
 	public Image[] note_container1;
 	public Image[] note_container2;
 	public Image[] note_container3;
@@ -44,8 +44,6 @@ public class ContainerManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-
-
 		note_container_big.Add(note_container1);
 		note_container_big.Add(note_container2);
 		note_container_big.Add(note_container3);
@@ -71,7 +69,9 @@ public class ContainerManager : MonoBehaviour {
 		sign_container_big.Add(sign_container11);
 
 		resetContainers ();
-		configContainers (fightScale);
+		resetCleffs ();
+		configContainers (f_scale);
+		configContainersSigns (f_scale);
 
 	}
 
@@ -86,10 +86,12 @@ public class ContainerManager : MonoBehaviour {
 		}
 		if (Input.GetKeyDown(KeyCode.Minus)) {
 			resetContainers ();
+			resetCleffs ();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha0)) {
-			configContainers (fightScale);
-			configContainersSigns (fightScale);
+			configContainers (f_scale);
+			configContainersSigns (f_scale);
+			
 		}
 	}
 
@@ -101,123 +103,115 @@ public class ContainerManager : MonoBehaviour {
 
 		int i = 0;
 
-			foreach (Image[] note_container in note_container_big) {
+		foreach (Image[] note_container in note_container_big) {
 
+			if (i < fightScale.Length-1){
 
-				if (fightScale [i] == 48) { 
-					note_container [0].enabled = true;
-					print ("Yes 48");
-					//sign_container[0].enabled = false;
-				}
-				else if (fightScale [i] == 49) {
-					note_container [0].enabled = true;
-					//sign_container[0].enabled = true;
-				}
-				else if (fightScale [i] == 50) {
-					note_container [1].enabled = true;
-					print ("Yes 50");
-					//sign_container[1].enabled = false;
-				}
-				else if (fightScale [i] == 51) {
-					note_container [1].enabled = true;
-					//sign_container[1].enabled = true;
-				}
-				else if (fightScale [i] == 52) {
-					note_container [2].enabled = true;
-					//sign_container[2].enabled = false;
-				}
-				else if (fightScale [i] == 53) {
-					note_container [3].enabled = true;
-					//sign_container[3].enabled = false;
-				}
-				else if (fightScale [i] == 54) {
-					note_container [3].enabled = true;
-					//sign_container[3].enabled = true;
-				}
-				else if (fightScale [i] == 55) {
-					note_container [4].enabled = true;
-					//sign_container[4].enabled = false;
-				}
-				else if (fightScale [i] == 56) {
-					note_container [4].enabled = true;
-					//sign_container[4].enabled = true;
-				}
-				else if (fightScale [i] == 57) {
-					note_container [5].enabled = true;
-					//sign_container[5].enabled = false;
-				}
-				else if (fightScale [i] == 58) {
-					note_container [5].enabled = true;
-					//sign_container[5].enabled = true;
-				}
-				else if (fightScale [i] == 59) {
-					note_container [6].enabled = true;
-					//sign_container[6].enabled = false;
-				}
-				else if (fightScale [i] == 60) {
-					note_container [7].enabled = true;
-					//sign_container[7].enabled = false;
-				}
-				else if (fightScale [i] == 61) { 
-					note_container [8].enabled = true;
-					//sign_container[8].enabled = false;
-				}
-				else if (fightScale [i] == 62) {
-					note_container [8].enabled = true;
-					//sign_container[8].enabled = true;
-				}
-				else if (fightScale [i] == 63) {
-					note_container [9].enabled = true;
-					//sign_container[9].enabled = false;
-				}
-				else if (fightScale [i] == 64) {
-					note_container [9].enabled = true;
-					//sign_container[9].enabled = true;
-				}
-				else if (fightScale [i] == 65) {
-					note_container [10].enabled = true;
-					//sign_container[10].enabled = false;
-				}
-				else if (fightScale [i] == 66) {
-					note_container [11].enabled = true;
-					//sign_container[11].enabled = false;
-				}
-				else if (fightScale [i] == 67) {
-					note_container [11].enabled = true;
-					//sign_container[11].enabled = true;
-				}
-				else if (fightScale [i] == 68) {
-					note_container [12].enabled = true;
-					//sign_container[12].enabled = false;
-				}
-				else if (fightScale [i] == 69) {
-					note_container [12].enabled = true;
-					//sign_container[12].enabled = true;
-				}
-				else if (fightScale [i] == 70) {
-					note_container [13].enabled = true;
-					//sign_container[13].enabled = false;
-				}
-				else if (fightScale [i] == 71) {
-					note_container [13].enabled = true;
-					//sign_container[13].enabled = true;
-				}
-				else if (fightScale [i] == 72) {
-					note_container [14].enabled = true;
-					//sign_container[14].enabled = false;
-				}
-				else if (fightScale [i] == 73) {
-					note_container [14].enabled = true;
-					//sign_container[14].enabled = false;
-				}
-				else if (fightScale [i] == 74) {
-					note_container [15].enabled = true;
-					//sign_container[15].enabled = false;
-				}
-
-			i++;
-
+			if (fightScale [i] == 48) {  // C
+				note_container [14].enabled = true;
+				print ("Yes 48");
+				//sign_container[0].enabled = false;
 			}
+			else if (fightScale [i] == 49) {  // cis
+				note_container [14].enabled = true;
+				//sign_container[0].enabled = true;
+			}
+			else if (fightScale [i] == 50) {
+				note_container [13].enabled = true;
+				print ("Yes 50");
+				//sign_container[1].enabled = false;
+			}
+			else if (fightScale [i] == 51) {
+				note_container [13].enabled = true;
+				//sign_container[1].enabled = true;
+			}
+			else if (fightScale [i] == 52) {
+				note_container [12].enabled = true;
+				//sign_container[2].enabled = false;
+			}
+			else if (fightScale [i] == 53) {  // f
+				note_container [11].enabled = true;
+				//sign_container[3].enabled = false;
+			}
+			else if (fightScale [i] == 54) {
+				note_container [11].enabled = true;
+				//sign_container[3].enabled = true;
+			}
+			else if (fightScale [i] == 55) { // g
+				note_container [10].enabled = true;
+				//sign_container[4].enabled = false;
+			}
+			else if (fightScale [i] == 56) {
+				note_container [10].enabled = true;
+				//sign_container[4].enabled = true;
+			}
+			else if (fightScale [i] == 57) { // a
+				note_container [9].enabled = true;
+				//sign_container[5].enabled = false;
+			}
+			else if (fightScale [i] == 58) {
+				note_container [9].enabled = true;
+				//sign_container[5].enabled = true;
+			}
+			else if (fightScale [i] == 59) {  // h
+				note_container [8].enabled = true;
+				//sign_container[6].enabled = false;
+			}
+			else if (fightScale [i] == 60) {  // c
+				note_container [7].enabled = true;
+				//sign_container[7].enabled = false;
+			}
+			else if (fightScale [i] == 61) { 
+				note_container [7].enabled = true;
+				//sign_container[8].enabled = false;
+			}
+			else if (fightScale [i] == 62) {  // d
+				note_container [6].enabled = true;
+				//sign_container[8].enabled = true;
+			}
+			else if (fightScale [i] == 63) {
+				note_container [6].enabled = true;
+				//sign_container[9].enabled = false;
+			}
+			else if (fightScale [i] == 64) { // e
+				note_container [5].enabled = true;
+				//sign_container[9].enabled = true;
+			}
+			else if (fightScale [i] == 65) { // f
+				note_container [4].enabled = true;
+				//sign_container[10].enabled = false;
+			}
+			else if (fightScale [i] == 66) {
+				note_container [4].enabled = true;
+				//sign_container[11].enabled = false;
+			}
+			else if (fightScale [i] == 67) { // g
+				note_container [3].enabled = true;
+				//sign_container[11].enabled = true;
+			}
+			else if (fightScale [i] == 68) {
+				note_container [3].enabled = true;
+				//sign_container[12].enabled = false;
+			}
+			else if (fightScale [i] == 69) {  // a
+				note_container [2].enabled = true;
+				//sign_container[12].enabled = true;
+			}
+			else if (fightScale [i] == 70) {
+				note_container [2].enabled = true;
+				//sign_container[13].enabled = false;
+			}
+			else if (fightScale [i] == 71) { // h
+				note_container [1].enabled = true;
+				//sign_container[13].enabled = true;
+			}
+			else if (fightScale [i] == 72) { // c
+				note_container [0].enabled = true;
+				//sign_container[14].enabled = false;
+			}
+			i++;
+		}
+		}
 	}
 
 	void configContainersSigns ( int[] fightScale ) {
@@ -230,91 +224,86 @@ public class ContainerManager : MonoBehaviour {
 
 		foreach (Image[] sign_container in sign_container_big) {
 
+			if (i < fightScale.Length-1){	
 
-			if (fightScale [i] == 48) { 				
-				sign_container[0].enabled = false;
+			if (fightScale [i] == 48) { 				// c
+				sign_container[14].enabled = false;
 			}
 			else if (fightScale [i] == 49) {
-				sign_container[0].enabled = true;
+				sign_container[14].enabled = true;
 			}
-			else if (fightScale [i] == 50) {
-				sign_container[1].enabled = false;
+			else if (fightScale [i] == 50) {   // d
+				sign_container[13].enabled = false;
 			}
 			else if (fightScale [i] == 51) {
-				sign_container[1].enabled = true;
+				sign_container[13].enabled = true;
 			}
-			else if (fightScale [i] == 52) {
-				sign_container[2].enabled = false;
+			else if (fightScale [i] == 52) {   // e
+				sign_container[12].enabled = false;
 			}
-			else if (fightScale [i] == 53) {
-				sign_container[3].enabled = false;
+			else if (fightScale [i] == 53) {		// f
+				sign_container[11].enabled = false;
 			}
 			else if (fightScale [i] == 54) {
-				sign_container[3].enabled = true;
+				sign_container[11].enabled = true;
 			}
-			else if (fightScale [i] == 55) {
-				sign_container[4].enabled = false;
+			else if (fightScale [i] == 55) {   // g
+				sign_container[10].enabled = false;
 			}
 			else if (fightScale [i] == 56) {
-				sign_container[4].enabled = true;
+				sign_container[10].enabled = true;
 			}
-			else if (fightScale [i] == 57) {
-				sign_container[5].enabled = false;
+			else if (fightScale [i] == 57) {   // a
+				sign_container[9].enabled = false;
 			}
 			else if (fightScale [i] == 58) {
-				sign_container[5].enabled = true;
+				sign_container[9].enabled = true;
 			}
-			else if (fightScale [i] == 59) {
-				sign_container[6].enabled = false;
+			else if (fightScale [i] == 59) {  // h
+				sign_container[8].enabled = false;
 			}
-			else if (fightScale [i] == 60) {
+			else if (fightScale [i] == 60) {  // c
 				sign_container[7].enabled = false;
 			}
 			else if (fightScale [i] == 61) { 
-				sign_container[8].enabled = false;
+				sign_container[7].enabled = false;
 			}
-			else if (fightScale [i] == 62) {
-				sign_container[8].enabled = true;
+			else if (fightScale [i] == 62) {  // d
+				sign_container[6].enabled = true;
 			}
 			else if (fightScale [i] == 63) {
-				sign_container[9].enabled = false;
+				sign_container[6].enabled = false;
 			}
-			else if (fightScale [i] == 64) {
-				sign_container[9].enabled = true;
+			else if (fightScale [i] == 64) {   // e
+				sign_container[5].enabled = true;
 			}
-			else if (fightScale [i] == 65) {
-				sign_container[10].enabled = false;
+			else if (fightScale [i] == 65) {  // f
+				sign_container[4].enabled = false;
 			}
-			else if (fightScale [i] == 66) {
-				sign_container[11].enabled = false;
+			else if (fightScale [i] == 66) {  
+				sign_container[4].enabled = false;
 			}
-			else if (fightScale [i] == 67) {
-				sign_container[11].enabled = true;
+			else if (fightScale [i] == 67) { // g
+				sign_container[3].enabled = true;
 			}
 			else if (fightScale [i] == 68) {
-				sign_container[12].enabled = false;
+				sign_container[3].enabled = false;
 			}
-			else if (fightScale [i] == 69) {
-				sign_container[12].enabled = true;
+			else if (fightScale [i] == 69) {  // a
+				sign_container[2].enabled = true;
 			}
 			else if (fightScale [i] == 70) {
-				sign_container[13].enabled = false;
+				sign_container[2].enabled = false;
 			}
-			else if (fightScale [i] == 71) {
-				sign_container[13].enabled = true;
+			else if (fightScale [i] == 71) {  // h
+				sign_container[1].enabled = true;
 			}
-			else if (fightScale [i] == 72) {
-				sign_container[14].enabled = false;
+			else if (fightScale [i] == 72) {  //
+				sign_container[0].enabled = false;
 			}
-			else if (fightScale [i] == 73) {
-				sign_container[14].enabled = false;
-			}
-			else if (fightScale [i] == 74) {
-				sign_container[15].enabled = false;
-			}
-
+			
 			i++;
-
+			}
 		}
 	}
 
@@ -337,134 +326,23 @@ public class ContainerManager : MonoBehaviour {
 		}
 	}
 
+	void resetCleffs () {
 
+		foreach (Image[] sign_container in sign_container_big) {
+			for (int k = 0; k < 15; k++) {
 
-}
+				sign_container [k].enabled = false;
+			}
+		}
+	}
 
-/*
-
-void resetContainer (int index) {
-
-	for (int j = 0; j < 16; j++) {
-
-		note_container[index][j].enabled = false;
-		sign_container[index][j].enabled = false;
-
+	void updateNoteContainer()
+	{
+		foreach (Image[] container in note_container_big){
+			foreach (Image note in container){
+				note.sprite = note_sprites[1];
+			}
+		}
 	}
 }
 
-
-void configContainers ( int[] fightScale ) {
-
-	for (int i = 0; i < fightScale.Length-1; i++) {
-
-		if (fightScale [i] == 48) { 
-			note_container [0].enabled = true;
-			sign_container[0].enabled = false;
-		}
-		if (fightScale [i] == 49) {
-			note_container [0].enabled = true;
-			sign_container[0].enabled = true;
-		}
-		if (fightScale [i] == 50) {
-			note_container [1].enabled = true;
-			sign_container[1].enabled = false;
-		}
-		if (fightScale [i] == 51) {
-			note_container [1].enabled = true;
-			sign_container[1].enabled = true;
-		}
-		if (fightScale [i] == 52) {
-			note_container [2].enabled = true;
-			sign_container[2].enabled = false;
-		}
-		if (fightScale [i] == 53) {
-			note_container [3].enabled = true;
-			sign_container[3].enabled = false;
-		}
-		if (fightScale [i] == 54) {
-			note_container [3].enabled = true;
-			sign_container[3].enabled = true;
-		}
-		if (fightScale [i] == 55) {
-			note_container [4].enabled = true;
-			sign_container[4].enabled = false;
-		}
-		if (fightScale [i] == 56) {
-			note_container [4].enabled = true;
-			sign_container[4].enabled = true;
-		}
-		if (fightScale [i] == 57) {
-			note_container [5].enabled = true;
-			sign_container[5].enabled = false;
-		}
-		if (fightScale [i] == 58) {
-			note_container [5].enabled = true;
-			sign_container[5].enabled = true;
-		}
-		if (fightScale [i] == 59) {
-			note_container [6].enabled = true;
-			sign_container[6].enabled = false;
-		}
-		if (fightScale [i] == 60) {
-			note_container [7].enabled = true;
-			sign_container[7].enabled = false;
-		}
-		if (fightScale [i] == 61) { 
-			note_container [8].enabled = true;
-			sign_container[8].enabled = false;
-		}
-		if (fightScale [i] == 62) {
-			note_container [8].enabled = true;
-			sign_container[8].enabled = true;
-		}
-		if (fightScale [i] == 63) {
-			note_container [9].enabled = true;
-			sign_container[9].enabled = false;
-		}
-		if (fightScale [i] == 64) {
-			note_container [9].enabled = true;
-			sign_container[9].enabled = true;
-		}
-		if (fightScale [i] == 65) {
-			note_container [10].enabled = true;
-			sign_container[10].enabled = false;
-		}
-		if (fightScale [i] == 66) {
-			note_container [11].enabled = true;
-			sign_container[11].enabled = false;
-		}
-		if (fightScale [i] == 67) {
-			note_container [11].enabled = true;
-			sign_container[11].enabled = true;
-		}
-		if (fightScale [i] == 68) {
-			note_container [12].enabled = true;
-			sign_container[12].enabled = false;
-		}
-		if (fightScale [i] == 69) {
-			note_container [12].enabled = true;
-			sign_container[12].enabled = true;
-		}
-		if (fightScale [i] == 70) {
-			note_container [13].enabled = true;
-			sign_container[13].enabled = false;
-		}
-		if (fightScale [i] == 71) {
-			note_container [13].enabled = true;
-			sign_container[13].enabled = true;
-		}
-		if (fightScale [i] == 72) {
-			note_container [14].enabled = true;
-			sign_container[14].enabled = false;
-		}
-		if (fightScale [i] == 73) {
-			note_container [14].enabled = true;
-			sign_container[14].enabled = false;
-		}
-		if (fightScale [i] == 74) {
-			note_container [15].enabled = true;
-			sign_container[15].enabled = false;
-		}
-
-*/
