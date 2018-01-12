@@ -131,19 +131,19 @@ public class ScaleListener : MonoBehaviour {
         noteKeys.Add(57, "N");
         noteKeys.Add(58, "J");
         noteKeys.Add(59, "M");
-        noteKeys.Add(60, "comma or E");
-        noteKeys.Add(61, "4");
-        noteKeys.Add(62, "R");
-        noteKeys.Add(63, "5");
-        noteKeys.Add(64, "T");
-        noteKeys.Add(65, "Z");
-        noteKeys.Add(66, "7");
-        noteKeys.Add(67, "U");
-        noteKeys.Add(68, "8");
-        noteKeys.Add(69, "I");
-        noteKeys.Add(70, "9");
-        noteKeys.Add(71, "O");
-        noteKeys.Add(72, "P");
+        noteKeys.Add(60, "comma or Q");
+        noteKeys.Add(61, "2");
+        noteKeys.Add(62, "W");
+        noteKeys.Add(63, "3");
+        noteKeys.Add(64, "E");
+        noteKeys.Add(65, "R");
+        noteKeys.Add(66, "5");
+        noteKeys.Add(67, "T");
+        noteKeys.Add(68, "6");
+        noteKeys.Add(69, "Z");
+        noteKeys.Add(70, "7");
+        noteKeys.Add(71, "U");
+        noteKeys.Add(72, "i");
 
     }
 
@@ -212,55 +212,55 @@ public class ScaleListener : MonoBehaviour {
 				playedNote = 60;
                 musicKeyPressed = true;
             }
-			else if(Input.GetKeyDown(KeyCode.E)) {
+			else if(Input.GetKeyDown(KeyCode.Q)) {
 				playedNote = 60;
 				musicKeyPressed = false;
 			}
-			else if(Input.GetKeyDown(KeyCode.Alpha4)) {
+			else if(Input.GetKeyDown(KeyCode.Alpha2)) {
 				playedNote = 61;
 				musicKeyPressed = true;
 			}
-			else if(Input.GetKeyDown(KeyCode.R)) {
+			else if(Input.GetKeyDown(KeyCode.W)) {
 				playedNote = 62;
 				musicKeyPressed = true;
 			}
-			else if(Input.GetKeyDown(KeyCode.Alpha5)) {
+			else if(Input.GetKeyDown(KeyCode.Alpha3)) {
 				playedNote = 63;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.T)) {
+			else if (Input.GetKeyDown(KeyCode.E)) {
 				playedNote = 64;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.Z)) {
+			else if (Input.GetKeyDown(KeyCode.R)) {
 				playedNote = 65;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha7)) {
+			else if (Input.GetKeyDown(KeyCode.Alpha5)) {
 				playedNote = 66;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.U)) {
+			else if (Input.GetKeyDown(KeyCode.T)) {
 				playedNote = 67;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha8)) {
+			else if (Input.GetKeyDown(KeyCode.Alpha6)) {
 				playedNote = 68;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.I)) {
+			else if (Input.GetKeyDown(KeyCode.Z)) {
 				playedNote = 69;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.Alpha9)) {
+			else if (Input.GetKeyDown(KeyCode.Alpha7)) {
 				playedNote = 70;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.O)) {
+			else if (Input.GetKeyDown(KeyCode.U)) {
 				playedNote = 71;
 				musicKeyPressed = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.P)) {
+			else if (Input.GetKeyDown(KeyCode.I)) {
 				playedNote = 72;
 				musicKeyPressed = true;
 			}
