@@ -69,43 +69,43 @@ public class SoundPlayer : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.J)) {
 			a_sh.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.E)) {
+		if (Input.GetKeyDown(KeyCode.Q)) {
 			c.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha4)) {
+		if (Input.GetKeyDown(KeyCode.Alpha2)) {
 			c_sh.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.P)) {
+		if (Input.GetKeyDown(KeyCode.I)) {
 			c1.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.R)) {
+		if (Input.GetKeyDown(KeyCode.W)) {
 			d.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha5)) {
+		if (Input.GetKeyDown(KeyCode.Alpha3)) {
 			d_sh.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.T)) {
+		if (Input.GetKeyDown(KeyCode.E)) {
 			e.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.Z)) {
+		if (Input.GetKeyDown(KeyCode.R)) {
 			f.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha7)) {
+		if (Input.GetKeyDown(KeyCode.Alpha5)) {
 			f_sh.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.U)) {
+		if (Input.GetKeyDown(KeyCode.T)) {
 			g.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha8)) {
+		if (Input.GetKeyDown(KeyCode.Alpha6)) {
 			g_sh.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.O)) {
+		if (Input.GetKeyDown(KeyCode.U)) {
 			h.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.I)) {
+		if (Input.GetKeyDown(KeyCode.Z)) {
 			a.Play ();
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha9)) {
+		if (Input.GetKeyDown(KeyCode.Alpha7)) {
 			a_sh.Play ();
 		}
 	}
