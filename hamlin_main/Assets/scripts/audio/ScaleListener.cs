@@ -2,45 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Enums
+public enum ScaleNames {	
+	CHROMATIC_SCALE = 0,
+	MAJOR_SCALE = 1,
+	MINOR_SCALE = 2,
+	HARMONIC_MINOR_SCALE = 3,
+	MELODIC_MINOR_SCALE = 4, // mix of ascend and descend
+	NATURAL_MINOR_SCALE = 5,
+	DIATONIC_MINOR_SCALE = 6,
+	AEOLIAN_SCALE = 7,
+	PHRYGIAN_SCALE = 8,
+	LOCRIAN_SCALE = 9,
+	DORIAN_SCALE = 10,	
+	LYDIAN_SCALE = 11,
+	MIXOLYDIAN_SCALE = 12,
+	PENTATONIC_SCALE = 13,
+	BLUES_SCALE = 14,
+	TURKISH_SCALE = 15,
+	INDIAN_SCALE = 16 
+};  
+
+public enum NoteNames {
+	C ,
+	Csh_Dfl,
+	D,
+	Dsh_Efl,
+	E,
+	F,
+	Fsh_Gfl,
+	G,
+	Gsh_Afl,
+	A,
+	Ash_Hfl,
+	H
+};
+
+
 public class ScaleListener : MonoBehaviour {
 
-	public enum ScaleNames {	
-		CHROMATIC_SCALE = 0,
-		MAJOR_SCALE = 1,
-		MINOR_SCALE = 2,
-		HARMONIC_MINOR_SCALE = 3,
-		MELODIC_MINOR_SCALE = 4, // mix of ascend and descend
-		NATURAL_MINOR_SCALE = 5,
-		DIATONIC_MINOR_SCALE = 6,
-		AEOLIAN_SCALE = 7,
-		PHRYGIAN_SCALE = 8,
-		LOCRIAN_SCALE = 9,
-		DORIAN_SCALE = 10,	
-		LYDIAN_SCALE = 11,
-		MIXOLYDIAN_SCALE = 12,
-		PENTATONIC_SCALE = 13,
-		BLUES_SCALE = 14,
-		TURKISH_SCALE = 15,
-		INDIAN_SCALE = 16 
-	};  
-
-
-	public enum NoteNames {
-		C ,
-		Csh_Dfl,
-		D,
-		Dsh_Efl,
-		E,
-		F,
-		Fsh_Gfl,
-		G,
-		Gsh_Afl,
-		A,
-		Ash_Hfl,
-		H
-	};
-
-    public AudioSource ApplauseSound;
+  public AudioSource ApplauseSound;
 	public AudioSource FailSound;
 
 	int[] fightScale;
