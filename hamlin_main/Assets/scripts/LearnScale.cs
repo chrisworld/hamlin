@@ -6,35 +6,50 @@ public class LearnScale : MonoBehaviour {
 
 	public AudioSource activate_sound;
 	public Transform player;
-	public ScaleListener scaleListener;
+	public PlayerController player_controller;
 	public Health health;
+	public ScaleListener scale_listener;
 	public ContainerManager container;
-	public ScaleNames scale_name;
 	public float distance_activation;
 
+	public ScaleNames scale_name;
+	public NoteBaseKey base_key;
+
 	private bool activated = false;
+	private int[] box_scale;
 
-
-	// Use this for initialization
+	// start
 	void Start () {
-		
+		// get the scale for the scalebox
+		box_scale = scale_listener.getFullScale(scale_name);
+		box_scale = scale_listener.ScaleByKey((int)base_key, box_scale);
 	}
 	
-	// Update is called once per frame
+	// update
 	void Update () {
 		// check distance
 		if(Vector3.Distance(player.position, this.transform.position) < distance_activation)
 		{
-		  	if(!activated && checkValidKey()){
-		  		print("inside");
-		    	activate_sound.Play ();
-		    	activated = true;
-		  	}
-
+	  	// start the scale
+	  	if(!activated && checkValidMusicKey()){
+	  		print("inside the scalebox");
+	    	activate_sound.Play();
+	    	activated = true;
+	    	player_controller.setMoveActivate(false);
+	    	container.setScale(box_scale);
+	  	}
+	  	// stop the scale
+	  	else if(activated && player_controller.checkValidJumpKey())
+	  	{
+	  		print("exit the scalebox");
+	  		activated = false;
+	  		player_controller.setMoveActivate(true);
+	  		container.resetContainers();
+	  	}
 		}
 	}
 
-	public bool checkValidKey(){
+	public bool checkValidMusicKey(){
 		KeyCode[] valid_keys = {
 			KeyCode.Y,
 			KeyCode.S,
