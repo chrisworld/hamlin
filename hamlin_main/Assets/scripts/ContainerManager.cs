@@ -337,7 +337,7 @@ public class ContainerManager : MonoBehaviour {
 		}
 	}
 
-	void resetContainers () {
+	public void resetContainers () {
 
 		foreach (Image[] note_container in note_container_big) {
 			for (int j = 0; j < 15; j++) {
@@ -347,7 +347,7 @@ public class ContainerManager : MonoBehaviour {
 		}
 	}
 
-	void resetCleffs () {
+	public void resetCleffs () {
 
 		foreach (Image[] sign_container in sign_container_big) {
 			for (int k = 0; k < 15; k++) {
