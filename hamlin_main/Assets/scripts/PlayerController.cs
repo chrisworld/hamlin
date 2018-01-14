@@ -12,9 +12,7 @@ public class PlayerController : MonoBehaviour {
     public float jumpHeight = 0.5f;
     public float inAirControl = 1;          //controls how much the player can turn while in mid air
 
-    //change these to change run and jump control keys
-    KeyCode runKey = KeyCode.LeftShift;
-    KeyCode jumpKey = KeyCode.Space;
+    private bool move_activated = true;
 
     float turnSmoothVelocity;
     float speedSmoothVelocity;
@@ -29,6 +27,7 @@ public class PlayerController : MonoBehaviour {
         animator = GetComponentInChildren<Animator>();
         cameraT = Camera.main.transform;
         controller = GetComponent<CharacterController>();
+        move_activated = true;
     }
 	
 	void Update () {
@@ -36,7 +35,7 @@ public class PlayerController : MonoBehaviour {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 inputDirection = input.normalized;
 
-        if (Input.GetKeyDown(jumpKey))
+        if (checkValidJumpKey())
         {
             Jump();
         }
@@ -49,24 +48,26 @@ public class PlayerController : MonoBehaviour {
             transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
         }
 
-        bool running = Input.GetKey(runKey);
-        float targetSpeed = (running ? runSpeed : walkSpeed) * inputDirection.magnitude;
-        currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, GetModifiedSmoothTime(speedSmoothTime));
+        if (move_activated){
+            bool running = checkValidRunKey();
+            float targetSpeed = (running ? runSpeed : walkSpeed) * inputDirection.magnitude;
+            currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, GetModifiedSmoothTime(speedSmoothTime));
 
-        velocityY += Time.deltaTime * gravity;
-        Vector3 velocity = transform.forward * currentSpeed + Vector3.up * velocityY;
-        controller.Move(velocity * Time.deltaTime);
-        currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
+            velocityY += Time.deltaTime * gravity;
+            Vector3 velocity = transform.forward * currentSpeed + Vector3.up * velocityY;
+            
+            controller.Move(velocity * Time.deltaTime);
+            currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
 
-        if (controller.isGrounded)
-        {
-            velocityY = 0;
+            if (controller.isGrounded)
+            {
+                velocityY = 0;
+            }
+
+            //this is how we tell the animation controller which state we're in
+            float animationSpeedPercent = (running ? currentSpeed / runSpeed : currentSpeed/walkSpeed * 0.5f);
+            animator.SetFloat("speedPercent", animationSpeedPercent, GetModifiedSmoothTime(speedSmoothTime), Time.deltaTime);
         }
-
-        //this is how we tell the animation controller which state we're in
-        float animationSpeedPercent = (running ? currentSpeed / runSpeed : currentSpeed/walkSpeed * 0.5f);
-        animator.SetFloat("speedPercent", animationSpeedPercent, GetModifiedSmoothTime(speedSmoothTime), Time.deltaTime);
-
     }
 
     void Jump()
@@ -87,5 +88,46 @@ public class PlayerController : MonoBehaviour {
 
     }
 
+    // set move activate
+    public void setMoveActivate(bool state){
+        move_activated = state;
+    }
+
+    // get move activate
+    public bool getMoveActivate(){
+        return move_activated;
+    }
+
+    // check valid jump keys
+    public bool checkValidJumpKey(){
+        KeyCode[] valid_keys = {
+            KeyCode.Space,
+            KeyCode.Keypad0,
+            KeyCode.RightControl
+        };
+        // check valid key
+        foreach (KeyCode key in valid_keys){
+            if(Input.GetKeyDown(key)){ 
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // check valid run keys
+    public bool checkValidRunKey(){
+        KeyCode[] valid_keys = {
+            KeyCode.LeftShift,
+            KeyCode.Keypad1,
+            KeyCode.RightShift
+        };
+        // check valid key
+        foreach (KeyCode key in valid_keys){
+            if(Input.GetKey(key)){ 
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

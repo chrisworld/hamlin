@@ -38,6 +38,21 @@ public enum NoteNames {
 	H
 };
 
+public enum NoteBaseKey {
+	BASE_C = 48,
+	BASE_Csh = 49,
+	BASE_D = 50,
+	BASE_Dsh = 51,
+	BASE_E = 52,
+	BASE_F = 53,
+	BASE_Fsh = 54,
+	BASE_G = 55,
+	BASE_Gsh = 56,
+	BASE_A = 57,
+	BASE_Ash = 58,
+	BASE_H = 59
+};
+
 
 public class ScaleListener : MonoBehaviour {
 
@@ -49,36 +64,17 @@ public class ScaleListener : MonoBehaviour {
 	int expectedNote;
 	int expectedNoteCounter = 0;
 	int playedNote;
-    Dictionary<int, string> noteKeys = new Dictionary<int, string>();  
+  Dictionary<int, string> noteKeys = new Dictionary<int, string>();  
 
-    //used by CombatManager
-    private bool playerHasWon;
+  //used by CombatManager
+  private bool playerHasWon;
 
-    //managed by CombatManager
-    private bool inCombat;
-    private int fightBaseKey;
-    private int scale;
+  //managed by CombatManager
+  private bool inCombat;
+  private int fightBaseKey;
+  private int scale;
 
-    string GetScaleName(int index){  // Cast Scale Name
-		ScaleNames enumValue = (ScaleNames)index;
-		string stringName = enumValue.ToString(); 
-		return stringName;
-	}
-
-	string GetBaseNoteName(int index){  // Check Base Key 
-
-		int modIndex = index % 12;  // Check base Key by Modulo
-		NoteNames enumValue = (NoteNames)modIndex;
-		string stringName = enumValue.ToString(); 
-		return stringName;
-	}
-
-	int GetOctave(int index){  // Get Octave Range
-		return index / 12;
-	}
-
-
-	int[][] allScales =   // Scales Definition
+  private int[][] allScales =   // Scales Definition
 	{
 		new int[] {0, 2, 4, 5, 7, 9, 11, 12},
 		new int[] {0, 2, 3, 5, 7, 8, 10, 12},
@@ -101,15 +97,35 @@ public class ScaleListener : MonoBehaviour {
 		new int[] {0, 1, 1, 4, 5, 8, 10},
 	};
 
+	// get a full scale from allScales
+	public int[] getFullScale(ScaleNames scale_index){
+		return allScales[(int)scale_index];
+	}
 
+  // Get Name of the scale
+	string GetScaleName(int index){  // Cast Scale Name
+		ScaleNames enumValue = (ScaleNames)index;
+		string stringName = enumValue.ToString(); 
+		return stringName;
+	}
 
-	int[] ScaleByKey (int key, int[] scale) {
+	string GetBaseNoteName(int index){  // Check Base Key 
 
-		for(int i = 0; i < scale.Length; i++)
-		{
+		int modIndex = index % 12;  // Check base Key by Modulo
+		NoteNames enumValue = (NoteNames)modIndex;
+		string stringName = enumValue.ToString(); 
+		return stringName;
+	}
+
+	int GetOctave(int index){  // Get Octave Range
+		return index / 12;
+	}
+
+	// scales by key
+	public int[] ScaleByKey (int key, int[] scale) {
+		for(int i = 0; i < scale.Length; i++){
 			scale[i] = scale[i] + key;
 		}
-
 		return scale;
 	}
 
@@ -148,26 +164,25 @@ public class ScaleListener : MonoBehaviour {
 
     }
 
-    // Update is called once per frame
-    void Update () {
+  // Update is called once per frame
+  void Update () {
 
-        //wait until values set by CombatManager
-        if(fightScale == null)
-        {
-            fightScale = ScaleByKey(fightBaseKey, allScales[scale]);  // Generate Fight Scale by Random Keys
-        }
+    //wait until values set by CombatManager
+    if(fightScale == null){
+        fightScale = ScaleByKey(fightBaseKey, allScales[scale]);  // Generate Fight Scale by Random Keys
+    }
 
-        if (fightScale.Length > 0 && Input.anyKeyDown){
+    if (fightScale.Length > 0 && Input.anyKeyDown){
 
-            bool musicKeyPressed = false;
+      bool musicKeyPressed = false;
 
-            if(Input.GetKeyDown(KeyCode.Y)) {
-				playedNote = 48;
-                musicKeyPressed = false;
-            }
+      if(Input.GetKeyDown(KeyCode.Y)) {
+					playedNote = 48;
+          musicKeyPressed = false;
+      }
 			else if(Input.GetKeyDown(KeyCode.S)) {
-				playedNote = 49;
-                musicKeyPressed = true;
+							playedNote = 49;
+              musicKeyPressed = true;
             }
 			else if(Input.GetKeyDown(KeyCode.X)) {
 				playedNote = 50;
@@ -266,37 +281,35 @@ public class ScaleListener : MonoBehaviour {
 				musicKeyPressed = true;
 			}
 
+      if (inCombat)
+      {
+        if (musicKeyPressed && (playedNote == expectedNote))
+        {
+            print("HIT");
+            expectedNoteCounter++;
+        }
+        else if (musicKeyPressed)
+        {
+            print("MISS");
+            expectedNoteCounter = 0;
+            FailSound.Play();
+        }
+        //do nothing if non-music key pressed, player should still be able to move and non-piano keys should not produce a sound
 
-            if (inCombat)
-            {
-                if (musicKeyPressed && (playedNote == expectedNote))
-                {
-                    print("HIT");
-                    expectedNoteCounter++;
-                }
-                else if (musicKeyPressed)
-                {
-                    print("MISS");
-                    expectedNoteCounter = 0;
-                    FailSound.Play();
-                }
-                //do nothing if non-music key pressed, player should still be able to move and non-piano keys should not produce a sound
-
-                if (expectedNoteCounter == fightScale.Length)
-                {
-                    print("You WIN");
-                    ApplauseSound.Play();
-                    playerHasWon = true;
-                    //reset
-                    expectedNoteCounter = 0;
-                    expectedNote = fightScale[expectedNoteCounter];
-                }
-                else
-                {
-                    expectedNote = fightScale[expectedNoteCounter];
-                }
-            }
-
+        if (expectedNoteCounter == fightScale.Length)
+        {
+            print("You WIN");
+            ApplauseSound.Play();
+            playerHasWon = true;
+            //reset
+            expectedNoteCounter = 0;
+            expectedNote = fightScale[expectedNoteCounter];
+        }
+        else
+        {
+            expectedNote = fightScale[expectedNoteCounter];
+        }
+      }
 		}
 	}
 
