@@ -30,7 +30,7 @@ public class SkeletonController : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         inCombat = false;
         playerHealthDamaged = false;
-        gameOver = false;
+        gameOver = true;    //start with skeleton disabled until player presses a key
     }
 
     // Update is called once per frame
@@ -109,6 +109,11 @@ public class SkeletonController : MonoBehaviour
     public void SetPlayerHasWon(bool value)
     {
         playerHasWon = value;
+    }
+
+    public void SetGameOver(bool value)
+    {
+        gameOver = value;
     }
 
     public void SetAttackDistance(float value)
