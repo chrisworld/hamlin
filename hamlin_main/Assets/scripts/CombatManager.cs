@@ -51,6 +51,7 @@ public class CombatManager : MonoBehaviour {
             string scaleInfo = scaleListener.GetScaleInfo();
             print(scaleInfo);  //TODO: this should be displayed in GUI e.g. musical notes on stave
             startedPlaying = true;
+            monster.SetGameOver(false);      //activate combat
         }
 
         //monster determines if we are in combat or not
