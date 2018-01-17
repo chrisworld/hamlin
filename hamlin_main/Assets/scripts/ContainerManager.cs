@@ -141,7 +141,6 @@ public class ContainerManager : MonoBehaviour {
 		foreach (NoteState[] notes in note_state){
 			int n = 0;
 			foreach (NoteState note in notes){
-				Debug.Log("count = " + c + n);
 				Image[] note_container = (Image[])note_container_big[c];
 				switch (note)
 				{
@@ -166,13 +165,6 @@ public class ContainerManager : MonoBehaviour {
 			}
 			c++;
 		}
-		/*
-		foreach (Image[] container in note_container_big){
-			foreach (Image note in container){
-				note.sprite = note_sprites[1];
-			}
-		}
-		*/
 	}
 
 	// write note container
