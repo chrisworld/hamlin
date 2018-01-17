@@ -180,7 +180,7 @@ public class ContainerManager : MonoBehaviour {
 		int i = 0;
 		foreach (Image[] note_container in note_container_big) {
 
-			if (i < fightScale.Length-1){
+			if (i < fightScale.Length){
 
 				if (fightScale [i] == 48) {  // C
 					note_container [14].enabled = true;
@@ -267,7 +267,7 @@ public class ContainerManager : MonoBehaviour {
 		int i = 0;
 		foreach (Image[] sign_container in sign_container_big) {
 
-			if (i < fightScale.Length-1){	
+			if (i < fightScale.Length){	
 
 				if (fightScale [i] == 48) { 				// c
 					sign_container[14].enabled = false;
