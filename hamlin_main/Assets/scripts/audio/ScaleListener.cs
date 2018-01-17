@@ -78,23 +78,23 @@ public class ScaleListener : MonoBehaviour {
 	{
 		new int[] {0, 2, 4, 5, 7, 9, 11, 12},
 		new int[] {0, 2, 3, 5, 7, 8, 10, 12},
-		new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
-		new int[] {0, 2, 4, 5, 7, 9, 11},
-		new int[] {0, 2, 3, 5, 7, 8, 10},
-		new int[] {0, 2, 3, 5, 7, 8, 11},
-		new int[] {0, 2, 3, 5, 7, 8, 9, 10, 11}, // mix of ascend and descend
-		new int[] {0, 2, 3, 5, 7, 8, 10},
-		new int[] {0, 2, 3, 5, 7, 8, 10},
-		new int[] {0, 2, 3, 5, 7, 8, 10},
-		new int[] {0, 1, 3, 5, 7, 8, 10},
-		new int[] {0, 1, 3, 5, 6, 8, 10},
-		new int[] {0, 2, 3, 5, 7, 9, 10},	
-		new int[] {0, 2, 4, 6, 7, 9, 11},
-		new int[] {0, 2, 4, 5, 7, 9, 10},
-		new int[] {0, 2, 4, 7, 9},
-		new int[] {0, 2, 3, 4, 5, 7, 9, 10, 11},
-		new int[] {0, 1, 3, 5, 7, 10, 11},
-		new int[] {0, 1, 1, 4, 5, 8, 10},
+		new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12},
+		new int[] {0, 2, 4, 5, 7, 9, 11, 12},
+		new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+		new int[] {0, 2, 3, 5, 7, 8, 11, 12},
+		new int[] {0, 2, 3, 5, 7, 8, 9, 10, 11, 12}, // mix of ascend and descend
+		new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+		new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+		new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+		new int[] {0, 1, 3, 5, 7, 8, 10, 12},
+		new int[] {0, 1, 3, 5, 6, 8, 10, 12},
+		new int[] {0, 2, 3, 5, 7, 9, 10, 12},	
+		new int[] {0, 2, 4, 6, 7, 9, 11, 12},
+		new int[] {0, 2, 4, 5, 7, 9, 10, 12},
+		new int[] {0, 2, 4, 7, 9, 12},
+		new int[] {0, 2, 3, 4, 5, 7, 9, 10, 11, 12},
+		new int[] {0, 1, 3, 5, 7, 10, 11, 12},
+		new int[] {0, 1, 1, 4, 5, 8, 10 ,12},
 	};
 
 	// get a full scale from allScales
@@ -178,7 +178,7 @@ public class ScaleListener : MonoBehaviour {
 
       if(Input.GetKeyDown(KeyCode.Y)) {
 					playedNote = 48;
-          musicKeyPressed = false;
+          musicKeyPressed = true;
       }
 			else if(Input.GetKeyDown(KeyCode.S)) {
 							playedNote = 49;
@@ -230,7 +230,7 @@ public class ScaleListener : MonoBehaviour {
             }
 			else if(Input.GetKeyDown(KeyCode.Q)) {
 				playedNote = 60;
-				musicKeyPressed = false;
+				musicKeyPressed = true;
 			}
 			else if(Input.GetKeyDown(KeyCode.Alpha2)) {
 				playedNote = 61;
