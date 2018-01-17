@@ -135,12 +135,43 @@ public class ContainerManager : MonoBehaviour {
 		}
 	}
 
-	public void updateNoteContainer(){
+	public void updateNoteContainer(NoteState[][] note_state){
+		int c = 0;
+		foreach (NoteState[] notes in note_state){
+			int n = 0;
+			foreach (NoteState note in notes){
+				Debug.Log("count = " + c + n);
+				Image[] note_container = (Image[])note_container_big[c];
+				switch (note)
+				{
+					case NoteState.DISABLED: 
+						note_container[n].enabled = false; 
+						break;
+					case NoteState.NORMAL:		
+						note_container[n].enabled = true;
+						note_container[n].sprite = note_sprites[0];
+						break;
+					case NoteState.RIGHT:
+						note_container[n].enabled = true;
+						note_container[n].sprite = note_sprites[2];
+						break;
+					case NoteState.WRONG:
+						note_container[n].enabled = true;
+						note_container[n].sprite = note_sprites[1];
+						break;
+					default: break;
+				}
+				n++;
+			}
+			c++;
+		}
+		/*
 		foreach (Image[] container in note_container_big){
 			foreach (Image note in container){
 				note.sprite = note_sprites[1];
 			}
 		}
+		*/
 	}
 
 	// write note container
@@ -148,7 +179,7 @@ public class ContainerManager : MonoBehaviour {
 		int i = 0;
 		foreach (Image[] note_container in note_container_big) {
 
-			if (i < fightScale.Length-1){
+			if (i < fightScale.Length){
 
 				if (fightScale [i] == 48) {  // C
 					note_container [14].enabled = true;
@@ -235,7 +266,7 @@ public class ContainerManager : MonoBehaviour {
 		int i = 0;
 		foreach (Image[] sign_container in sign_container_big) {
 
-			if (i < fightScale.Length-1){	
+			if (i < fightScale.Length){	
 
 				if (fightScale [i] == 48) { 				// c
 					sign_container[14].enabled = false;
@@ -277,37 +308,37 @@ public class ContainerManager : MonoBehaviour {
 					sign_container[7].enabled = false;
 				}
 				else if (fightScale [i] == 61) { 
-					sign_container[7].enabled = false;
+					sign_container[7].enabled = true;
 				}
 				else if (fightScale [i] == 62) {  // d
-					sign_container[6].enabled = true;
-				}
-				else if (fightScale [i] == 63) {
 					sign_container[6].enabled = false;
 				}
+				else if (fightScale [i] == 63) {
+					sign_container[6].enabled = true;
+				}
 				else if (fightScale [i] == 64) {   // e
-					sign_container[5].enabled = true;
+					sign_container[5].enabled = false;
 				}
 				else if (fightScale [i] == 65) {  // f
 					sign_container[4].enabled = false;
 				}
 				else if (fightScale [i] == 66) {  
-					sign_container[4].enabled = false;
+					sign_container[4].enabled = true;
 				}
 				else if (fightScale [i] == 67) { // g
-					sign_container[3].enabled = true;
-				}
-				else if (fightScale [i] == 68) {
 					sign_container[3].enabled = false;
 				}
-				else if (fightScale [i] == 69) {  // a
-					sign_container[2].enabled = true;
+				else if (fightScale [i] == 68) {
+					sign_container[3].enabled = true;
 				}
-				else if (fightScale [i] == 70) {
+				else if (fightScale [i] == 69) {  // a
 					sign_container[2].enabled = false;
 				}
+				else if (fightScale [i] == 70) {
+					sign_container[2].enabled = true;
+				}
 				else if (fightScale [i] == 71) {  // h
-					sign_container[1].enabled = true;
+					sign_container[1].enabled = false;
 				}
 				else if (fightScale [i] == 72) {  //
 					sign_container[0].enabled = false;

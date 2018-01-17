@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Enums
+public enum NoteState {
+	DISABLED = 0,
+	NORMAL = 1,
+	RIGHT = 2,
+	WRONG = 3
+};
+
 public class LearnScale : MonoBehaviour {
 
 	public AudioSource activate_sound;
@@ -17,12 +25,27 @@ public class LearnScale : MonoBehaviour {
 
 	private bool activated = false;
 	private int[] box_scale;
+	private int[] box_midi;
+	private int num_c = 11;
+	private int num_n = 15;
+	private NoteState[][] note_state = new NoteState[11][];
 
 	// start
 	void Start () {
 		// get the scale for the scalebox
 		box_scale = scale_listener.getFullScale(scale_name);
-		box_scale = scale_listener.ScaleByKey((int)base_key, box_scale);
+		box_midi = scale_listener.ScaleByKey((int)base_key, box_scale);
+		// init note_state to all disabled
+		for (int c = 0; c < num_c; c++){
+			note_state[c] = new NoteState[num_n];
+			for (int n = 0; n < num_n; n++){
+				note_state[c][n] = NoteState.DISABLED;
+			}
+		}
+		int ni = 0;
+		foreach (int note in box_scale){
+			ni++;
+		}
 	}
 	
 	// update
@@ -36,7 +59,7 @@ public class LearnScale : MonoBehaviour {
 	    	activate_sound.Play();
 	    	activated = true;
 	    	player_controller.setMoveActivate(false);
-	    	container.setScale(box_scale);
+	    	container.setScale(box_midi);
 	  	}
 	  	// stop the scale
 	  	else if(activated && player_controller.checkValidJumpKey())
@@ -45,6 +68,11 @@ public class LearnScale : MonoBehaviour {
 	  		activated = false;
 	  		player_controller.setMoveActivate(true);
 	  		container.resetContainers();
+	  	}
+	  	// play the scales
+	  	else if(activated)
+	  	{
+	  		container.updateNoteContainer(note_state);
 	  	}
 		}
 	}
