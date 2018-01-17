@@ -61,6 +61,14 @@ public class CombatManager : MonoBehaviour {
         Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
         playerController.setMoveActivate(false);
 
+        if (player.GetHealthAmount() == 0)
+        {
+          gameOver = true;
+          infowindow.SetActive(true);
+          infobox.text = "You lose :(";
+          SceneManager.LoadScene("MainMenu");
+        }
+
         if (scaleListener.playerHasWon)
         {
           monster.status = "run away";

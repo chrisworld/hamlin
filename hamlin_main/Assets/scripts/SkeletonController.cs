@@ -70,11 +70,11 @@ public class SkeletonController : MonoBehaviour
                 }
                 else if (direction.magnitude > attackDistance)               //detected player but too far away to attack, walk towards
                 {
-                    nav.destination = player.position;
                     anim.SetBool("isRunning", false);
                     anim.SetBool("isWalking", true);
                     anim.SetBool("isAttacking", false);
                     anim.SetBool("isIdle", false);
+                    nav.destination = player.position;
                     inCombat = false;
 
                 }
