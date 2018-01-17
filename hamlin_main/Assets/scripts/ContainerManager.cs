@@ -309,37 +309,37 @@ public class ContainerManager : MonoBehaviour {
 					sign_container[7].enabled = false;
 				}
 				else if (fightScale [i] == 61) { 
-					sign_container[7].enabled = false;
+					sign_container[7].enabled = true;
 				}
 				else if (fightScale [i] == 62) {  // d
-					sign_container[6].enabled = true;
-				}
-				else if (fightScale [i] == 63) {
 					sign_container[6].enabled = false;
 				}
+				else if (fightScale [i] == 63) {
+					sign_container[6].enabled = true;
+				}
 				else if (fightScale [i] == 64) {   // e
-					sign_container[5].enabled = true;
+					sign_container[5].enabled = false;
 				}
 				else if (fightScale [i] == 65) {  // f
 					sign_container[4].enabled = false;
 				}
 				else if (fightScale [i] == 66) {  
-					sign_container[4].enabled = false;
+					sign_container[4].enabled = true;
 				}
 				else if (fightScale [i] == 67) { // g
-					sign_container[3].enabled = true;
-				}
-				else if (fightScale [i] == 68) {
 					sign_container[3].enabled = false;
 				}
-				else if (fightScale [i] == 69) {  // a
-					sign_container[2].enabled = true;
+				else if (fightScale [i] == 68) {
+					sign_container[3].enabled = true;
 				}
-				else if (fightScale [i] == 70) {
+				else if (fightScale [i] == 69) {  // a
 					sign_container[2].enabled = false;
 				}
+				else if (fightScale [i] == 70) {
+					sign_container[2].enabled = true;
+				}
 				else if (fightScale [i] == 71) {  // h
-					sign_container[1].enabled = true;
+					sign_container[1].enabled = false;
 				}
 				else if (fightScale [i] == 72) {  //
 					sign_container[0].enabled = false;
