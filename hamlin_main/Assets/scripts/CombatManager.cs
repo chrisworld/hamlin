@@ -23,80 +23,79 @@ public class CombatManager : MonoBehaviour {
     private bool gameOver;
     private bool startedPlaying;
     private float fov;
-    private CharacterController playerController;
+    private PlayerController playerController;
 
 	void Start () {
         int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
         int scale = Random.Range(0, 5);           // Picking Random Scale           NOTE: currently between 0 and 5 to keep it easier
-        
-        //uncomment to test win condition
-        //fightBaseKey = 53;        
-        //scale = 0;
-        //print("DEBUG: to test win condition, press V, B, N, J, comma, R, T, Z");
-        scaleListener.SetFightBaseKey (fightBaseKey);
-        scaleListener.SetScale (scale);
-        monster.SetAttackDistance (monsterAttackDistance);
-        monster.SetViewDistance (monsterViewDistance);
-        monster.SetViewAngle (monsterViewAngle);
+        scaleListener.InitFightScale(fightBaseKey, scale);
+        monster.attackDistance = monsterAttackDistance;
+        monster.viewDistance = monsterViewDistance;
+        monster.viewAngle = monsterViewAngle;
         damage = 0;
         gameOver = false;
         startedPlaying = false;
         infowindow.SetActive(false);
         fov = Camera.main.fieldOfView;
-        playerController = playerRef.GetComponent<CharacterController>();
+        playerController = playerRef.GetComponent<PlayerController>();
   }
-	
-	// Update is called once per frame
-	void Update () {
 
-        if(!startedPlaying && Input.anyKey)                            //player has started playing
+  // Update is called once per frame
+  void Update()
+  {
+
+    if (!startedPlaying && Input.anyKey)                            //player has started playing
+    {
+      container.setScale(scaleListener.fightScale);
+      print(scaleListener.GetScaleInfo());  //TODO: this should be displayed in GUI e.g. musical notes on stave
+      startedPlaying = true;
+      monster.gameOver = false;
+    }
+
+    if (!gameOver)
+    {
+      //monster determines if we are in combat or not
+      if (monster.inCombat)
+      {
+        scaleListener.inCombat = true;                          //when in combat, activate scaleListener hit/miss/win mechanics; can still play notes at any time
+        Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
+        playerController.setMoveActivate(false);
+
+        if (scaleListener.playerHasWon)
         {
-            int[] fightScale = scaleListener.GetFightScale();
-            container.setScale(fightScale);
-            string scaleInfo = scaleListener.GetScaleInfo();
-            print(scaleInfo);  //TODO: this should be displayed in GUI e.g. musical notes on stave
-            startedPlaying = true;
-            monster.SetGameOver(false);      //activate combat
+          monster.status = "run away";
+          gameOver = true;
+          infowindow.SetActive(true);
+          infobox.text = "You win!";
+          SceneManager.LoadScene("MainMenu");
         }
 
-        //monster determines if we are in combat or not
-        if ( !gameOver && monster.GetInCombat() )
+        if (scaleListener.wrongNotePlayed)
         {
-            scaleListener.SetInCombat (true);                         //when in combat, activate scaleListener hit/miss/win mechanics; can still play notes at any time
-
-            //TODO: zoom in camera to go into 'combat mode'
-            fov = 40f;
-            //fov = Mathf.Clamp(fov, 15f, 90f);
-            Camera.main.fieldOfView = 40f;
-            playerController.enabled = false;
-
-      //TODO: change monster combat. attacks once if wrong note.
-
-
-        if ( monster.GetPlayerHealthDamaged() )
-            {
-               damage++;
-               player.takeDamage(1);
-               monster.ResetPlayerHealthDamaged();
-              if (player.GetHealthAmount() == 0)
-              {
-                gameOver = true;
-                infowindow.SetActive(true);
-                infobox.text = "You lose :(";
-                SceneManager.LoadScene("MainMenu");
-              }
-            }
+          print("set monster status to attack");
+          monster.status = "attack";
+          scaleListener.wrongNotePlayed = false;     //reset
+          //TODO: make sure it only attacks once
         }
 
-        //scale listener determines if player has won or not
-        if ( !gameOver && scaleListener.GetPlayerHasWon() )
+        if (scaleListener.correctNotePlayed)
         {
-            monster.SetPlayerHasWon (true);
-            gameOver = true;
-            infowindow.SetActive(true);
-            infobox.text = "You win!";
-            SceneManager.LoadScene("MainMenu");
+          monster.status = "damaged";
+          scaleListener.correctNotePlayed = false;    //reset
         }
 
-	}
+        if (monster.playerHealthDamaged)
+        {
+          player.takeDamage(1);
+          monster.playerHealthDamaged = false;       //reset
+        }
+
+      }
+      else {
+        playerController.setMoveActivate(true);
+      }
+
+    }
+
+  }
 }

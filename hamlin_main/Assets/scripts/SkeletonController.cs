@@ -7,20 +7,31 @@ public class SkeletonController : MonoBehaviour
 {
 
     public Transform player;
-    static Animator anim;
-    NavMeshAgent nav;
+
+    [HideInInspector]
+    public static Animator anim;
+    [HideInInspector]
+    public NavMeshAgent nav;
 
     //used by CombatManager
-    private bool inCombat;
-    private bool playerHealthDamaged;
+    [HideInInspector]
+    public bool inCombat;
+    [HideInInspector]
+    public bool playerHealthDamaged;
 
     //managed by CombatManager
-    private bool playerHasWon;
-    //private bool initialised;
-    private float attackDistance;
-    private int viewDistance;
-    private int viewAngle;
-    private bool gameOver;
+    [HideInInspector]
+    public bool playerHasWon;
+    [HideInInspector]
+    public float attackDistance;
+    [HideInInspector]
+    public int viewDistance;
+    [HideInInspector]
+    public int viewAngle;
+    [HideInInspector]
+    public bool gameOver;
+    [HideInInspector]
+    public string status;
 
 
     void Start()
@@ -46,7 +57,7 @@ public class SkeletonController : MonoBehaviour
                    //direction.y = 0;
                    //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.05f);
 
-                if (playerHasWon)                                       //player has won, monster runs away
+                if (status == "run away")                                       //player has won
                 {
                     transform.LookAt(new Vector3(player.transform.position.x, 0, player.transform.position.z));
                     nav.destination = -direction;
@@ -68,79 +79,40 @@ public class SkeletonController : MonoBehaviour
 
                 }
                 else
-                {                                                        //detected player nearby, attack, player takes damage
+                {                                                        //detected player nearby, activate combat
                     inCombat = true;
                     anim.SetBool("isRunning", false);
                     anim.SetBool("isWalking", false);
-                    anim.SetBool("isAttacking", true);
-                    anim.SetBool("isIdle", false);
                     if (!nav.isStopped)
                     {
                       nav.ResetPath();
                       nav.isStopped = true;
                     }
-                    //playerHealthDamaged = true;
+                    bool isAttacking = (status == "attack") ? true : false;
+                    anim.SetBool("isAttacking", isAttacking);
+                    anim.SetBool("isIdle", !isAttacking);
+                    if(status == "damaged"){
+                      //TODO: player successfully attacked with note. Knockback animation?                          
+                    }
                 }
             }
 
             else                                                         //not in combat, idle
             {
-                print("else ran, idling");
                 inCombat = false;
                 anim.SetBool("isRunning", false);
                 anim.SetBool("isWalking", false);
                 anim.SetBool("isAttacking", false);
                 anim.SetBool("isIdle", true);
+            }
 
     }
 
-    }
-
-    //Getters and Setters for CombatManager
-
-    public bool GetInCombat() {
-        return inCombat;
-    }
-
-    public bool GetPlayerHealthDamaged()
-    {
-        return playerHealthDamaged;
-    }
-
-    public void ResetPlayerHealthDamaged()
-    {
-        playerHealthDamaged = false;
-    }
-
-    public void SetPlayerHasWon(bool value)
-    {
-        playerHasWon = value;
-    }
-
-    public void SetGameOver(bool value)
-    {
-        gameOver = value;
-    }
-
-    public void SetAttackDistance(float value)
-    {
-        attackDistance = value;
-    }
-
-    public void SetViewDistance(int value)
-    {
-        viewDistance = value;
-    }
-
-    public void SetViewAngle(int value)
-    {
-        viewAngle = value;
-    }
-
+    //Used by animation event to time health damage
     public void DamagePlayer()
     {
       playerHealthDamaged = true;
-      print("damage");
-    }
+      status = "idle";     //only attack once per wrong note
+  }
 
 }

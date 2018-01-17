@@ -37,39 +37,48 @@ public class PlayerController : MonoBehaviour {
 
         if (checkValidJumpKey())
         {
-            Jump();
+          Jump();
         }
 
-        //calculates rotation for player as arctan(x / y)
-        //player facing forwards = 0 deg rotation; facing right = 90 deg rotation, etc 
-        if (inputDirection != Vector2.zero)
-        {
-            float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
-            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
-        }
 
         if (move_activated){
+         
+          //calculates rotation for player as arctan(x / y)
+          //player facing forwards = 0 deg rotation; facing right = 90 deg rotation, etc 
+          if (inputDirection != Vector2.zero)
+          {
+            float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
+            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
+          }
+
+          if (move_activated)
+          {
             bool running = checkValidRunKey();
             float targetSpeed = (running ? runSpeed : walkSpeed) * inputDirection.magnitude;
             currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, GetModifiedSmoothTime(speedSmoothTime));
 
             velocityY += Time.deltaTime * gravity;
             Vector3 velocity = transform.forward * currentSpeed + Vector3.up * velocityY;
-            
+
             controller.Move(velocity * Time.deltaTime);
             currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
 
             if (controller.isGrounded)
             {
-                velocityY = 0;
+              velocityY = 0;
             }
 
             //this is how we tell the animation controller which state we're in
-            float animationSpeedPercent = (running ? currentSpeed / runSpeed : currentSpeed/walkSpeed * 0.5f);
+            float animationSpeedPercent = (running ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f);
             animator.SetFloat("speedPercent", animationSpeedPercent, GetModifiedSmoothTime(speedSmoothTime), Time.deltaTime);
+          }
+        
         }
-    }
 
+        
+    }
+    
+    //should work even when movement disabled
     void Jump()
     {
         if (controller.isGrounded)
