@@ -41,15 +41,10 @@ public class SkeletonController : MonoBehaviour
             Vector3 direction = player.position - this.transform.position;
             float angle = Vector3.Angle(direction, this.transform.forward);
 
-            //print(Vector3.Distance(player.position, this.transform.position));
-            //print(angle);
-
             if (!gameOver && Vector3.Distance(player.position, this.transform.position) < viewDistance && angle < viewAngle)
             {
-
-                direction.y = 0;
-                //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.05f);
-                anim.SetBool("isIdle", false);
+                   //direction.y = 0;
+                   //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.05f);
 
                 if (playerHasWon)                                       //player has won, monster runs away
                 {
@@ -58,35 +53,46 @@ public class SkeletonController : MonoBehaviour
                     anim.SetBool("isRunning", true);
                     anim.SetBool("isWalking", false);
                     anim.SetBool("isAttacking", false);
+                    anim.SetBool("isIdle", false);
                     inCombat = false;
                     gameOver = true;
                 }
                 else if (direction.magnitude > attackDistance)               //detected player but too far away to attack, walk towards
                 {
-                    inCombat = true;
-                    //this.transform.Translate(0, 0, 0.1f);
-                    nav.destination = player.position; //TODO: translate this position slightly so skeleton doesn't end up on top of player 
+                    nav.destination = player.position;
+                    anim.SetBool("isRunning", false);
                     anim.SetBool("isWalking", true);
                     anim.SetBool("isAttacking", false);
+                    anim.SetBool("isIdle", false);
+                    inCombat = false;
 
                 }
                 else
                 {                                                        //detected player nearby, attack, player takes damage
                     inCombat = true;
+                    anim.SetBool("isRunning", false);
                     anim.SetBool("isWalking", false);
                     anim.SetBool("isAttacking", true);
-                    playerHealthDamaged = true;
+                    anim.SetBool("isIdle", false);
+                    if (!nav.isStopped)
+                    {
+                      nav.ResetPath();
+                      nav.isStopped = true;
+                    }
+                    //playerHealthDamaged = true;
                 }
             }
 
             else                                                         //not in combat, idle
             {
+                print("else ran, idling");
                 inCombat = false;
-                anim.SetBool("isIdle", true);
+                anim.SetBool("isRunning", false);
                 anim.SetBool("isWalking", false);
                 anim.SetBool("isAttacking", false);
+                anim.SetBool("isIdle", true);
 
-            }
+    }
 
     }
 
@@ -129,6 +135,12 @@ public class SkeletonController : MonoBehaviour
     public void SetViewAngle(int value)
     {
         viewAngle = value;
+    }
+
+    public void DamagePlayer()
+    {
+      playerHealthDamaged = true;
+      print("damage");
     }
 
 }

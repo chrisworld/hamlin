@@ -12,6 +12,7 @@ public class CombatManager : MonoBehaviour {
     public ContainerManager container;
     public GameObject infowindow;
     public Text infobox;
+    public Transform playerRef;
 
     //NOTE: these values will need tweaking for each map!!! test them out in game
     public float monsterAttackDistance = 1;  //walk towards player if player detected and further away from this distance, else attack player
@@ -21,6 +22,8 @@ public class CombatManager : MonoBehaviour {
     private int damage;
     private bool gameOver;
     private bool startedPlaying;
+    private float fov;
+    private CharacterController playerController;
 
 	void Start () {
         int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
@@ -39,7 +42,9 @@ public class CombatManager : MonoBehaviour {
         gameOver = false;
         startedPlaying = false;
         infowindow.SetActive(false);
-    }
+        fov = Camera.main.fieldOfView;
+        playerController = playerRef.GetComponent<CharacterController>();
+  }
 	
 	// Update is called once per frame
 	void Update () {
@@ -58,23 +63,28 @@ public class CombatManager : MonoBehaviour {
         if ( !gameOver && monster.GetInCombat() )
         {
             scaleListener.SetInCombat (true);                         //when in combat, activate scaleListener hit/miss/win mechanics; can still play notes at any time
-            if ( monster.GetPlayerHealthDamaged() )
+
+            //TODO: zoom in camera to go into 'combat mode'
+            fov = 40f;
+            //fov = Mathf.Clamp(fov, 15f, 90f);
+            Camera.main.fieldOfView = 40f;
+            playerController.enabled = false;
+
+      //TODO: change monster combat. attacks once if wrong note.
+
+
+        if ( monster.GetPlayerHealthDamaged() )
             {
                damage++;
+               player.takeDamage(1);
                monster.ResetPlayerHealthDamaged();
-            }
-            if(damage != 0 && damage % 120 == 0)
-            {
-                player.takeDamage(1);
-                damage = 0; //reset count
-            }
-            if(player.GetHealthAmount() == 0)
-            {
+              if (player.GetHealthAmount() == 0)
+              {
                 gameOver = true;
                 infowindow.SetActive(true);
                 infobox.text = "You lose :(";
-                //yield WaitForSeconds 2.0f;
                 SceneManager.LoadScene("MainMenu");
+              }
             }
         }
 
@@ -85,7 +95,6 @@ public class CombatManager : MonoBehaviour {
             gameOver = true;
             infowindow.SetActive(true);
             infobox.text = "You win!";
-            //yield WaitForSeconds 2.0f;
             SceneManager.LoadScene("MainMenu");
         }
 
