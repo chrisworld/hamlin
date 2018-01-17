@@ -136,12 +136,43 @@ public class ContainerManager : MonoBehaviour {
 		}
 	}
 
-	public void updateNoteContainer(){
+	public void updateNoteContainer(NoteState[][] note_state){
+		int c = 0;
+		foreach (NoteState[] notes in note_state){
+			int n = 0;
+			foreach (NoteState note in notes){
+				Debug.Log("count = " + c + n);
+				Image[] note_container = (Image[])note_container_big[c];
+				switch (note)
+				{
+					case NoteState.DISABLED: 
+						note_container[n].enabled = false; 
+						break;
+					case NoteState.NORMAL:		
+						note_container[n].enabled = true;
+						note_container[n].sprite = note_sprites[0];
+						break;
+					case NoteState.RIGHT:
+						note_container[n].enabled = true;
+						note_container[n].sprite = note_sprites[2];
+						break;
+					case NoteState.WRONG:
+						note_container[n].enabled = true;
+						note_container[n].sprite = note_sprites[1];
+						break;
+					default: break;
+				}
+				n++;
+			}
+			c++;
+		}
+		/*
 		foreach (Image[] container in note_container_big){
 			foreach (Image note in container){
 				note.sprite = note_sprites[1];
 			}
 		}
+		*/
 	}
 
 	// write note container
