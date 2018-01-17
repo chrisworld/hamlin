@@ -76,8 +76,6 @@ public class ContainerManager : MonoBehaviour {
 
     if (gotData)
     {
-        print("init scale");
-        print(f_scale);
         configContainers(f_scale);
         configContainersSigns(f_scale);
         gotData = false;

@@ -24,6 +24,7 @@ public class CombatManager : MonoBehaviour {
     private bool startedPlaying;
     private float fov;
     private PlayerController playerController;
+    private bool initCombat;
 
 	void Start () {
         int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
@@ -38,6 +39,7 @@ public class CombatManager : MonoBehaviour {
         infowindow.SetActive(false);
         fov = Camera.main.fieldOfView;
         playerController = playerRef.GetComponent<PlayerController>();
+        initCombat = true;
   }
 
   // Update is called once per frame
@@ -57,9 +59,21 @@ public class CombatManager : MonoBehaviour {
       //monster determines if we are in combat or not
       if (monster.inCombat)
       {
+        
+        if(initCombat){
+          playerController.setMoveActivate(false);
+          initCombat = false;
+        }
+        else if(!initCombat && playerController.getMoveActivate())    //player has jumped to escape combat
+        {
+          monster.inCombat = false;
+          //monster.status = "idle";
+          initCombat = true;
+          return;
+        }
+
         scaleListener.inCombat = true;                          //when in combat, activate scaleListener hit/miss/win mechanics; can still play notes at any time
         Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
-        playerController.setMoveActivate(false);
 
         if (player.GetHealthAmount() == 0)
         {

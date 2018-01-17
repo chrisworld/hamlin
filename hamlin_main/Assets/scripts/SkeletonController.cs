@@ -81,6 +81,8 @@ public class SkeletonController : MonoBehaviour
                 else
                 {                                                        //detected player nearby, activate combat
                     inCombat = true;
+                    //TODO: TURN TO FACE PLAYER. transform.LookAt?
+                    transform.LookAt(player);
                     anim.SetBool("isRunning", false);
                     anim.SetBool("isWalking", false);
                     if (!nav.isStopped)

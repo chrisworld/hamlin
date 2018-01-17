@@ -38,11 +38,10 @@ public class PlayerController : MonoBehaviour {
         if (checkValidJumpKey())
         {
           Jump();
+          move_activated = true;     //escape combat
         }
 
-
-        if (move_activated){
-         
+       
           //calculates rotation for player as arctan(x / y)
           //player facing forwards = 0 deg rotation; facing right = 90 deg rotation, etc 
           if (inputDirection != Vector2.zero)
@@ -72,8 +71,6 @@ public class PlayerController : MonoBehaviour {
             float animationSpeedPercent = (running ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f);
             animator.SetFloat("speedPercent", animationSpeedPercent, GetModifiedSmoothTime(speedSmoothTime), Time.deltaTime);
           }
-        
-        }
 
         
     }
