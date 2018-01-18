@@ -474,6 +474,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ApplauseSound: {fileID: 300484699}
   FailSound: {fileID: 1285175527}
+  fightScale: 
+  playerHasWon: 0
+  inCombat: 0
+  correctNotePlayed: 0
+  wrongNotePlayed: 0
 --- !u!4 &19897266
 Transform:
   m_ObjectHideFlags: 0
@@ -25130,6 +25135,7 @@ MonoBehaviour:
   a: {fileID: 1136215976}
   a_sh: {fileID: 1006709252}
   h: {fileID: 1944056149}
+  inCombat: 0
 --- !u!4 &1477252107
 Transform:
   m_ObjectHideFlags: 0
@@ -26769,6 +26775,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 547588089}
+  nav: {fileID: 0}
+  inCombat: 0
+  playerHealthDamaged: 0
+  playerHasWon: 0
+  attackDistance: 0
+  viewDistance: 0
+  viewAngle: 0
+  gameOver: 0
+  status: 
 --- !u!195 &1627800765
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -34653,7 +34668,9 @@ MonoBehaviour:
   container: {fileID: 1347446729}
   infowindow: {fileID: 1050804721}
   infobox: {fileID: 1608228609}
-  monsterAttackDistance: 0.5
+  playerRef: {fileID: 547588089}
+  soundPlayer: {fileID: 1477252106}
+  monsterAttackDistance: 0.3
   monsterViewDistance: 20
   monsterViewAngle: 100
 --- !u!1 &2070450919

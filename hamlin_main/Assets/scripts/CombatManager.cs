@@ -13,6 +13,7 @@ public class CombatManager : MonoBehaviour {
     public GameObject infowindow;
     public Text infobox;
     public Transform playerRef;
+    public SoundPlayer soundPlayer;
 
     //NOTE: these values will need tweaking for each map!!! test them out in game
     public float monsterAttackDistance = 1;  //walk towards player if player detected and further away from this distance, else attack player
@@ -35,26 +36,31 @@ public class CombatManager : MonoBehaviour {
         startedPlaying = false;
         infowindow.SetActive(false);
         playerController = playerRef.GetComponent<PlayerController>();
-        //TODO: fix, this doesn't seem to get called again, also we lose player ref in editor
-        //onLevelFinishedLoading did not help :/
         initCombat = true;
   }
 
-  void onEnable(){
+  void OnEnable(){
     SceneManager.sceneLoaded += OnLevelFinishedLoading;
   }
 
-  void onDisable(){
+  void OnDisable(){
     SceneManager.sceneLoaded -= OnLevelFinishedLoading;
   }
 
   void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode){
-    //TODO: get reference 
-    //TODO: move this into start()
     if(playerRef == null){
-      GameObject.Find
+      playerRef = GameObject.Find("Player").GetComponent<Transform>();
+      playerController = playerRef.GetComponent<PlayerController>();
     }
-    Start();
+    if(soundPlayer == null){
+      soundPlayer = GameObject.Find("SoundPlayer").GetComponent<SoundPlayer>();
+    }
+  }
+
+  void setAllCombatStatus(bool status){
+    monster.inCombat = status;
+    scaleListener.inCombat = status;
+    soundPlayer.inCombat = status;
   }
 
   // Update is called once per frame
@@ -76,18 +82,17 @@ public class CombatManager : MonoBehaviour {
       {
         
         if(initCombat){
-          playerController.setMoveActivate(false);
+          playerController.setMoveActivate(false);                    //stop player moving
           initCombat = false;
         }
         else if(!initCombat && playerController.getMoveActivate())    //player has jumped to escape combat
         {
-          monster.inCombat = false;
-          //monster.status = "idle";
+          setAllCombatStatus(false);
           initCombat = true;
           return;
         }
 
-        scaleListener.inCombat = true;                          //when in combat, activate scaleListener hit/miss/win mechanics; can still play notes at any time
+        setAllCombatStatus(true);
         Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
 
         if (player.GetHealthAmount() == 0)
@@ -107,12 +112,11 @@ public class CombatManager : MonoBehaviour {
           SceneManager.LoadScene("MainMenu");
         }
 
+        //combat rework: monster will only attack if wrong note played, and then only attacks once
         if (scaleListener.wrongNotePlayed)
         {
-          print("set monster status to attack");
           monster.status = "attack";
           scaleListener.wrongNotePlayed = false;     //reset
-          //TODO: make sure it only attacks once
         }
 
         if (scaleListener.correctNotePlayed)
@@ -124,7 +128,7 @@ public class CombatManager : MonoBehaviour {
         if (monster.playerHealthDamaged)
         {
           player.takeDamage(1);
-          monster.playerHealthDamaged = false;       //reset
+          monster.playerHealthDamaged = false;        //reset
         }
 
       }
