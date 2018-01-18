@@ -19,10 +19,8 @@ public class CombatManager : MonoBehaviour {
     public int monsterViewDistance = 2;    //these two vars define the space in which the monster can detect the player
     public int monsterViewAngle = 60;
 
-    private int damage;
     private bool gameOver;
     private bool startedPlaying;
-    private float fov;
     private PlayerController playerController;
     private bool initCombat;
 
@@ -33,13 +31,30 @@ public class CombatManager : MonoBehaviour {
         monster.attackDistance = monsterAttackDistance;
         monster.viewDistance = monsterViewDistance;
         monster.viewAngle = monsterViewAngle;
-        damage = 0;
         gameOver = false;
         startedPlaying = false;
         infowindow.SetActive(false);
-        fov = Camera.main.fieldOfView;
         playerController = playerRef.GetComponent<PlayerController>();
+        //TODO: fix, this doesn't seem to get called again, also we lose player ref in editor
+        //onLevelFinishedLoading did not help :/
         initCombat = true;
+  }
+
+  void onEnable(){
+    SceneManager.sceneLoaded += OnLevelFinishedLoading;
+  }
+
+  void onDisable(){
+    SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+  }
+
+  void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode){
+    //TODO: get reference 
+    //TODO: move this into start()
+    if(playerRef == null){
+      GameObject.Find
+    }
+    Start();
   }
 
   // Update is called once per frame
