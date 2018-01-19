@@ -28,6 +28,7 @@ public class LearnScale : MonoBehaviour {
 	private int[] box_midi;
 	private int num_c = 11;
 	private int num_n = 15;
+	private int c_pos;
 	private NoteState[][] note_state = new NoteState[11][];
 	private KeyCode[] valid_keys = {
 		KeyCode.Y,
@@ -62,14 +63,11 @@ public class LearnScale : MonoBehaviour {
 	void Start () {
 		// get the scale for the scalebox
 		box_scale = scale_listener.getFullScale(scale_name);
-		//box_midi = scale_listener.ScaleByKey((int)base_key, box_scale);
-		// init note_state to all disabled
-		for (int c = 0; c < num_c; c++){
-			note_state[c] = new NoteState[num_n];
-			for (int n = 0; n < num_n; n++){
-				note_state[c][n] = NoteState.DISABLED;
-			}
-		}
+		box_midi = scaleToMidi(box_scale);
+		// init note_state to disabled
+		resetNoteState();
+		// container position
+		c_pos = 0;
 	}
 	
 	// update
@@ -85,13 +83,9 @@ public class LearnScale : MonoBehaviour {
 	    	player_controller.setMoveActivate(false);
 	    	//container.setScale(box_midi);
 	    	// put scale
-	    	int ci = 0;
-				int ni = 0;
-				foreach (int note in box_scale){
-					ni = scaleToContainerMapping(note);
-					note_state[ci][ni] = NoteState.NORMAL;
-					ci++;
-				}
+	    	setNoteStateToScale(box_scale);
+				container.updateNoteContainer(note_state);
+				c_pos = 0;
 	  	}
 	  	// stop the scale
 	  	else if(activated && player_controller.checkValidJumpKey())
@@ -104,22 +98,60 @@ public class LearnScale : MonoBehaviour {
 	  	// play the scales
 	  	else if(activated)
 	  	{
-	  		int k = 0;
+	  		int key = 0;
 	  		bool[] key_mask = getKeyMask();
+	  		// won the scale
+	  		if (c_pos > box_scale.Length){
+	  			activated = false;
+	  			activate_sound.Play();
+	  			print("won");
+	  			resetNoteState();
+	  			return;
+	  		}
+
+	  		// check each key
 	  		foreach (bool mask in key_mask){
 	  			if (mask){
-	  				int midi = keyToMidiMapping(k);
-	  				int note_pos = midiToContainerMapping(midi);
-	  				Debug.Log("note_pos: "+ note_pos);
-	  				note_state[0][note_pos] = NoteState.NORMAL;
+	  				int note_midi = keyToMidiMapping(key);
+	  				int note_pos = midiToContainerMapping(note_midi);
+	  				Debug.Log("note_pos: "+ c_pos + note_pos);
+	  				if(note_midi == box_midi[c_pos]){
+	  					note_state[c_pos][note_pos] = NoteState.RIGHT;
+	  					c_pos++;
+	  				}
+	  				else{
+	  					note_state[c_pos][note_pos] = NoteState.WRONG;
+	  				}
 	  			}
-	  			k++;
+	  			key++;
 	  		}
 	  		container.updateNoteContainer(note_state);
 	  	}
 		}
 	}
 
+	// set the NoteState to all disabled
+	void resetNoteState(){
+		for (int c = 0; c < num_c; c++){
+			note_state[c] = new NoteState[num_n];
+			for (int n = 0; n < num_n; n++){
+				note_state[c][n] = NoteState.DISABLED;
+			}
+		}
+	}
+
+	// set the note_state to a scale with normal
+	void setNoteStateToScale(int[] update_scale){
+		int ci = 0;
+		int ni = 0;
+		foreach (int note in update_scale){
+			ni = scaleToContainerMapping(note);
+			note_state[ci][ni] = NoteState.NORMAL;
+			ci++;
+		}
+	}
+
+	// check if valid music key is pressed
 	public bool checkValidMusicKey(){
 		// check valid key
 		foreach (KeyCode key in valid_keys){
@@ -148,13 +180,22 @@ public class LearnScale : MonoBehaviour {
 		return key_mask;
 	}
 
+	// map the keys to midi
 	public int keyToMidiMapping(int key){
 		return key + 48;
 	}
 
-	public int scaleToContainerMapping(int scale){
-		int midi = (int)base_key + scale;
-		return midiToContainerMapping(midi);
+	// puts a scale to a midi array
+	public int[] scaleToMidi(int[] scale){
+		int[] midi = new int[scale.Length];
+		for(int i = 0; i < scale.Length; i++){
+			midi[i] = scale[i] + (int)base_key;
+		}
+		return midi;
+	}
+
+	public int scaleToContainerMapping(int scale_note){
+		return midiToContainerMapping((int)base_key + scale_note);
 	}
 
 	public int midiToContainerMapping(int midi){
