@@ -12,14 +12,17 @@ public enum NoteState {
 
 public class LearnScale : MonoBehaviour {
 
+	// GameObjects
 	public AudioSource activate_sound;
 	public Transform player;
 	public PlayerController player_controller;
 	public Health health;
 	public ScaleListener scale_listener;
 	public ContainerManager container;
-	public float distance_activation;
+	public SoundPlayer sound_player;
 
+	// settings
+	public float distance_activation;
 	public ScaleNames scale_name;
 	public NoteBaseKey base_key;
 
@@ -84,8 +87,8 @@ public class LearnScale : MonoBehaviour {
 	    	//container.setScale(box_midi);
 	    	// put scale
 	    	setNoteStateToScale(box_scale);
-				container.updateNoteContainer(note_state);
 				c_pos = 0;
+				sound_player.inLearning = true;
 	  	}
 	  	// stop the scale
 	  	else if(activated && player_controller.checkValidJumpKey())
@@ -101,11 +104,12 @@ public class LearnScale : MonoBehaviour {
 	  		int key = 0;
 	  		bool[] key_mask = getKeyMask();
 	  		// won the scale
-	  		if (c_pos > box_scale.Length){
+	  		if (c_pos >= box_scale.Length){
 	  			activated = false;
 	  			activate_sound.Play();
 	  			print("won");
 	  			resetNoteState();
+	  			player_controller.setMoveActivate(true);
 	  			return;
 	  		}
 
@@ -114,7 +118,6 @@ public class LearnScale : MonoBehaviour {
 	  			if (mask){
 	  				int note_midi = keyToMidiMapping(key);
 	  				int note_pos = midiToContainerMapping(note_midi);
-	  				Debug.Log("note_pos: "+ c_pos + note_pos);
 	  				if(note_midi == box_midi[c_pos]){
 	  					note_state[c_pos][note_pos] = NoteState.RIGHT;
 	  					c_pos++;
@@ -138,6 +141,7 @@ public class LearnScale : MonoBehaviour {
 				note_state[c][n] = NoteState.DISABLED;
 			}
 		}
+		container.updateNoteContainer(note_state);
 	}
 
 	// set the note_state to a scale with normal
@@ -149,6 +153,7 @@ public class LearnScale : MonoBehaviour {
 			note_state[ci][ni] = NoteState.NORMAL;
 			ci++;
 		}
+		container.updateNoteContainer(note_state);
 	}
 
 	// check if valid music key is pressed

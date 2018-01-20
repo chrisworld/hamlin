@@ -1794,6 +1794,8 @@ MonoBehaviour:
   a: {fileID: 391797485}
   a_sh: {fileID: 2054652412}
   h: {fileID: 1195333477}
+  inCombat: 0
+  inLearning: 0
 --- !u!4 &117340638
 Transform:
   m_ObjectHideFlags: 0
@@ -1818,7 +1820,7 @@ Transform:
   - {fileID: 194221890}
   - {fileID: 1195333478}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &118647153
 GameObject:
@@ -15683,6 +15685,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ApplauseSound: {fileID: 1693135828}
   FailSound: {fileID: 1991698122}
+  fightScale: 
+  playerHasWon: 0
+  inCombat: 0
+  correctNotePlayed: 0
+  wrongNotePlayed: 0
 --- !u!4 &1125607021
 Transform:
   m_ObjectHideFlags: 0
@@ -26505,6 +26512,7 @@ MonoBehaviour:
   health: {fileID: 2116189263}
   scale_listener: {fileID: 1125607020}
   container: {fileID: 1277254684}
+  sound_player: {fileID: 117340637}
   distance_activation: 0.3
   scale_name: 0
   base_key: 48
@@ -29697,7 +29705,7 @@ Transform:
   m_Children:
   - {fileID: 869942876}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2116189263
 MonoBehaviour:
