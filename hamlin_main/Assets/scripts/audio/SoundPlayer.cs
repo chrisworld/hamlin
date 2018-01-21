@@ -25,16 +25,17 @@ public class SoundPlayer : MonoBehaviour {
   //managed by CombatManager
   [HideInInspector]
   public bool inCombat;
+  public bool inLearning;
 
 	// Use this for initialization
 	void Start () {
     inCombat = false;
+    inLearning = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-    if(inCombat){ 
+    if(inCombat || inLearning){ 
       if (Input.GetKeyDown(KeyCode.Y))
       {
         c.Play();

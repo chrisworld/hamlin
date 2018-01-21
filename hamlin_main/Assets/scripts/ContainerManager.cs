@@ -166,6 +166,19 @@ public class ContainerManager : MonoBehaviour {
 		}
 	}
 
+	public void updateSignContainer(SignState[][] sign_state){
+		int c = 0;
+		foreach (SignState[] signs in sign_state){
+			int n = 0;
+			foreach (SignState sign in signs){
+				Image[] sign_container = (Image[])sign_container_big[c];
+				sign_container[n].enabled = sign.act;
+				n++;
+			}
+			c++;
+		}
+	}
+
 	// write note container
 	void configContainers ( int[] fightScale ) {
 		int i = 0;
