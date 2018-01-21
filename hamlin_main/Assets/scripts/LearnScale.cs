@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Structs
+public struct SignState  
+{  
+    public bool act;
+    public int pos;
+}
+
 // Enums
 public enum NoteState {
 	DISABLED = 0,
@@ -32,7 +39,9 @@ public class LearnScale : MonoBehaviour {
 	private int num_c = 11;
 	private int num_n = 15;
 	private int c_pos;
+	private int error_counter;
 	private NoteState[][] note_state = new NoteState[11][];
+	private SignState[][] sign_state = new SignState[11][];
 	private KeyCode[] valid_keys = {
 		KeyCode.Y,
 		KeyCode.S,
@@ -69,8 +78,10 @@ public class LearnScale : MonoBehaviour {
 		box_midi = scaleToMidi(box_scale);
 		// init note_state to disabled
 		resetNoteState();
+		resetSignState();
 		// container position
 		c_pos = 0;
+		error_counter = 0;
 	}
 	
 	// update
@@ -84,10 +95,11 @@ public class LearnScale : MonoBehaviour {
 	    	activate_sound.Play();
 	    	activated = true;
 	    	player_controller.setMoveActivate(false);
-	    	//container.setScale(box_midi);
 	    	// put scale
 	    	setNoteStateToScale(box_scale);
+	    	setSignStateToScale(box_scale);
 				c_pos = 0;
+				error_counter = 0;
 				sound_player.inLearning = true;
 	  	}
 	  	// stop the scale
@@ -96,7 +108,10 @@ public class LearnScale : MonoBehaviour {
 	  		print("exit the scalebox");
 	  		activated = false;
 	  		player_controller.setMoveActivate(true);
-	  		container.resetContainers();
+	  		c_pos = 0;
+	  		error_counter = 0;
+	  		resetNoteState();
+				resetSignState();
 	  	}
 	  	// play the scales
 	  	else if(activated)
@@ -109,6 +124,17 @@ public class LearnScale : MonoBehaviour {
 	  			activate_sound.Play();
 	  			print("won");
 	  			resetNoteState();
+	  			resetSignState();
+	  			player_controller.setMoveActivate(true);
+	  			return;
+	  		}
+	  		else if (error_counter > 5){
+	  			activated = false;
+	  			// ToDo: ErrorSound
+	  			//activate_sound.Play();
+	  			print("to much wrong");
+	  			resetNoteState();
+	  			resetSignState();
 	  			player_controller.setMoveActivate(true);
 	  			return;
 	  		}
@@ -116,21 +142,47 @@ public class LearnScale : MonoBehaviour {
 	  		// check each key
 	  		foreach (bool mask in key_mask){
 	  			if (mask){
+	  				cleanWrongNoteState(box_scale);
 	  				int note_midi = keyToMidiMapping(key);
 	  				int note_pos = midiToContainerMapping(note_midi);
 	  				if(note_midi == box_midi[c_pos]){
 	  					note_state[c_pos][note_pos] = NoteState.RIGHT;
+	  					sign_state[c_pos][note_pos] = midiToSignState(note_midi);
 	  					c_pos++;
 	  				}
 	  				else{
 	  					note_state[c_pos][note_pos] = NoteState.WRONG;
+	  					sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+	  					error_counter++;
 	  				}
 	  			}
 	  			key++;
 	  		}
 	  		container.updateNoteContainer(note_state);
+	  		container.updateSignContainer(sign_state);
 	  	}
 		}
+	}
+
+	// remove wrong notes played before
+	void cleanWrongNoteState(int[] right_scale){
+		for (int c = 0; c < num_c; c++){
+			for (int n = 0; n < num_n; n++){
+				if (note_state[c][n] == NoteState.WRONG){
+					if (scaleToContainerMapping(right_scale[c]) == n)
+					{
+						note_state[c][n] = NoteState.NORMAL;
+						sign_state[c][n] = scaleToSignStateMapping(right_scale[c]);
+					}
+					else{
+						note_state[c][n] = NoteState.DISABLED;
+						sign_state[c][n].act = false;
+					}
+				}
+			}
+		}
+		container.updateNoteContainer(note_state);
+		container.updateSignContainer(sign_state);
 	}
 
 	// set the NoteState to all disabled
@@ -144,7 +196,18 @@ public class LearnScale : MonoBehaviour {
 		container.updateNoteContainer(note_state);
 	}
 
-	// set the note_state to a scale with normal
+		// set the SignState to all disabled
+	void resetSignState(){
+		for (int c = 0; c < num_c; c++){
+			sign_state[c] = new SignState[num_n];
+			for (int n = 0; n < num_n; n++){
+				sign_state[c][n].act = false;
+			}
+		}
+		container.updateSignContainer(sign_state);
+	}
+
+	// set the note_state to a scale
 	void setNoteStateToScale(int[] update_scale){
 		int ci = 0;
 		int ni = 0;
@@ -154,6 +217,18 @@ public class LearnScale : MonoBehaviour {
 			ci++;
 		}
 		container.updateNoteContainer(note_state);
+	}
+
+	// set the sign_state to a scale
+	void setSignStateToScale(int[] update_scale){
+		int ci = 0;
+		SignState st;
+		foreach (int note in update_scale){
+			st = scaleToSignStateMapping(note);
+			sign_state[ci][st.pos].act = st.act;
+			ci++;
+		}
+		container.updateSignContainer(sign_state);
 	}
 
 	// check if valid music key is pressed
@@ -203,6 +278,10 @@ public class LearnScale : MonoBehaviour {
 		return midiToContainerMapping((int)base_key + scale_note);
 	}
 
+	public SignState scaleToSignStateMapping(int scale_note){
+		return midiToSignState((int)base_key + scale_note);
+	}
+
 	public int midiToContainerMapping(int midi){
 		switch(midi)
 		{
@@ -234,5 +313,41 @@ public class LearnScale : MonoBehaviour {
 			default:	break;
 		}
 		return 0;
+	}
+
+	public SignState midiToSignState(int midi){
+		SignState st;
+		st.act = false;
+		st.pos = 0;
+		switch(midi)
+		{
+			case 48:	st.pos = 14; st.act = false; return st;	// c
+			case 49:	st.pos = 14; st.act = true; return st;	//cis
+			case 50:	st.pos = 13; st.act = false; return st;	// d
+			case 51:	st.pos = 13; st.act = true; return st;	// dis
+			case 52:	st.pos = 12; st.act = false; return st;	// e
+			case 53:	st.pos = 11; st.act = false; return st;	//f
+			case 54:	st.pos = 11; st.act = true; return st;
+			case 55:	st.pos = 10; st.act = false; return st;
+			case 56:	st.pos = 10; st.act = true; return st;
+			case 57:	st.pos = 9; st.act = false; return st;
+			case 58:	st.pos = 9; st.act = true; return st;
+			case 59:	st.pos = 8; st.act = false; return st;
+			case 60:	st.pos = 7; st.act = false; return st;
+			case 61:	st.pos = 7; st.act = true; return st;
+			case 62:	st.pos = 6; st.act = false; return st;
+			case 63:	st.pos = 6; st.act = true; return st;
+			case 64:	st.pos = 5; st.act = false; return st;
+			case 65:	st.pos = 4; st.act = false; return st;
+			case 66:	st.pos = 4; st.act = true; return st;
+			case 67:	st.pos = 3; st.act = false; return st;
+			case 68:	st.pos = 3; st.act = true; return st;
+			case 69:	st.pos = 2; st.act = false; return st;
+			case 70:	st.pos = 2; st.act = true; return st;
+			case 71:	st.pos = 1; st.act = false; return st;
+			case 72:	st.pos = 0; st.act = false; return st;
+			default:	break;
+		}
+		return st;
 	}
 }

@@ -36,7 +36,6 @@ public class SoundPlayer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
     if(inCombat || inLearning){ 
-    	print("in LEarning");
       if (Input.GetKeyDown(KeyCode.Y))
       {
         c.Play();

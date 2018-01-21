@@ -26514,8 +26514,8 @@ MonoBehaviour:
   container: {fileID: 1277254684}
   sound_player: {fileID: 117340637}
   distance_activation: 0.3
-  scale_name: 0
-  base_key: 48
+  scale_name: 1
+  base_key: 50
 --- !u!1 &1930382291
 GameObject:
   m_ObjectHideFlags: 0
