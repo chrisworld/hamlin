@@ -83,6 +83,7 @@ public class CombatManager : MonoBehaviour {
         
         if(initCombat){
           playerController.setMoveActivate(false);                    //stop player moving
+          //TODO: make player and monster face each other
           initCombat = false;
         }
         else if(!initCombat && playerController.getMoveActivate())    //player has jumped to escape combat
