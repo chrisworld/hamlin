@@ -181,6 +181,7 @@ public class ContainerManager : MonoBehaviour {
 
 	// write note container
 	void configContainers ( int[] fightScale ) {
+
 		int i = 0;
 		foreach (Image[] note_container in note_container_big) {
 

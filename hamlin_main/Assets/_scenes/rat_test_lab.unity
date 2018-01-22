@@ -474,6 +474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ApplauseSound: {fileID: 300484699}
   FailSound: {fileID: 1285175527}
+  container: {fileID: 1347446729}
   fightScale: 
   playerHasWon: 0
   inCombat: 0
@@ -4096,7 +4097,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -17567,6 +17568,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1085314466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1085314468}
+  m_Layer: 0
+  m_Name: LearnScale
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1085314468
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1085314466}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.0114174, y: -1.206, z: 3.984}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1100348968
 GameObject:
   m_ObjectHideFlags: 0
@@ -21627,7 +21656,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -22888,7 +22917,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cf2676e8547e4695abcc4092e28cbc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  note_sprites: []
+  note_sprites:
+  - {fileID: 21300006, guid: e6896549eb757c347a40ffdf0664cfac, type: 3}
+  - {fileID: 21300008, guid: e6896549eb757c347a40ffdf0664cfac, type: 3}
+  - {fileID: 21300010, guid: e6896549eb757c347a40ffdf0664cfac, type: 3}
   note_container1:
   - {fileID: 1352564798}
   - {fileID: 941732944}
@@ -25136,6 +25168,7 @@ MonoBehaviour:
   a_sh: {fileID: 1006709252}
   h: {fileID: 1944056149}
   inCombat: 0
+  inLearning: 0
 --- !u!4 &1477252107
 Transform:
   m_ObjectHideFlags: 0
