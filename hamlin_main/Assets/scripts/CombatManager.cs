@@ -20,56 +20,39 @@ public class CombatManager : MonoBehaviour {
     public int monsterViewDistance = 2;    //these two vars define the space in which the monster can detect the player
     public int monsterViewAngle = 60;
 
+    public ScaleNames scale_name;
+    public NoteBaseKey base_key;
+
     private bool gameOver;
     private bool startedPlaying;
     private PlayerController playerController;
     private bool initCombat;
 
-	void Start () {
-        int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
-        int scale = Random.Range(0, 5);           // Picking Random Scale           NOTE: currently between 0 and 5 to keep it easier
-        scaleListener.InitFightScale(fightBaseKey, scale);
-        monster.attackDistance = monsterAttackDistance;
-        monster.viewDistance = monsterViewDistance;
-        monster.viewAngle = monsterViewAngle;
-        gameOver = false;
-        startedPlaying = false;
-        infowindow.SetActive(false);
-        playerController = playerRef.GetComponent<PlayerController>();
-        initCombat = true;
-  }
+	void Start () 
+  {
+    //NOTE: currently between 0 and 5 to keep it easier
+    //int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
+    //int scale = Random.Range(0, 2);           // Picking Random Scale           
+    int fightBaseKey = (int)base_key;
+    int scale = (int)scale_name;
+    scaleListener.InitFightScale(fightBaseKey, scale);
 
-  void OnEnable(){
-    SceneManager.sceneLoaded += OnLevelFinishedLoading;
-  }
-
-  void OnDisable(){
-    SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-  }
-
-  void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode){
-    if(playerRef == null){
-      playerRef = GameObject.Find("Player").GetComponent<Transform>();
-      playerController = playerRef.GetComponent<PlayerController>();
-    }
-    if(soundPlayer == null){
-      soundPlayer = GameObject.Find("SoundPlayer").GetComponent<SoundPlayer>();
-    }
-  }
-
-  void setAllCombatStatus(bool status){
-    monster.inCombat = status;
-    scaleListener.inCombat = status;
-    soundPlayer.inCombat = status;
+    monster.attackDistance = monsterAttackDistance;
+    monster.viewDistance = monsterViewDistance;
+    monster.viewAngle = monsterViewAngle;
+    gameOver = false;
+    startedPlaying = false;
+    infowindow.SetActive(false);
+    playerController = playerRef.GetComponent<PlayerController>();
+    initCombat = true;
   }
 
   // Update is called once per frame
   void Update()
   {
-
-    if (!startedPlaying && Input.anyKey)                            //player has started playing
+    if (!startedPlaying && Input.anyKey)           //player has started playing
     {
-      container.setScale(scaleListener.fightScale);
+      //container.setScale(scaleListener.fightScale);
       print(scaleListener.GetScaleInfo());  //TODO: this should be displayed in GUI e.g. musical notes on stave
       startedPlaying = true;
       monster.gameOver = false;
@@ -82,6 +65,8 @@ public class CombatManager : MonoBehaviour {
       {
         
         if(initCombat){
+          print("combat");
+          scaleListener.setNoteStateToScale(scaleListener.getFullScale(scale_name));
           playerController.setMoveActivate(false);                    //stop player moving
           //TODO: make player and monster face each other
           initCombat = false;
@@ -139,5 +124,30 @@ public class CombatManager : MonoBehaviour {
 
     }
 
+  }
+
+  // functions
+  void OnEnable(){
+    SceneManager.sceneLoaded += OnLevelFinishedLoading;
+  }
+
+  void OnDisable(){
+    SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+  }
+
+  void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode){
+    if(playerRef == null){
+      playerRef = GameObject.Find("Player").GetComponent<Transform>();
+      playerController = playerRef.GetComponent<PlayerController>();
+    }
+    if(soundPlayer == null){
+      soundPlayer = GameObject.Find("SoundPlayer").GetComponent<SoundPlayer>();
+    }
+  }
+
+  void setAllCombatStatus(bool status){
+    monster.inCombat = status;
+    scaleListener.inCombat = status;
+    soundPlayer.inCombat = status;
   }
 }

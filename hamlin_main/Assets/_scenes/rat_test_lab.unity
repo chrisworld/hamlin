@@ -29335,7 +29335,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -34706,6 +34705,8 @@ MonoBehaviour:
   monsterAttackDistance: 0.3
   monsterViewDistance: 20
   monsterViewAngle: 100
+  scale_name: 1
+  base_key: 48
 --- !u!1 &2070450919
 GameObject:
   m_ObjectHideFlags: 0

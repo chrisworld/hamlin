@@ -90,39 +90,10 @@ public class ScaleListener : MonoBehaviour {
   // the two states as 2D
   private NoteState[][] note_state = new NoteState[11][];
   private SignState[][] sign_state = new SignState[11][];
-  
   private int num_c = 11;
   private int num_n = 15;
   private int c_pos;
   private int error_counter;
-  private KeyCode[] valid_keys = {
-    KeyCode.Y,
-    KeyCode.S,
-    KeyCode.X,
-    KeyCode.D,
-    KeyCode.C,
-    KeyCode.V,
-    KeyCode.G,
-    KeyCode.B,
-    KeyCode.H,
-    KeyCode.N,
-    KeyCode.J,
-    KeyCode.M,
-    KeyCode.Comma,
-    KeyCode.Q,
-    KeyCode.Alpha2,
-    KeyCode.W,
-    KeyCode.Alpha3,
-    KeyCode.E,
-    KeyCode.R,
-    KeyCode.Alpha5,
-    KeyCode.T,
-    KeyCode.Alpha6,
-    KeyCode.Z,
-    KeyCode.Alpha7,
-    KeyCode.U,
-    KeyCode.I
-  };
 
   //used by CombatManager
   [HideInInspector]
@@ -159,6 +130,201 @@ public class ScaleListener : MonoBehaviour {
 		new int[] {0, 1, 1, 4, 5, 8, 10 ,12},
 	};
 
+    // Use this for initialization
+  void Start () {
+
+    inCombat = false;
+    playerHasWon = false;
+    
+    //populate dictionary for converting note numbers to the keyboard keys
+    noteKeys.Add(48, "Y");
+    noteKeys.Add(49, "S");
+    noteKeys.Add(50, "X");
+    noteKeys.Add(51, "D");
+    noteKeys.Add(52, "C");
+    noteKeys.Add(53, "V");
+    noteKeys.Add(54, "G");
+    noteKeys.Add(55, "B");
+    noteKeys.Add(56, "H");
+    noteKeys.Add(57, "N");
+    noteKeys.Add(58, "J");
+    noteKeys.Add(59, "M");
+    noteKeys.Add(60, "comma or Q");
+    noteKeys.Add(61, "2");
+    noteKeys.Add(62, "W");
+    noteKeys.Add(63, "3");
+    noteKeys.Add(64, "E");
+    noteKeys.Add(65, "R");
+    noteKeys.Add(66, "5");
+    noteKeys.Add(67, "T");
+    noteKeys.Add(68, "6");
+    noteKeys.Add(69, "Z");
+    noteKeys.Add(70, "7");
+    noteKeys.Add(71, "U");
+    noteKeys.Add(72, "i");
+
+    // init states
+    resetNoteState();
+    //resetSignState();
+  }
+
+  // Update is called once per frame
+  void Update () {
+
+    if (fightScale.Length > 0 && Input.anyKeyDown){
+
+      bool musicKeyPressed = false;
+
+      if(Input.GetKeyDown(KeyCode.Y)) {
+          playedNote = 48;
+              musicKeyPressed = true;
+          }
+      else if(Input.GetKeyDown(KeyCode.S)) {
+        playedNote = 49;
+                musicKeyPressed = true;
+            }
+      else if(Input.GetKeyDown(KeyCode.X)) {
+        playedNote = 50;
+                musicKeyPressed = true;
+            }
+      else if(Input.GetKeyDown(KeyCode.D)) {
+        playedNote = 51;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.C)) {
+        playedNote = 52;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.V)) {
+        playedNote = 53;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.G)) {
+        playedNote = 54;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.B)) {
+        playedNote = 55;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.H)) {
+        playedNote = 56;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.N)) {
+        playedNote = 57;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.J)) {
+        playedNote = 58;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.M)) {
+        playedNote = 59;
+                musicKeyPressed = true;
+            }
+      else if (Input.GetKeyDown(KeyCode.Comma)) {
+        playedNote = 60;
+                musicKeyPressed = true;
+            }
+      else if(Input.GetKeyDown(KeyCode.Q)) {
+        playedNote = 60;
+        musicKeyPressed = true;
+      }
+      else if(Input.GetKeyDown(KeyCode.Alpha2)) {
+        playedNote = 61;
+        musicKeyPressed = true;
+      }
+      else if(Input.GetKeyDown(KeyCode.W)) {
+        playedNote = 62;
+        musicKeyPressed = true;
+      }
+      else if(Input.GetKeyDown(KeyCode.Alpha3)) {
+        playedNote = 63;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.E)) {
+        playedNote = 64;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.R)) {
+        playedNote = 65;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.Alpha5)) {
+        playedNote = 66;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.T)) {
+        playedNote = 67;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.Alpha6)) {
+        playedNote = 68;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.Z)) {
+        playedNote = 69;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.Alpha7)) {
+        playedNote = 70;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.U)) {
+        playedNote = 71;
+        musicKeyPressed = true;
+      }
+      else if (Input.GetKeyDown(KeyCode.I)) {
+        playedNote = 72;
+        musicKeyPressed = true;
+      }
+
+      if (inCombat)
+      {
+        if (musicKeyPressed && (playedNote == expectedNote))
+        {
+            print("HIT");
+            correctNotePlayed = true;
+            expectedNoteCounter++;
+            UpdateNoteStates(playedNote, true);
+        }
+        else if (musicKeyPressed)
+        {
+            print("MISS");
+            wrongNotePlayed = true;
+            expectedNoteCounter = 0;
+            UpdateNoteStates(playedNote, false);
+            FailSound.Play();
+        }
+        //do nothing if non-music key pressed, player should still be able to move and non-piano keys should not produce a sound
+
+        if (expectedNoteCounter == fightScale.Length)
+        {
+            print("You WIN");
+            ApplauseSound.Play();
+            playerHasWon = true;
+            //reset
+            expectedNoteCounter = 0;
+            expectedNote = fightScale[expectedNoteCounter];
+        }
+        else
+        {
+            expectedNote = fightScale[expectedNoteCounter];
+        }
+      }
+      else {
+        //reset
+        //c_pos = 0;
+        //error_counter = 0;
+        //resetNoteState();
+        //resetSignState();
+      }
+    }
+  }
+
+
+  //-------------------------------------------------------functions
 	// get a full scale from allScales
 	public int[] getFullScale(ScaleNames scale_index){
 		return allScales[(int)scale_index];
@@ -194,20 +360,17 @@ public class ScaleListener : MonoBehaviour {
   public void InitFightScale(int baseKeyIndex, int scaleIndex){
     fightBaseKey = baseKeyIndex;
     scale = scaleIndex;
-    fightScale = ScaleByKey(fightBaseKey, allScales[scale]);
     resetNoteState();
     resetSignState();
-    setNoteStateToScale(fightScale);
-    setSignStateToScale(fightScale);
+    fightScale = ScaleByKey(fightBaseKey, allScales[scale]);
+    //setNoteStateToScale(fightScale);
+    //setSignStateToScale(fightScale);
     c_pos = 0;
     error_counter = 0;
   }
 
 
-
-
   //---merged from learn scale
-
 
   // remove wrong notes played before
   void cleanWrongNoteState(int[] right_scale)
@@ -236,7 +399,7 @@ public class ScaleListener : MonoBehaviour {
   }
 
   // set the NoteState to all disabled
-  void resetNoteState()
+  public void resetNoteState()
   {
     for (int c = 0; c < num_c; c++)
     {
@@ -246,11 +409,11 @@ public class ScaleListener : MonoBehaviour {
         note_state[c][n] = NoteState.DISABLED;
       }
     }
-    container.updateNoteContainer(note_state);
+    //container.updateNoteContainer(note_state);
   }
 
   // set the SignState to all disabled
-  void resetSignState()
+  public void resetSignState()
   {
     for (int c = 0; c < num_c; c++)
     {
@@ -260,11 +423,11 @@ public class ScaleListener : MonoBehaviour {
         sign_state[c][n].act = false;
       }
     }
-    container.updateSignContainer(sign_state);
+    //container.updateSignContainer(sign_state);
   }
 
   // set the note_state to a scale
-  void setNoteStateToScale(int[] update_scale)
+  public void setNoteStateToScale(int[] update_scale)
   {
     int ci = 0;
     int ni = 0;
@@ -278,7 +441,7 @@ public class ScaleListener : MonoBehaviour {
   }
 
   // set the sign_state to a scale
-  void setSignStateToScale(int[] update_scale)
+  public void setSignStateToScale(int[] update_scale)
   {
     int ci = 0;
     SignState st;
@@ -289,42 +452,6 @@ public class ScaleListener : MonoBehaviour {
       ci++;
     }
     container.updateSignContainer(sign_state);
-  }
-
-  // check if valid music key is pressed
-  public bool checkValidMusicKey()
-  {
-    // check valid key
-    foreach (KeyCode key in valid_keys)
-    {
-      if (Input.GetKeyDown(key))
-      {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  // get mask of pressed keys
-  public bool[] getKeyMask()
-  {
-    int k = 0;
-    bool[] key_mask = new bool[valid_keys.Length];
-    // set to zero
-    for (int c = 0; c < valid_keys.Length; c++)
-    {
-      key_mask[c] = false;
-    }
-    // get mask
-    foreach (KeyCode key in valid_keys)
-    {
-      if (Input.GetKeyDown(key))
-      {
-        key_mask[k] = true;
-      }
-      k++;
-    }
-    return key_mask;
   }
 
   // map the keys to midi
@@ -425,33 +552,21 @@ public class ScaleListener : MonoBehaviour {
     return st;
   }
 
-  public void UpdateNoteStates(int playedNote, bool noteCorrect)
+  public void UpdateNoteStates(int note_midi, bool noteCorrect)
   {
-    // check each key
-    //int key = 0;
-    //bool[] key_mask = getKeyMask();
-    //foreach (bool mask in key_mask)
-    //{
-      //if (mask)
-      //{
-        cleanWrongNoteState(fightScale);
-        int note_midi = keyToMidiMapping(playedNote);
-        int note_pos = midiToContainerMapping(note_midi);
-        if (noteCorrect)
-        {
-          note_state[c_pos][note_pos] = NoteState.RIGHT;
-          sign_state[c_pos][note_pos] = midiToSignState(note_midi);
-          c_pos++;
-        }
-        else
-        {
-          note_state[c_pos][note_pos] = NoteState.WRONG;
-          sign_state[c_pos][note_pos] = midiToSignState(note_midi);
-          error_counter++;
-        }
-      //}
-      //key++;
-    //}
+    int note_pos = midiToContainerMapping(note_midi);
+    if (noteCorrect)
+    {
+      note_state[c_pos][note_pos] = NoteState.RIGHT;
+      sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+      c_pos++;
+    }
+    else
+    {
+      note_state[c_pos][note_pos] = NoteState.WRONG;
+      sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+      error_counter++;
+    }
     container.updateNoteContainer(note_state);
     container.updateSignContainer(sign_state);
   }
@@ -476,198 +591,6 @@ public class ScaleListener : MonoBehaviour {
 
     return scaleString;
   }
-
-
-
-  // Use this for initialization
-  void Start () {
-
-        inCombat = false;
-        playerHasWon = false;
-        
-        //populate dictionary for converting note numbers to the keyboard keys
-        noteKeys.Add(48, "Y");
-        noteKeys.Add(49, "S");
-        noteKeys.Add(50, "X");
-        noteKeys.Add(51, "D");
-        noteKeys.Add(52, "C");
-        noteKeys.Add(53, "V");
-        noteKeys.Add(54, "G");
-        noteKeys.Add(55, "B");
-        noteKeys.Add(56, "H");
-        noteKeys.Add(57, "N");
-        noteKeys.Add(58, "J");
-        noteKeys.Add(59, "M");
-        noteKeys.Add(60, "comma or Q");
-        noteKeys.Add(61, "2");
-        noteKeys.Add(62, "W");
-        noteKeys.Add(63, "3");
-        noteKeys.Add(64, "E");
-        noteKeys.Add(65, "R");
-        noteKeys.Add(66, "5");
-        noteKeys.Add(67, "T");
-        noteKeys.Add(68, "6");
-        noteKeys.Add(69, "Z");
-        noteKeys.Add(70, "7");
-        noteKeys.Add(71, "U");
-        noteKeys.Add(72, "i");
-
-    }
-
-  // Update is called once per frame
-  void Update () {
-
-    if (fightScale.Length > 0 && Input.anyKeyDown){
-
-      bool musicKeyPressed = false;
-
-      if(Input.GetKeyDown(KeyCode.Y)) {
-					playedNote = 48;
-          		musicKeyPressed = true;
-      		}
-			else if(Input.GetKeyDown(KeyCode.S)) {
-				playedNote = 49;
-              	musicKeyPressed = true;
-            }
-			else if(Input.GetKeyDown(KeyCode.X)) {
-				playedNote = 50;
-                musicKeyPressed = true;
-            }
-			else if(Input.GetKeyDown(KeyCode.D)) {
-				playedNote = 51;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.C)) {
-				playedNote = 52;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.V)) {
-				playedNote = 53;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.G)) {
-				playedNote = 54;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.B)) {
-				playedNote = 55;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.H)) {
-				playedNote = 56;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.N)) {
-				playedNote = 57;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.J)) {
-				playedNote = 58;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.M)) {
-				playedNote = 59;
-                musicKeyPressed = true;
-            }
-			else if (Input.GetKeyDown(KeyCode.Comma)) {
-				playedNote = 60;
-                musicKeyPressed = true;
-            }
-			else if(Input.GetKeyDown(KeyCode.Q)) {
-				playedNote = 60;
-				musicKeyPressed = true;
-			}
-			else if(Input.GetKeyDown(KeyCode.Alpha2)) {
-				playedNote = 61;
-				musicKeyPressed = true;
-			}
-			else if(Input.GetKeyDown(KeyCode.W)) {
-				playedNote = 62;
-				musicKeyPressed = true;
-			}
-			else if(Input.GetKeyDown(KeyCode.Alpha3)) {
-				playedNote = 63;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.E)) {
-				playedNote = 64;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.R)) {
-				playedNote = 65;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.Alpha5)) {
-				playedNote = 66;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.T)) {
-				playedNote = 67;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.Alpha6)) {
-				playedNote = 68;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.Z)) {
-				playedNote = 69;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.Alpha7)) {
-				playedNote = 70;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.U)) {
-				playedNote = 71;
-				musicKeyPressed = true;
-			}
-			else if (Input.GetKeyDown(KeyCode.I)) {
-				playedNote = 72;
-				musicKeyPressed = true;
-			}
-
-      if (inCombat)
-      {
-        if (musicKeyPressed && (playedNote == expectedNote))
-        {
-            print("HIT");
-            correctNotePlayed = true;
-            expectedNoteCounter++;
-            UpdateNoteStates(playedNote, true);
-        }
-        else if (musicKeyPressed)
-        {
-            print("MISS");
-            wrongNotePlayed = true;
-            expectedNoteCounter = 0;
-            UpdateNoteStates(playedNote, false);
-            FailSound.Play();
-        }
-        //do nothing if non-music key pressed, player should still be able to move and non-piano keys should not produce a sound
-
-        if (expectedNoteCounter == fightScale.Length)
-        {
-            print("You WIN");
-            ApplauseSound.Play();
-            playerHasWon = true;
-            //reset
-            expectedNoteCounter = 0;
-            expectedNote = fightScale[expectedNoteCounter];
-        }
-        else
-        {
-            expectedNote = fightScale[expectedNoteCounter];
-        }
-      }
-      else {
-        //reset
-        c_pos = 0;
-        error_counter = 0;
-        resetNoteState();
-        resetSignState();
-      }
-		}
-	}
 
 
 }
