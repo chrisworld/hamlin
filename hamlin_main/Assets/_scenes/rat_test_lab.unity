@@ -474,7 +474,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ApplauseSound: {fileID: 300484699}
   FailSound: {fileID: 1285175527}
-  container: {fileID: 1347446729}
   fightScale: 
   playerHasWon: 0
   inCombat: 0
@@ -26802,7 +26801,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1627800763}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afec805f0e8ba0a49aeed037ba326a6f, type: 3}
   m_Name: 
@@ -26838,6 +26837,29 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1627800766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1627800763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d8d09db40095ef498c8c70fceddb09d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 547588089}
+  player_controller: {fileID: 547588087}
+  health: {fileID: 547588085}
+  container: {fileID: 1347446729}
+  sound_player: {fileID: 1477252106}
+  infowindow: {fileID: 0}
+  infobox: {fileID: 0}
+  nav: {fileID: 0}
+  distance_activation: 0.8
+  angle_activation: 60
+  scale_name: 0
+  base_key: 48
 --- !u!1 &1630319097
 GameObject:
   m_ObjectHideFlags: 0
@@ -34663,7 +34685,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2066308272}
-  - component: {fileID: 2066308273}
   m_Layer: 0
   m_Name: CombatManager
   m_TagString: Untagged
@@ -34684,28 +34705,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2066308273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2066308271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87eefdc685e150947b4069e8588d9c6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scaleListener: {fileID: 19897265}
-  monster: {fileID: 1627800764}
-  player: {fileID: 547588085}
-  container: {fileID: 1347446729}
-  infowindow: {fileID: 1050804721}
-  infobox: {fileID: 1608228609}
-  playerRef: {fileID: 547588089}
-  soundPlayer: {fileID: 1477252106}
-  monsterAttackDistance: 0.3
-  monsterViewDistance: 20
-  monsterViewAngle: 100
 --- !u!1 &2070450919
 GameObject:
   m_ObjectHideFlags: 0
