@@ -115,6 +115,6 @@ public class SkeletonController : MonoBehaviour
     {
       playerHealthDamaged = true;
       status = "idle";     //only attack once per wrong note
-  }
+    }
 
 }

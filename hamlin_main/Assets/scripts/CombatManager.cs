@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,14 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class CombatManager : MonoBehaviour {
 
-    public ScaleListener scaleListener;
-    public SkeletonController monster;     //TODO: make this generic for all monsters
+    //public ScaleListener scaleListener;
+    public Monster monster;    
     public Health player;
     public ContainerManager container;
     public GameObject infowindow;
     public Text infobox;
     public Transform playerRef;
     public SoundPlayer soundPlayer;
+  public ScaleListener scaleListener;
 
     //NOTE: these values will need tweaking for each map!!! test them out in game
     public float monsterAttackDistance = 1;  //walk towards player if player detected and further away from this distance, else attack player
@@ -26,14 +28,14 @@ public class CombatManager : MonoBehaviour {
     private bool initCombat;
 
 	void Start () {
-        int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
-        int scale = Random.Range(0, 5);           // Picking Random Scale           NOTE: currently between 0 and 5 to keep it easier
-        scaleListener.InitFightScale(fightBaseKey, scale);
-        monster.attackDistance = monsterAttackDistance;
-        monster.viewDistance = monsterViewDistance;
-        monster.viewAngle = monsterViewAngle;
+        //int fightBaseKey = Random.Range(48, 55);  // Picking Random Base Key
+        //int scale = Random.Range(0, 5);           // Picking Random Scale           NOTE: currently between 0 and 5 to keep it easier
+        //scaleListener.InitFightScale(fightBaseKey, scale);
+        //monster.attackDistance = monsterAttackDistance;
+        //monster.viewDistance = monsterViewDistance;
+        //monster.viewAngle = monsterViewAngle;
         gameOver = false;
-        startedPlaying = false;
+        //startedPlaying = false;
         infowindow.SetActive(false);
         playerController = playerRef.GetComponent<PlayerController>();
         initCombat = true;
@@ -141,3 +143,5 @@ public class CombatManager : MonoBehaviour {
 
   }
 }
+
+*/

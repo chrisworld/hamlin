@@ -453,7 +453,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 19897266}
-  - component: {fileID: 19897265}
   m_Layer: 0
   m_Name: ScaleListener
   m_TagString: Untagged
@@ -461,25 +460,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &19897265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 19897264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1385367d5a4b4c2428249e738982f12f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ApplauseSound: {fileID: 300484699}
-  FailSound: {fileID: 1285175527}
-  container: {fileID: 1347446729}
-  fightScale: 
-  playerHasWon: 0
-  inCombat: 0
-  correctNotePlayed: 0
-  wrongNotePlayed: 0
 --- !u!4 &19897266
 Transform:
   m_ObjectHideFlags: 0
@@ -17568,34 +17548,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1085314466
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1085314468}
-  m_Layer: 0
-  m_Name: LearnScale
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1085314468
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1085314466}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0114174, y: -1.206, z: 3.984}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 15
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1100348968
 GameObject:
   m_ObjectHideFlags: 0
@@ -26802,7 +26754,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1627800763}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afec805f0e8ba0a49aeed037ba326a6f, type: 3}
   m_Name: 
@@ -26838,6 +26790,30 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1627800766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1627800763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d8d09db40095ef498c8c70fceddb09d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 547588089}
+  player_controller: {fileID: 547588087}
+  health: {fileID: 547588085}
+  container: {fileID: 1347446729}
+  sound_player: {fileID: 1477252106}
+  infowindow: {fileID: 2051402562}
+  infobox: {fileID: 1608228609}
+  nav: {fileID: 0}
+  viewDistance: 2
+  attackDistance: 0.2
+  viewAngle: 60
+  scale_name: 0
+  base_key: 48
 --- !u!1 &1630319097
 GameObject:
   m_ObjectHideFlags: 0
@@ -34663,7 +34639,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2066308272}
-  - component: {fileID: 2066308273}
   m_Layer: 0
   m_Name: CombatManager
   m_TagString: Untagged
@@ -34684,28 +34659,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2066308273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2066308271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87eefdc685e150947b4069e8588d9c6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scaleListener: {fileID: 19897265}
-  monster: {fileID: 1627800764}
-  player: {fileID: 547588085}
-  container: {fileID: 1347446729}
-  infowindow: {fileID: 1050804721}
-  infobox: {fileID: 1608228609}
-  playerRef: {fileID: 547588089}
-  soundPlayer: {fileID: 1477252106}
-  monsterAttackDistance: 0.3
-  monsterViewDistance: 20
-  monsterViewAngle: 100
 --- !u!1 &2070450919
 GameObject:
   m_ObjectHideFlags: 0
