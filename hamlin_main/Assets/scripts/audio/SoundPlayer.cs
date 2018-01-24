@@ -90,7 +90,7 @@ public class SoundPlayer : MonoBehaviour {
       }
       if (Input.GetKeyDown(KeyCode.Q))
       {
-        c.Play();
+        c1.Play();
       }
       if (Input.GetKeyDown(KeyCode.Alpha2))
       {
