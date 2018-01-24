@@ -79,8 +79,9 @@ public class Monster : MonoBehaviour
   public UnityEngine.AI.NavMeshAgent nav;
 
   // settings
-  public float distance_activation = 0.8f;
-  public float angle_activation = 60f;
+  public float viewDistance = 2f;
+  public float attackDistance = 1f;
+  public float viewAngle = 60f;
   public ScaleNames scale_name;
   public NoteBaseKey base_key;
 
@@ -198,8 +199,10 @@ public class Monster : MonoBehaviour
   // update
   void Update()
   {
+    Vector3 direction = player.position - this.transform.position;
+
     // check distance
-    if (! (Vector3.Distance(player.position, this.transform.position) < distance_activation && Vector3.Angle(player.position - this.transform.position, this.transform.forward) < angle_activation) ){
+    if (! (Vector3.Distance(player.position, this.transform.position) < viewDistance && Vector3.Angle(direction, this.transform.forward) < viewAngle) ){
       anim.SetBool("isRunning", false);
       anim.SetBool("isWalking", false);
       anim.SetBool("isAttacking", false);
@@ -212,7 +215,6 @@ public class Monster : MonoBehaviour
       if (!activated && checkValidMusicKey())
       {
         activated = true;
-        player_controller.setMoveActivate(false);
         // put scale
         setNoteStateToScale(box_scale);
         setSignStateToScale(box_scale);
@@ -230,10 +232,24 @@ public class Monster : MonoBehaviour
         resetNoteState();
         resetSignState();
       }
+      else if (activated && (direction.magnitude > attackDistance))     //too far away to attack, chase player
+      {     
+        print("chasing player");
+        anim.SetBool("isRunning", false);
+        anim.SetBool("isWalking", true);
+        anim.SetBool("isAttacking", false);
+        anim.SetBool("isIdle", false);
+        nav.destination = player.position;
+      }
       // play the scales
       else if (activated)
       {
-        Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
+        if (!nav.isStopped)
+        {
+          nav.ResetPath();
+          nav.isStopped = true;
+        }
+        player_controller.setMoveActivate(false);
         int key = 0;
         bool[] key_mask = getKeyMask();
         if (c_pos >= box_scale.Length)          //player has won
@@ -260,14 +276,10 @@ public class Monster : MonoBehaviour
           return;
         }
         else {
+            Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
             transform.LookAt(player);
             anim.SetBool("isRunning", false);
             anim.SetBool("isWalking", false);
-            if (!nav.isStopped)
-            {
-              nav.ResetPath();
-              nav.isStopped = true;
-            }
             
             // check each key
             foreach (bool mask in key_mask)

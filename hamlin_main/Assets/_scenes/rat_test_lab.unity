@@ -26809,8 +26809,9 @@ MonoBehaviour:
   infowindow: {fileID: 2051402562}
   infobox: {fileID: 1608228609}
   nav: {fileID: 0}
-  distance_activation: 0.8
-  angle_activation: 60
+  viewDistance: 2
+  attackDistance: 0.2
+  viewAngle: 60
   scale_name: 0
   base_key: 48
 --- !u!1 &1630319097
@@ -29310,6 +29311,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
