@@ -193,7 +193,7 @@ public class LearnScale : MonoBehaviour {
 				note_state[c][n] = NoteState.DISABLED;
 			}
 		}
-		container.updateNoteContainer(note_state);
+		//container.updateNoteContainer(note_state);
 	}
 
 		// set the SignState to all disabled
@@ -204,7 +204,7 @@ public class LearnScale : MonoBehaviour {
 				sign_state[c][n].act = false;
 			}
 		}
-		container.updateSignContainer(sign_state);
+		//container.updateSignContainer(sign_state);
 	}
 
 	// set the note_state to a scale
