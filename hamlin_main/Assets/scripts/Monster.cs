@@ -22,6 +22,45 @@ public enum NoteState
   WRONG = 3
 };  */       //TODO: this MUST be uncommented if LearnScale.cs is deleted
 
+// Enums
+public enum ScaleNames
+{
+  MAJOR_SCALE = 0,
+  MINOR_SCALE = 1,
+  CHROMATIC_SCALE = 2,
+  HARMONIC_MINOR_SCALE = 3,
+  MELODIC_MINOR_SCALE = 4, // mix of ascend and descend
+  NATURAL_MINOR_SCALE = 5,
+  DIATONIC_MINOR_SCALE = 6,
+  AEOLIAN_SCALE = 7,
+  PHRYGIAN_SCALE = 8,
+  LOCRIAN_SCALE = 9,
+  DORIAN_SCALE = 10,
+  LYDIAN_SCALE = 11,
+  MIXOLYDIAN_SCALE = 12,
+  PENTATONIC_SCALE = 13,
+  BLUES_SCALE = 14,
+  TURKISH_SCALE = 15,
+  INDIAN_SCALE = 16
+};
+
+public enum NoteBaseKey
+{
+  BASE_C = 48,
+  BASE_Csh = 49,
+  BASE_D = 50,
+  BASE_Dsh = 51,
+  BASE_E = 52,
+  BASE_F = 53,
+  BASE_Fsh = 54,
+  BASE_G = 55,
+  BASE_Gsh = 56,
+  BASE_A = 57,
+  BASE_Ash = 58,
+  BASE_H = 59
+};
+
+
 public class Monster : MonoBehaviour
 {
 
@@ -40,8 +79,9 @@ public class Monster : MonoBehaviour
   public UnityEngine.AI.NavMeshAgent nav;
 
   // settings
-  public float distance_activation = 0.8f;
-  public float angle_activation = 60f;
+  public float viewDistance = 2f;
+  public float attackDistance = 1f;
+  public float viewAngle = 60f;
   public ScaleNames scale_name;
   public NoteBaseKey base_key;
 
@@ -153,13 +193,16 @@ public class Monster : MonoBehaviour
     error_counter = 0;
     anim = GetComponent<Animator>();
     nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
+    infowindow.SetActive(false);
   }
 
   // update
   void Update()
   {
+    Vector3 direction = player.position - this.transform.position;
+
     // check distance
-    if (! (Vector3.Distance(player.position, this.transform.position) < distance_activation && Vector3.Angle(player.position - this.transform.position, this.transform.forward) < angle_activation) ){
+    if (! (Vector3.Distance(player.position, this.transform.position) < viewDistance && Vector3.Angle(direction, this.transform.forward) < viewAngle) ){
       anim.SetBool("isRunning", false);
       anim.SetBool("isWalking", false);
       anim.SetBool("isAttacking", false);
@@ -172,7 +215,6 @@ public class Monster : MonoBehaviour
       if (!activated && checkValidMusicKey())
       {
         activated = true;
-        player_controller.setMoveActivate(false);
         // put scale
         setNoteStateToScale(box_scale);
         setSignStateToScale(box_scale);
@@ -190,10 +232,24 @@ public class Monster : MonoBehaviour
         resetNoteState();
         resetSignState();
       }
+      else if (activated && (direction.magnitude > attackDistance))     //too far away to attack, chase player
+      {     
+        print("chasing player");
+        anim.SetBool("isRunning", false);
+        anim.SetBool("isWalking", true);
+        anim.SetBool("isAttacking", false);
+        anim.SetBool("isIdle", false);
+        nav.destination = player.position;
+      }
       // play the scales
       else if (activated)
       {
-        Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
+        if (!nav.isStopped)
+        {
+          nav.ResetPath();
+          nav.isStopped = true;
+        }
+        player_controller.setMoveActivate(false);
         int key = 0;
         bool[] key_mask = getKeyMask();
         if (c_pos >= box_scale.Length)          //player has won
@@ -220,14 +276,10 @@ public class Monster : MonoBehaviour
           return;
         }
         else {
+            Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
             transform.LookAt(player);
             anim.SetBool("isRunning", false);
             anim.SetBool("isWalking", false);
-            if (!nav.isStopped)
-            {
-              nav.ResetPath();
-              nav.isStopped = true;
-            }
             
             // check each key
             foreach (bool mask in key_mask)
@@ -301,7 +353,6 @@ public class Monster : MonoBehaviour
         note_state[c][n] = NoteState.DISABLED;
       }
     }
-    //container.updateNoteContainer(note_state);
   }
 
   // set the SignState to all disabled
@@ -315,7 +366,6 @@ public class Monster : MonoBehaviour
         sign_state[c][n].act = false;
       }
     }
-    //container.updateSignContainer(sign_state);
   }
 
   // set the note_state to a scale
@@ -326,6 +376,7 @@ public class Monster : MonoBehaviour
     foreach (int note in update_scale)
     {
       ni = scaleToContainerMapping(note);
+      //Debug.Log("debug:" + note + " " + ci + " " + ni);
       note_state[ci][ni] = NoteState.NORMAL;
       ci++;
     }
@@ -385,6 +436,10 @@ public class Monster : MonoBehaviour
   // map the keys to midi
   public int keyToMidiMapping(int key)
   {
+    if (key > 12)
+    {
+      key--;
+    }
     return key + 48;
   }
 
