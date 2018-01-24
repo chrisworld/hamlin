@@ -4,66 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-/*
-
-// Structs
-public struct SignState
-{
-  public bool act;
-  public int pos;
-}
-
-// Enums
-public enum NoteState
-{
-  DISABLED = 0,
-  NORMAL = 1,
-  RIGHT = 2,
-  WRONG = 3
-};  */       //TODO: this MUST be uncommented if LearnScale.cs is deleted
-
-// Enums
-public enum ScaleNames
-{
-  MAJOR_SCALE = 0,
-  MINOR_SCALE = 1,
-  CHROMATIC_SCALE = 2,
-  HARMONIC_MINOR_SCALE = 3,
-  MELODIC_MINOR_SCALE = 4, // mix of ascend and descend
-  NATURAL_MINOR_SCALE = 5,
-  DIATONIC_MINOR_SCALE = 6,
-  AEOLIAN_SCALE = 7,
-  PHRYGIAN_SCALE = 8,
-  LOCRIAN_SCALE = 9,
-  DORIAN_SCALE = 10,
-  LYDIAN_SCALE = 11,
-  MIXOLYDIAN_SCALE = 12,
-  PENTATONIC_SCALE = 13,
-  BLUES_SCALE = 14,
-  TURKISH_SCALE = 15,
-  INDIAN_SCALE = 16
-};
-
-public enum NoteBaseKey
-{
-  BASE_C = 48,
-  BASE_Csh = 49,
-  BASE_D = 50,
-  BASE_Dsh = 51,
-  BASE_E = 52,
-  BASE_F = 53,
-  BASE_Fsh = 54,
-  BASE_G = 55,
-  BASE_Gsh = 56,
-  BASE_A = 57,
-  BASE_Ash = 58,
-  BASE_H = 59
-};
-
 
 public class Monster : MonoBehaviour
 {
-
   // GameObjects
   public Transform player;
   public PlayerController player_controller;
@@ -124,10 +67,10 @@ public class Monster : MonoBehaviour
   };
 
   private int[][] allScales =   // Scales Definition
- {
+  {
+    new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
     new int[] {0, 2, 4, 5, 7, 9, 11, 12},
     new int[] {0, 2, 3, 5, 7, 8, 10, 12},
-    new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
     new int[] {0, 2, 4, 5, 7, 9, 11, 12},
     new int[] {0, 2, 3, 5, 7, 8, 10, 12},
     new int[] {0, 2, 3, 5, 7, 8, 11, 12},

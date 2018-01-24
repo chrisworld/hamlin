@@ -21,6 +21,7 @@ public class SoundPlayer : MonoBehaviour {
 	public AudioSource a;
 	public AudioSource a_sh;
 	public AudioSource h;
+	public AudioSource activate_sound;
 
   //managed by CombatManager
   [HideInInspector]

@@ -2,37 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Structs
-public struct SignState  
-{  
-    public bool act;
-    public int pos;
-}
-
-// Enums
-public enum NoteState {
-	DISABLED = 0,
-	NORMAL = 1,
-	RIGHT = 2,
-	WRONG = 3
-};
-
 public class LearnScale : MonoBehaviour {
 
 	// GameObjects
-	public AudioSource activate_sound;
 	public Transform player;
 	public PlayerController player_controller;
 	public Health health;
-	public ScaleListener scale_listener;
 	public ContainerManager container;
 	public SoundPlayer sound_player;
+	static Animator anim;
 
 	// settings
 	public float distance_activation;
 	public ScaleNames scale_name;
 	public NoteBaseKey base_key;
 
+	// private vars
 	private bool activated = false;
 	private int[] box_scale;
 	private int[] box_midi;
@@ -71,28 +56,69 @@ public class LearnScale : MonoBehaviour {
 		KeyCode.I
 	};
 
+	private int[][] allScales =   // Scales Definition
+  {
+    new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
+    new int[] {0, 2, 4, 5, 7, 9, 11, 12},
+    new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+    new int[] {0, 2, 4, 5, 7, 9, 11, 12},
+    new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+    new int[] {0, 2, 3, 5, 7, 8, 11, 12},
+    new int[] {0, 2, 3, 5, 7, 8, 9, 10, 11, 12}, // mix of ascend and descend
+		new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+    new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+    new int[] {0, 2, 3, 5, 7, 8, 10, 12},
+    new int[] {0, 1, 3, 5, 7, 8, 10, 12},
+    new int[] {0, 1, 3, 5, 6, 8, 10, 12},
+    new int[] {0, 2, 3, 5, 7, 9, 10, 12},
+    new int[] {0, 2, 4, 6, 7, 9, 11, 12},
+    new int[] {0, 2, 4, 5, 7, 9, 10, 12},
+    new int[] {0, 2, 4, 7, 9, 12},
+    new int[] {0, 2, 3, 4, 5, 7, 9, 10, 11, 12},
+    new int[] {0, 1, 3, 5, 7, 10, 11, 12},
+    new int[] {0, 1, 1, 4, 5, 8, 10 ,12},
+  };
+
 	// start
 	void Start () {
 		// get the scale for the scalebox
-		box_scale = scale_listener.getFullScale(scale_name);
+		box_scale = allScales[(int)scale_name];
 		box_midi = scaleToMidi(box_scale);
 		// init note_state to disabled
-		resetNoteState();
-		resetSignState();
+		initNoteState();
+		initSignState();
 		// container position
 		c_pos = 0;
 		error_counter = 0;
+		// reference objects for prefab
+		if(player == null){
+      player = GameObject.Find("Player").GetComponent<Transform>();
+      player_controller = player.GetComponent<PlayerController>();
+      health = player.GetComponent<Health>();
+    }
+    if(sound_player == null){
+      sound_player = GameObject.Find("SoundPlayer").GetComponent<SoundPlayer>();
+    }
+    if(container == null){
+    	 container = GameObject.Find("ContainerManager").GetComponent<ContainerManager>();
+    }
+    anim = this.GetComponent<Animator>();
 	}
 	
 	// update
 	void Update () {
 		// check distance
 		if(Vector3.Distance(player.position, this.transform.position) < distance_activation)
-		{
+		{	
+			// animation
+			Vector3 direction = player.position - this.transform.position;
+			this.transform.rotation = Quaternion.Slerp (this.transform.rotation, Quaternion.LookRotation (direction), 0.05f);
+			anim.SetBool ("isWaiting", false);
+			anim.SetBool ("isListening", true);
 	  	// start the scale
 	  	if(!activated && checkValidMusicKey()){
 	  		print("inside the scalebox");
-	    	activate_sound.Play();
+	    	sound_player.activate_sound.Play();
 	    	activated = true;
 	    	player_controller.setMoveActivate(false);
 	    	// put scale
@@ -121,13 +147,15 @@ public class LearnScale : MonoBehaviour {
 	  		// won the scale
 	  		if (c_pos >= box_scale.Length){
 	  			activated = false;
-	  			activate_sound.Play();
+	  			sound_player.activate_sound.Play();
 	  			print("won");
 	  			resetNoteState();
 	  			resetSignState();
 	  			player_controller.setMoveActivate(true);
+	  			anim.Play("disappear");
 	  			return;
 	  		}
+	  		// loose condition
 	  		else if (error_counter > 5){
 	  			activated = false;
 	  			// ToDo: ErrorSound
@@ -138,18 +166,20 @@ public class LearnScale : MonoBehaviour {
 	  			player_controller.setMoveActivate(true);
 	  			return;
 	  		}
-
 	  		// check each key
 	  		foreach (bool mask in key_mask){
 	  			if (mask){
 	  				cleanWrongNoteState(box_scale);
 	  				int note_midi = keyToMidiMapping(key);
 	  				int note_pos = midiToContainerMapping(note_midi);
+	  				// right note
 	  				if(note_midi == box_midi[c_pos]){
 	  					note_state[c_pos][note_pos] = NoteState.RIGHT;
 	  					sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+	  					anim.Play("rightNote");
 	  					c_pos++;
 	  				}
+	  				// wrong note
 	  				else{
 	  					note_state[c_pos][note_pos] = NoteState.WRONG;
 	  					sign_state[c_pos][note_pos] = midiToSignState(note_midi);
@@ -162,6 +192,17 @@ public class LearnScale : MonoBehaviour {
 	  		container.updateSignContainer(sign_state);
 	  	}
 		}
+		// not in distance
+		else{
+			anim.SetBool ("isWaiting", true);
+			anim.SetBool ("isListening", false);
+		}
+	}
+
+	private IEnumerator Die()
+	{		
+		yield return new WaitForSeconds(1.333f);
+		Destroy(gameObject);
 	}
 
 	// remove wrong notes played before
@@ -186,6 +227,26 @@ public class LearnScale : MonoBehaviour {
 	}
 
 	// set the NoteState to all disabled
+	void initNoteState(){
+		for (int c = 0; c < num_c; c++){
+			note_state[c] = new NoteState[num_n];
+			for (int n = 0; n < num_n; n++){
+				note_state[c][n] = NoteState.DISABLED;
+			}
+		}
+	}
+
+	// set the SignState to all disabled
+	void initSignState(){
+		for (int c = 0; c < num_c; c++){
+			sign_state[c] = new SignState[num_n];
+			for (int n = 0; n < num_n; n++){
+				sign_state[c][n].act = false;
+			}
+		}
+	}
+
+	// set the NoteState to all disabled
 	void resetNoteState(){
 		for (int c = 0; c < num_c; c++){
 			note_state[c] = new NoteState[num_n];
@@ -193,7 +254,7 @@ public class LearnScale : MonoBehaviour {
 				note_state[c][n] = NoteState.DISABLED;
 			}
 		}
-		//container.updateNoteContainer(note_state);
+		container.updateNoteContainer(note_state);
 	}
 
 		// set the SignState to all disabled
@@ -204,7 +265,7 @@ public class LearnScale : MonoBehaviour {
 				sign_state[c][n].act = false;
 			}
 		}
-		//container.updateSignContainer(sign_state);
+		container.updateSignContainer(sign_state);
 	}
 
 	// set the note_state to a scale
