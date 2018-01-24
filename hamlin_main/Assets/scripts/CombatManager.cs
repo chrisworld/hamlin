@@ -67,6 +67,7 @@ public class CombatManager : MonoBehaviour {
         if(initCombat){
           print("combat");
           scaleListener.setNoteStateToScale(scaleListener.getFullScale(scale_name));
+          scaleListener.setSignStateToScale(scaleListener.getFullScale(scale_name));
           playerController.setMoveActivate(false);                    //stop player moving
           //TODO: make player and monster face each other
           initCombat = false;

@@ -20,9 +20,9 @@ public enum NoteStateSL
 
 
 public enum ScaleNames {	
-	CHROMATIC_SCALE = 0,
-	MAJOR_SCALE = 1,
-	MINOR_SCALE = 2,
+	MAJOR_SCALE = 0,
+	MINOR_SCALE = 1,
+	CHROMATIC_SCALE = 2,
 	HARMONIC_MINOR_SCALE = 3,
 	MELODIC_MINOR_SCALE = 4, // mix of ascend and descend
 	NATURAL_MINOR_SCALE = 5,
@@ -433,7 +433,8 @@ public class ScaleListener : MonoBehaviour {
     int ni = 0;
     foreach (int note in update_scale)
     {
-      ni = scaleToContainerMapping(note);
+      ni = midiToContainerMapping(note);
+      Debug.Log("note_state: " + ci + "/" + ni + " base: " + note);
       note_state[ci][ni] = NoteState.NORMAL;
       ci++;
     }
