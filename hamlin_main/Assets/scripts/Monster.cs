@@ -192,6 +192,7 @@ public class Monster : MonoBehaviour
     error_counter = 0;
     anim = GetComponent<Animator>();
     nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
+    infowindow.SetActive(false);
   }
 
   // update
@@ -273,7 +274,7 @@ public class Monster : MonoBehaviour
             {
               if (mask)
               {
-                //cleanWrongNoteState(box_scale);
+                cleanWrongNoteState(box_scale);
                 int note_midi = keyToMidiMapping(key);
                 int note_pos = midiToContainerMapping(note_midi);
                 if (note_midi == box_midi[c_pos])
@@ -297,8 +298,8 @@ public class Monster : MonoBehaviour
             }
         }
 
-        //container.updateNoteContainer(note_state);
-        //container.updateSignContainer(sign_state);
+        container.updateNoteContainer(note_state);
+        container.updateSignContainer(sign_state);
       }
     }
   }
@@ -340,7 +341,6 @@ public class Monster : MonoBehaviour
         note_state[c][n] = NoteState.DISABLED;
       }
     }
-    //container.updateNoteContainer(note_state);
   }
 
   // set the SignState to all disabled
@@ -354,7 +354,6 @@ public class Monster : MonoBehaviour
         sign_state[c][n].act = false;
       }
     }
-    //container.updateSignContainer(sign_state);
   }
 
   // set the note_state to a scale
@@ -364,9 +363,8 @@ public class Monster : MonoBehaviour
     int ni = 0;
     foreach (int note in update_scale)
     {
-      
       ni = scaleToContainerMapping(note);
-      Debug.Log("debug:" + note + " " + ci + " " + ni);
+      //Debug.Log("debug:" + note + " " + ci + " " + ni);
       note_state[ci][ni] = NoteState.NORMAL;
       ci++;
     }
