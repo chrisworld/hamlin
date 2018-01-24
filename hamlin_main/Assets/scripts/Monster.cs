@@ -22,6 +22,45 @@ public enum NoteState
   WRONG = 3
 };  */       //TODO: this MUST be uncommented if LearnScale.cs is deleted
 
+// Enums
+public enum ScaleNames
+{
+  MAJOR_SCALE = 0,
+  MINOR_SCALE = 1,
+  CHROMATIC_SCALE = 2,
+  HARMONIC_MINOR_SCALE = 3,
+  MELODIC_MINOR_SCALE = 4, // mix of ascend and descend
+  NATURAL_MINOR_SCALE = 5,
+  DIATONIC_MINOR_SCALE = 6,
+  AEOLIAN_SCALE = 7,
+  PHRYGIAN_SCALE = 8,
+  LOCRIAN_SCALE = 9,
+  DORIAN_SCALE = 10,
+  LYDIAN_SCALE = 11,
+  MIXOLYDIAN_SCALE = 12,
+  PENTATONIC_SCALE = 13,
+  BLUES_SCALE = 14,
+  TURKISH_SCALE = 15,
+  INDIAN_SCALE = 16
+};
+
+public enum NoteBaseKey
+{
+  BASE_C = 48,
+  BASE_Csh = 49,
+  BASE_D = 50,
+  BASE_Dsh = 51,
+  BASE_E = 52,
+  BASE_F = 53,
+  BASE_Fsh = 54,
+  BASE_G = 55,
+  BASE_Gsh = 56,
+  BASE_A = 57,
+  BASE_Ash = 58,
+  BASE_H = 59
+};
+
+
 public class Monster : MonoBehaviour
 {
 
@@ -234,7 +273,7 @@ public class Monster : MonoBehaviour
             {
               if (mask)
               {
-                cleanWrongNoteState(box_scale);
+                //cleanWrongNoteState(box_scale);
                 int note_midi = keyToMidiMapping(key);
                 int note_pos = midiToContainerMapping(note_midi);
                 if (note_midi == box_midi[c_pos])
@@ -258,8 +297,8 @@ public class Monster : MonoBehaviour
             }
         }
 
-        container.updateNoteContainer(note_state);
-        container.updateSignContainer(sign_state);
+        //container.updateNoteContainer(note_state);
+        //container.updateSignContainer(sign_state);
       }
     }
   }
@@ -325,7 +364,9 @@ public class Monster : MonoBehaviour
     int ni = 0;
     foreach (int note in update_scale)
     {
+      
       ni = scaleToContainerMapping(note);
+      Debug.Log("debug:" + note + " " + ci + " " + ni);
       note_state[ci][ni] = NoteState.NORMAL;
       ci++;
     }
@@ -385,6 +426,10 @@ public class Monster : MonoBehaviour
   // map the keys to midi
   public int keyToMidiMapping(int key)
   {
+    if (key > 12)
+    {
+      key--;
+    }
     return key + 48;
   }
 

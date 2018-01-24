@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Enums
-public enum ScaleNames
+/* public enum ScaleNames
 {
   CHROMATIC_SCALE = 0,
   MAJOR_SCALE = 1,
@@ -22,7 +22,7 @@ public enum ScaleNames
   BLUES_SCALE = 14,
   TURKISH_SCALE = 15,
   INDIAN_SCALE = 16
-};
+}; */
 
 public enum NoteNames
 {
@@ -40,6 +40,7 @@ public enum NoteNames
   H
 };
 
+/*
 public enum NoteBaseKey
 {
   BASE_C = 48,
@@ -54,7 +55,7 @@ public enum NoteBaseKey
   BASE_A = 57,
   BASE_Ash = 58,
   BASE_H = 59
-};
+}; */
 
 
 public class ScaleListener : MonoBehaviour
