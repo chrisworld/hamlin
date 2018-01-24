@@ -40,8 +40,8 @@ public class Monster : MonoBehaviour
   public UnityEngine.AI.NavMeshAgent nav;
 
   // settings
-  public float distance_activation;
-  public float angle_activation;
+  public float distance_activation = 0.8f;
+  public float angle_activation = 60f;
   public ScaleNames scale_name;
   public NoteBaseKey base_key;
 

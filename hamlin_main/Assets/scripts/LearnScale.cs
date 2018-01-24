@@ -262,6 +262,9 @@ public class LearnScale : MonoBehaviour {
 
 	// map the keys to midi
 	public int keyToMidiMapping(int key){
+		if (key > 12) {
+			key--;
+		}
 		return key + 48;
 	}
 
