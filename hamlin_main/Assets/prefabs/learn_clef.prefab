@@ -117,6 +117,6 @@ MonoBehaviour:
   health: {fileID: 0}
   container: {fileID: 0}
   sound_player: {fileID: 0}
-  distance_activation: 0.3
+  distance_activation: 0.5
   scale_name: 1
   base_key: 48
