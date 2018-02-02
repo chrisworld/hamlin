@@ -38,6 +38,7 @@ public class SoundPlayer : MonoBehaviour {
   //managed by CombatManager
   [HideInInspector]
   public bool inCombat;
+  [HideInInspector]
   public bool inLearning;
 
 	// Use this for initialization
