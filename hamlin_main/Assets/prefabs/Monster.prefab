@@ -217,9 +217,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4542412933231256}
   - component: {fileID: 95656811677654284}
-  - component: {fileID: 114672453625550072}
   - component: {fileID: 195106893198425916}
-  - component: {fileID: 114668796742379562}
+  - component: {fileID: 114005875767500178}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -1198,7 +1197,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114668796742379562
+--- !u!114 &114005875767500178
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1206,43 +1205,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1315182886761472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d8d09db40095ef498c8c70fceddb09d, type: 3}
+  m_Script: {fileID: 11500000, guid: c7e3601d3507ffb43af44205f165cbf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  player_controller: {fileID: 0}
-  health: {fileID: 0}
-  container: {fileID: 0}
-  sound_player: {fileID: 0}
-  infowindow: {fileID: 0}
-  infobox: {fileID: 0}
-  nav: {fileID: 0}
-  viewDistance: 2
-  attackDistance: 0.2
-  viewAngle: 60
   scale_name: 1
   base_key: 48
---- !u!114 &114672453625550072
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1315182886761472}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afec805f0e8ba0a49aeed037ba326a6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  health: {fileID: 0}
+  anim: {fileID: 0}
   nav: {fileID: 0}
-  inCombat: 0
-  playerHealthDamaged: 0
-  playerHasWon: 0
-  attackDistance: 0
-  viewDistance: 0
-  viewAngle: 0
-  gameOver: 0
-  status: 
+  box_scale: 
+  box_midi: 
 --- !u!137 &137046968917316708
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

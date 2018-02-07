@@ -15,11 +15,7 @@ public class MonsterManager : MonoBehaviour
   public SoundPlayer sound_player;
   public GameObject infowindow;
   public Text infobox;
- 
-  //monsters
-  public Transform[] monsters;
-  public Animator[] anims;
-  public UnityEngine.AI.NavMeshAgent[] navs;
+  public Monster[] monsters;
 
   //[HideInInspector]
   //public static Animator anim;
@@ -35,9 +31,8 @@ public class MonsterManager : MonoBehaviour
 
   private bool activated;
   private int currentMonsterId;
+  private bool initialisedMonsters;
 
-  private int[] box_scale;
-  private int[] box_midi;
   private int num_c = 11;
   private int num_n = 15;
   private int c_pos;
@@ -73,7 +68,7 @@ public class MonsterManager : MonoBehaviour
     KeyCode.I
   };
 
-  private int[][] allScales =   // Scales Definition
+  public int[][] allScales =   // Scales Definition
   {
     new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
     new int[] {0, 2, 4, 5, 7, 9, 11, 12},
@@ -96,14 +91,7 @@ public class MonsterManager : MonoBehaviour
     new int[] {0, 1, 1, 4, 5, 8, 10 ,12},
   };
 
-  //Used by animation event to time health damage
-  public void DamagePlayer()
-  {
-    health.takeDamage(1);
-    //only attack once
-    anims[currentMonsterId].SetBool("isAttacking", false);
-    anims[currentMonsterId].SetBool("isIdle", true);
-  }
+  //TODO: maybe remove three below methods
 
   void OnEnable()
   {
@@ -117,7 +105,9 @@ public class MonsterManager : MonoBehaviour
 
   void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
   {
-    //TODO
+    //TODO if can't fix null reference exceptions
+
+  }
 
     //if (player_controller == null)
     //{
@@ -128,22 +118,18 @@ public class MonsterManager : MonoBehaviour
     //{
       //soundPlayer = GameObject.Find("SoundPlayer").GetComponent<SoundPlayer>();
     //}
-  }
+ 
 
   void Start()
   {
-    // get the scale for the scalebox
-    box_scale = allScales[(int)scale_name];
-    box_midi = scaleToMidi(box_scale);
     resetNoteState();
     resetSignState();
     // container position
     c_pos = 0;
     error_counter = 0;
-    //anim = GetComponent<Animator>();
-    //nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
     infowindow.SetActive(false);
 
+    monsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));
 
   }
 
@@ -153,58 +139,78 @@ public class MonsterManager : MonoBehaviour
     bool monsterActivatedThisTurn = false;
     int result = 0;
 
-    if(activated){           //update just the active monster, activated = false when combat has finished
-      result = UpdateMonster(currentMonsterId);
-      monsterActivatedThisTurn = true;
-    }
-    else {                  //cycle through all monsters and activate first one which is within combat distance, if any
+    if (!initialisedMonsters && monsters != null){
       for (int i = 0; i < monsters.Length; i++)
       {
-        if (!monsterActivatedThisTurn && Vector3.Distance(player.position, monsters[i].position) < viewDistance && Vector3.Angle(player.position - monsters[i].position, monsters[i].forward) < viewAngle)
+        monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
+        monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
+      }
+      initialisedMonsters = true;
+    }
+    else {
+      if (activated)
+      {           //update just the active monster, activated = false when combat has finished
+        result = UpdateMonster(currentMonsterId);
+        monsterActivatedThisTurn = true;
+      }
+      else
+      {                  //cycle through all monsters and activate first one which is within combat distance, if any
+        for (int i = 0; i < monsters.Length; i++)
         {
-          monsterActivatedThisTurn = true;
-          currentMonsterId = i;
-          result = UpdateMonster(i);
-        }
-        else
-        {
-          //deactivate everything
-          anims[i].SetBool("isRunning", false);
-          anims[i].SetBool("isWalking", false);
-          anims[i].SetBool("isAttacking", false);
-          anims[i].SetBool("isIdle", true);
-          //TODO: check more stuff???
+
+          if (!monsterActivatedThisTurn && Vector3.Distance(player.position, monsters[i].transform.position) < viewDistance && Vector3.Angle(player.position - monsters[i].transform.position, monsters[i].transform.forward) < viewAngle)
+          {
+            monsterActivatedThisTurn = true;
+            currentMonsterId = i;
+            result = UpdateMonster(i);
+          }
+          else
+          {
+            //deactivate everything
+            monsters[i].anim.SetBool("isRunning", false);
+            monsters[i].anim.SetBool("isWalking", false);
+            monsters[i].anim.SetBool("isAttacking", false);
+            monsters[i].anim.SetBool("isIdle", true);
+            if (i == (monsters.Length - 1) && !monsterActivatedThisTurn)
+            {
+              //this fixes a bug where monsters where stopping then instantly reactivating due to player proximity
+              activated = false;
+            }
+          }
         }
       }
+      if (result == 1)
+      {
+        resetNoteState();
+        resetSignState();
+        player_controller.setMoveActivate(true);
+        StartCoroutine(ShowMessage("You lose :'(", 3f, true));
+      }
     }
-    if (result == 1)
-    {
-      //TOOD: improve infobox
-      infowindow.SetActive(true);
-      infobox.text = "You lose :(";
-      resetNoteState();
-      resetSignState();
-      player_controller.setMoveActivate(true);
-      SceneManager.LoadScene("MainMenu");
-    }
+
+
+  //TODO: add key listener for buttons that activate scales
+  // set soundPlayer.inLearning = true;
+  //should let player play notes without activating combat 
+
+   
+
   }
 
   //return values: 0 no action, 1 player lost
   int UpdateMonster(int id) {
 
-    //TODO: I think we can get away with a global activated var instead of one for each monster, but need to test
-
-    Vector3 direction = player.position - monsters[id].position;
+    Vector3 direction = player.position - monsters[id].transform.position;
     // start the scale
     if (!activated && checkValidMusicKey())
     {
       activated = true;
       // put scale
-      setNoteStateToScale(box_scale);
-      setSignStateToScale(box_scale);
+      setNoteStateToScale(monsters[id].box_scale);
+      setSignStateToScale(monsters[id].box_scale);
       c_pos = 0;
       error_counter = 0;
-      sound_player.inLearning = true;
+      sound_player.inCombat = true;
      }
      // stop the scale
      else if (activated && player_controller.checkValidJumpKey())
@@ -215,76 +221,73 @@ public class MonsterManager : MonoBehaviour
         error_counter = 0;
         resetNoteState();
         resetSignState();
+        sound_player.inCombat = false;
         return 0;
      }
       else if (activated && (direction.magnitude > attackDistance))     //too far away to attack, chase player
       {
-        print("chasing player");
-        anims[id].SetBool("isRunning", false);
-        anims[id].SetBool("isWalking", true);
-        anims[id].SetBool("isAttacking", false);
-        anims[id].SetBool("isIdle", false);
-        navs[id].destination = player.position;
+        monsters[id].anim.SetBool("isRunning", false);
+        monsters[id].anim.SetBool("isWalking", true);
+        monsters[id].anim.SetBool("isAttacking", false);
+        monsters[id].anim.SetBool("isIdle", false);
+        monsters[id].nav.destination = player.position;
       }
       // play the scales
       else if (activated)
       {
-        if (!navs[id].isStopped)
+        if (!monsters[id].nav.isStopped)
         {
-          navs[id].ResetPath();
-          navs[id].isStopped = true;
+          monsters[id].nav.ResetPath();
+          monsters[id].nav.isStopped = true;
         }
         player_controller.setMoveActivate(false);
         int key = 0;
         bool[] key_mask = getKeyMask();
-        if (c_pos >= box_scale.Length)          //player has beaten monster
+        if (c_pos >= monsters[id].box_scale.Length)          //player has beaten monster
         {
           activated = false;
-          
-          //TODO: replace with points system??? monsters run away?? do not end game
-          infowindow.SetActive(true);
-          infobox.text = "You win!";
-          
+          StartCoroutine(ShowMessage("You win!", 3f, false));
           resetNoteState();
           resetSignState();
           player_controller.setMoveActivate(true);
           return 0;
         }
         else if (health.GetHealthAmount() == 0)         //game ends if they run out of health
-      {
+        {
+          print("player out of health");
           activated = false;
           return 1;
         }
         else
         {
           Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
-          transform.LookAt(player);
-          anims[id].SetBool("isRunning", false);
-          anims[id].SetBool("isWalking", false);
+          //monsters[id].transform.LookAt(player);   //TODO: we need this but need to change the player transform somehow as it's the wrong angle
+          monsters[id].anim.SetBool("isRunning", false);
+          monsters[id].anim.SetBool("isWalking", false);
 
           // check each key
           foreach (bool mask in key_mask)
           {
             if (mask)
             {
-              cleanWrongNoteState(box_scale);
+              cleanWrongNoteState(monsters[id].box_scale);
               int note_midi = keyToMidiMapping(key);
               int note_pos = midiToContainerMapping(note_midi);
-              if (note_midi == box_midi[c_pos])
+              if (note_midi == monsters[id].box_midi[c_pos])
               {
                 note_state[c_pos][note_pos] = NoteState.RIGHT;
                 sign_state[c_pos][note_pos] = midiToSignState(note_midi);
                 c_pos++;
-                anims[id].SetBool("isAttacking", false);
-                anims[id].SetBool("isIdle", true);
+                monsters[id].anim.SetBool("isAttacking", false);
+                monsters[id].anim.SetBool("isIdle", true);
               }
               else
               {
                 note_state[c_pos][note_pos] = NoteState.WRONG;
                 sign_state[c_pos][note_pos] = midiToSignState(note_midi);
                 error_counter++;
-                anims[id].SetBool("isAttacking", true);
-                anims[id].SetBool("isIdle", false);
+                monsters[id].anim.SetBool("isAttacking", true);
+                monsters[id].anim.SetBool("isIdle", false);
               }
             }
             key++;
@@ -297,6 +300,27 @@ public class MonsterManager : MonoBehaviour
     return 0;
 
   }
+
+
+  //do not call directly, call with StartCoroutine(ShowMessage(...))
+  IEnumerator ShowMessage(string message, float delay, bool endGame)
+  {
+    infobox.text = message;
+    infowindow.SetActive (true);
+    yield return new WaitForSeconds(delay);
+    infowindow.SetActive (false);
+    if(endGame){
+      SceneManager.LoadScene("MainMenu");
+    }
+  }
+
+
+
+
+
+
+
+
 
 
   // remove wrong notes played before
@@ -332,10 +356,11 @@ public class MonsterManager : MonoBehaviour
     {
       note_state[c] = new NoteState[num_n];
       for (int n = 0; n < num_n; n++)
-      {
-        note_state[c][n] = NoteState.DISABLED;
-      }
+        {
+          note_state[c][n] = NoteState.DISABLED;
+        }
     }
+    container.updateNoteContainer(note_state);
   }
 
   // set the SignState to all disabled
@@ -349,6 +374,7 @@ public class MonsterManager : MonoBehaviour
         sign_state[c][n].act = false;
       }
     }
+    container.updateSignContainer(sign_state);
   }
 
   // set the note_state to a scale
