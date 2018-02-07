@@ -15,7 +15,9 @@ public class MonsterManager : MonoBehaviour
   public SoundPlayer sound_player;
   public GameObject infowindow;
   public Text infobox;
-  public Monster[] monsters;
+
+  [HideInInspector]
+  public Monster[] monsters;  //do NOT make this private
 
   //[HideInInspector]
   //public static Animator anim;
@@ -122,28 +124,28 @@ public class MonsterManager : MonoBehaviour
 
   void Start()
   {
-    resetNoteState();
-    resetSignState();
-    // container position
-    c_pos = 0;
-    error_counter = 0;
     infowindow.SetActive(false);
-
-    monsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));
+    monsters = (Monster[]) GameObject.FindObjectsOfType(typeof(Monster));
 
   }
 
   void Update()
   {
-
     bool monsterActivatedThisTurn = false;
     int result = 0;
 
     if (!initialisedMonsters && monsters != null){
       for (int i = 0; i < monsters.Length; i++)
       {
+        resetNoteState();
+        resetSignState();
+        // container position
+        c_pos = 0;
+        error_counter = 0;
         monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
         monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
+        container.updateNoteContainer(note_state);
+        container.updateSignContainer(sign_state);
       }
       initialisedMonsters = true;
     }
