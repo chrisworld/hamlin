@@ -10,7 +10,6 @@ public class SoundPlayer : MonoBehaviour {
 
 	public AudioSource c;
 	public AudioSource c_sh;
-	public AudioSource c1;
 	public AudioSource d;
 	public AudioSource d_sh;
 	public AudioSource e;
@@ -21,11 +20,25 @@ public class SoundPlayer : MonoBehaviour {
 	public AudioSource a;
 	public AudioSource a_sh;
 	public AudioSource h;
+	public AudioSource c1;
+	public AudioSource c_sh1;
+	public AudioSource d1;
+	public AudioSource d_sh1;
+	public AudioSource e1;
+	public AudioSource f1;
+	public AudioSource f_sh1;
+	public AudioSource g1;
+	public AudioSource g_sh1;
+	public AudioSource a1;
+	public AudioSource a_sh1;
+	public AudioSource h1;
+	public AudioSource c2;
 	public AudioSource activate_sound;
 
   //managed by CombatManager
   [HideInInspector]
   public bool inCombat;
+  [HideInInspector]
   public bool inLearning;
 
 	// Use this for initialization
@@ -95,51 +108,51 @@ public class SoundPlayer : MonoBehaviour {
       }
       if (Input.GetKeyDown(KeyCode.Alpha2))
       {
-        c_sh.Play();
+        c_sh1.Play();
       }
       if (Input.GetKeyDown(KeyCode.I))
       {
-        c1.Play();
+        c2.Play();
       }
       if (Input.GetKeyDown(KeyCode.W))
       {
-        d.Play();
+        d1.Play();
       }
       if (Input.GetKeyDown(KeyCode.Alpha3))
       {
-        d_sh.Play();
+        d_sh1.Play();
       }
       if (Input.GetKeyDown(KeyCode.E))
       {
-        e.Play();
+        e1.Play();
       }
       if (Input.GetKeyDown(KeyCode.R))
       {
-        f.Play();
+        f1.Play();
       }
       if (Input.GetKeyDown(KeyCode.Alpha5))
       {
-        f_sh.Play();
+        f_sh1.Play();
       }
       if (Input.GetKeyDown(KeyCode.T))
       {
-        g.Play();
+        g1.Play();
       }
       if (Input.GetKeyDown(KeyCode.Alpha6))
       {
-        g_sh.Play();
+        g_sh1.Play();
       }
       if (Input.GetKeyDown(KeyCode.U))
       {
-        h.Play();
+        h1.Play();
       }
       if (Input.GetKeyDown(KeyCode.Z))
       {
-        a.Play();
+        a1.Play();
       }
       if (Input.GetKeyDown(KeyCode.Alpha7))
       {
-        a_sh.Play();
+        a_sh1.Play();
       }
     }
 

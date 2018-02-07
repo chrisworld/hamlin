@@ -111,13 +111,10 @@ public class LearnScale : MonoBehaviour {
 		if(Vector3.Distance(player.position, this.transform.position) < distance_activation)
 		{	
 			// animation
-			Vector3 direction = player.position - this.transform.position;
-			this.transform.rotation = Quaternion.Slerp (this.transform.rotation, Quaternion.LookRotation (direction), 0.05f);
 			anim.SetBool ("isWaiting", false);
 			anim.SetBool ("isListening", true);
 	  	// start the scale
 	  	if(!activated && checkValidMusicKey()){
-	  		print("inside the scalebox");
 	    	sound_player.activate_sound.Play();
 	    	activated = true;
 	    	player_controller.setMoveActivate(false);
@@ -131,11 +128,11 @@ public class LearnScale : MonoBehaviour {
 	  	// stop the scale
 	  	else if(activated && player_controller.checkValidJumpKey())
 	  	{
-	  		print("exit the scalebox");
 	  		activated = false;
-	  		player_controller.setMoveActivate(true);
 	  		c_pos = 0;
 	  		error_counter = 0;
+	  		sound_player.inLearning = false;
+	  		player_controller.setMoveActivate(true);
 	  		resetNoteState();
 				resetSignState();
 	  	}
@@ -144,23 +141,22 @@ public class LearnScale : MonoBehaviour {
 	  	{
 	  		int key = 0;
 	  		bool[] key_mask = getKeyMask();
-	  		// won the scale
+	  		// win condition
 	  		if (c_pos >= box_scale.Length){
-	  			activated = false;
 	  			sound_player.activate_sound.Play();
-	  			print("won");
+	  			sound_player.inLearning = false;
+	  			player_controller.setMoveActivate(true);
 	  			resetNoteState();
 	  			resetSignState();
-	  			player_controller.setMoveActivate(true);
-	  			anim.Play("disappear");
+	  			DestroyClef();
 	  			return;
 	  		}
 	  		// loose condition
 	  		else if (error_counter > 5){
 	  			activated = false;
+	  			sound_player.inLearning = false;
 	  			// ToDo: ErrorSound
 	  			//activate_sound.Play();
-	  			print("to much wrong");
 	  			resetNoteState();
 	  			resetSignState();
 	  			player_controller.setMoveActivate(true);
@@ -196,13 +192,17 @@ public class LearnScale : MonoBehaviour {
 		else{
 			anim.SetBool ("isWaiting", true);
 			anim.SetBool ("isListening", false);
+			Vector3 direction = player.position - this.transform.position;
+			direction.y = 0;
+			this.transform.rotation = Quaternion.Slerp (this.transform.rotation, Quaternion.LookRotation (direction), 0.05f);
 		}
 	}
 
-	private IEnumerator Die()
+	// destroy
+	private void DestroyClef()
 	{		
-		yield return new WaitForSeconds(1.333f);
-		Destroy(gameObject);
+		anim.Play("disappear");
+		Destroy(gameObject, 1);
 	}
 
 	// remove wrong notes played before
