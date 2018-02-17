@@ -10,7 +10,8 @@ public class LearnScale : MonoBehaviour {
 	public Health health;
 	public ContainerManager container;
 	public SoundPlayer sound_player;
-	static Animator anim;
+	[HideInInspector]
+	public static Animator anim;
 
 	// settings
 	public float distance_activation;
@@ -21,12 +22,12 @@ public class LearnScale : MonoBehaviour {
 	private bool activated = false;
 	private int[] box_scale;
 	private int[] box_midi;
-	private int num_c = 11;
+	private int num_c = 12;
 	private int num_n = 15;
 	private int c_pos;
 	private int error_counter;
-	private NoteState[][] note_state = new NoteState[11][];
-	private SignState[][] sign_state = new SignState[11][];
+	private NoteState[][] note_state = new NoteState[12][];
+	private SignState[][] sign_state = new SignState[12][];
 	private KeyCode[] valid_keys = {
 		KeyCode.Y,
 		KeyCode.S,
@@ -102,7 +103,7 @@ public class LearnScale : MonoBehaviour {
     if(container == null){
     	 container = GameObject.Find("ContainerManager").GetComponent<ContainerManager>();
     }
-    anim = this.GetComponent<Animator>();
+    anim = GetComponent<Animator>();
 	}
 	
 	// update
@@ -110,6 +111,7 @@ public class LearnScale : MonoBehaviour {
 		// check distance
 		if(Vector3.Distance(player.position, this.transform.position) < distance_activation)
 		{	
+			print("In");
 			// animation
 			anim.SetBool ("isWaiting", false);
 			anim.SetBool ("isListening", true);
@@ -181,11 +183,11 @@ public class LearnScale : MonoBehaviour {
 	  					sign_state[c_pos][note_pos] = midiToSignState(note_midi);
 	  					error_counter++;
 	  				}
+		  			container.updateNoteContainer(note_state);
+		  			container.updateSignContainer(sign_state);
 	  			}
 	  			key++;
 	  		}
-	  		container.updateNoteContainer(note_state);
-	  		container.updateSignContainer(sign_state);
 	  	}
 		}
 		// not in distance
@@ -222,8 +224,6 @@ public class LearnScale : MonoBehaviour {
 				}
 			}
 		}
-		container.updateNoteContainer(note_state);
-		container.updateSignContainer(sign_state);
 	}
 
 	// set the NoteState to all disabled

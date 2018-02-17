@@ -11,6 +11,7 @@ public class ContainerManager : MonoBehaviour {
 
 	int[] f_scale;
 	public Sprite[] note_sprites;
+
 	public Image[] note_container1;
 	public Image[] note_container2;
 	public Image[] note_container3;
@@ -22,6 +23,7 @@ public class ContainerManager : MonoBehaviour {
 	public Image[] note_container9;
 	public Image[] note_container10;
 	public Image[] note_container11;
+	public Image[] note_container12;
 
 	public Image[] sign_container1;
 	public Image[] sign_container2;
@@ -34,6 +36,7 @@ public class ContainerManager : MonoBehaviour {
 	public Image[] sign_container9;
 	public Image[] sign_container10;
 	public Image[] sign_container11;
+	public Image[] sign_container12;
 
 	ArrayList note_container_big = new ArrayList();
 	ArrayList sign_container_big = new ArrayList();
@@ -53,6 +56,7 @@ public class ContainerManager : MonoBehaviour {
 		note_container_big.Add(note_container9);
 		note_container_big.Add(note_container10);
 		note_container_big.Add(note_container11);
+		note_container_big.Add(note_container12);
 
 		sign_container_big.Add(sign_container1);
 		sign_container_big.Add(sign_container2);
@@ -65,6 +69,7 @@ public class ContainerManager : MonoBehaviour {
 		sign_container_big.Add(sign_container9);
 		sign_container_big.Add(sign_container10);
 		sign_container_big.Add(sign_container11);
+		sign_container_big.Add(sign_container12);
 
 		resetContainers ();
 		resetCleffs ();
@@ -139,24 +144,27 @@ public class ContainerManager : MonoBehaviour {
 		int c = 0;
 		foreach (NoteState[] notes in note_state){
 			int n = 0;
+			Image[] note_container = (Image[])note_container_big[c];
 			foreach (NoteState note in notes){
-				Image[] note_container = (Image[])note_container_big[c];
 				switch (note)
 				{
 					case NoteState.DISABLED: 
 						note_container[n].enabled = false; 
 						break;
 					case NoteState.NORMAL:		
+						note_container[n].sprite = note_sprites[0 + lineOffset(n)];
 						note_container[n].enabled = true;
-						note_container[n].sprite = note_sprites[0];
-						break;
-					case NoteState.RIGHT:
-						note_container[n].enabled = true;
-						note_container[n].sprite = note_sprites[2];
+						//Debug.Log("normal: " + c +"/"+ n);
 						break;
 					case NoteState.WRONG:
+						note_container[n].sprite = note_sprites[1 + lineOffset(n)];
 						note_container[n].enabled = true;
-						note_container[n].sprite = note_sprites[1];
+						Debug.Log("wrong: " + c +"/"+ n);
+						break;
+					case NoteState.RIGHT:
+						note_container[n].sprite = note_sprites[2 + lineOffset(n)];
+						note_container[n].enabled = true;
+						Debug.Log("right: " + c +"/"+ n);
 						break;
 					default: break;
 				}
@@ -164,6 +172,23 @@ public class ContainerManager : MonoBehaviour {
 			}
 			c++;
 		}
+	}
+
+	public int lineOffset(int note_pos){
+		int offset = 3;
+		switch (note_pos)
+		{
+			case 0: return offset;
+			case 2: return offset;
+			case 4: return offset;
+			case 6: return offset;
+			case 8: return offset;
+			case 10: return offset;
+			case 12: return offset;
+			case 14: return offset;
+			default: break;
+		}
+		return 0;
 	}
 
 	public void updateSignContainer(SignState[][] sign_state){
