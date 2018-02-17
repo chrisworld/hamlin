@@ -149,7 +149,8 @@ ModelImporter:
       - time: 0.43844494
         functionName: DamagePlayer
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11500000, guid: c7e3601d3507ffb43af44205f165cbf4,
+          type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
