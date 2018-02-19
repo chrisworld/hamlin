@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour {
             transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
           }
 
-          if (move_activated)
+          if (move_activated && controller.enabled)
           {
             bool running = checkValidRunKey();
             float targetSpeed = (running ? runSpeed : walkSpeed) * inputDirection.magnitude;
@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour {
             Vector3 velocity = transform.forward * currentSpeed + Vector3.up * velocityY;
 
             controller.Move(velocity * Time.deltaTime);
+            
             currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
 
             if (controller.isGrounded)

@@ -31,12 +31,12 @@ public class MonsterManager : MonoBehaviour
   private int currentMonsterId;
   private bool initialisedMonsters;
 
-  private int num_c = 11;
-  private int num_n = 15;
+  private int num_c = 12;   //was 11
+  private int num_n = 15;   //was 15
   private int c_pos;
   private int error_counter;
-  private NoteState[][] note_state = new NoteState[11][];
-  private SignState[][] sign_state = new SignState[11][];
+  private NoteState[][] note_state = new NoteState[12][];
+  private SignState[][] sign_state = new SignState[12][];
   private KeyCode[] valid_keys = {
     KeyCode.Y,
     KeyCode.S,
