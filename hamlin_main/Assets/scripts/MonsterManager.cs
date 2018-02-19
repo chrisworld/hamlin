@@ -181,6 +181,12 @@ public class MonsterManager : MonoBehaviour
   //return values: 0 no action, 1 player lost
   int UpdateMonster(int id) {
 
+    //do nothing if player has already defeated monster
+    if(monsters[id].defeated == true){
+      //TODO: make monster run away / disappear
+      return 0;
+    }
+
     Vector3 direction = player.position - monsters[id].transform.position;
     // start the scale
     if (!activated && Input.anyKey)
@@ -237,6 +243,7 @@ public class MonsterManager : MonoBehaviour
           resetNoteState();
           resetSignState();
           player_controller.setMoveActivate(true);
+          monsters[id].defeated = true;
           return 0;
         }
         else if (health.GetHealthAmount() == 0)         //game ends if they run out of health
