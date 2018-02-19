@@ -19,11 +19,6 @@ public class MonsterManager : MonoBehaviour
   [HideInInspector]
   public Monster[] monsters;  //do NOT make this private
 
-  //[HideInInspector]
-  //public static Animator anim;
-  //[HideInInspector]
-  //public UnityEngine.AI.NavMeshAgent nav;   //TODO: why is this public?
-
   // settings
   public float viewDistance = 2f;
   public float attackDistance = 1f;
@@ -32,6 +27,7 @@ public class MonsterManager : MonoBehaviour
   public NoteBaseKey base_key;
 
   private bool activated;
+  private bool chasing;
   private int currentMonsterId;
   private bool initialisedMonsters;
 
@@ -93,39 +89,12 @@ public class MonsterManager : MonoBehaviour
     new int[] {0, 1, 1, 4, 5, 8, 10 ,12},
   };
 
-  //TODO: maybe remove three below methods
-
-  void OnEnable()
-  {
-    SceneManager.sceneLoaded += OnLevelFinishedLoading;
-  }
-
-  void OnDisable()
-  {
-    SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-  }
-
-  void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
-  {
-    //TODO if can't fix null reference exceptions
-
-  }
-
-    //if (player_controller == null)
-    //{
-      //playerRef = GameObject.Find("Player").GetComponent<Transform>();
-      //playerController = playerRef.GetComponent<PlayerController>();
-    //}
-    //if (soundPlayer == null)
-    //{
-      //soundPlayer = GameObject.Find("SoundPlayer").GetComponent<SoundPlayer>();
-    //}
- 
-
   void Start()
   {
     infowindow.SetActive(false);
     monsters = (Monster[]) GameObject.FindObjectsOfType(typeof(Monster));
+    chasing = false;
+    activated = false;
 
   }
 
@@ -181,7 +150,7 @@ public class MonsterManager : MonoBehaviour
           }
         }
       }
-      if (result == 1)
+      if (result == 1 || health.GetHealthAmount() == 0)
       {
         resetNoteState();
         resetSignState();
@@ -194,9 +163,6 @@ public class MonsterManager : MonoBehaviour
   //TODO: add key listener for buttons that activate scales
   // set soundPlayer.inLearning = true;
   //should let player play notes without activating combat 
-
-   
-
   }
 
   //return values: 0 no action, 1 player lost
@@ -204,7 +170,7 @@ public class MonsterManager : MonoBehaviour
 
     Vector3 direction = player.position - monsters[id].transform.position;
     // start the scale
-    if (!activated && checkValidMusicKey())
+    if (!activated && Input.anyKey)
     {
       activated = true;
       // put scale
@@ -224,6 +190,7 @@ public class MonsterManager : MonoBehaviour
         resetNoteState();
         resetSignState();
         sound_player.inCombat = false;
+        monsters[id].nav.isStopped = false;
         return 0;
      }
       else if (activated && (direction.magnitude > attackDistance))     //too far away to attack, chase player
@@ -233,11 +200,16 @@ public class MonsterManager : MonoBehaviour
         monsters[id].anim.SetBool("isAttacking", false);
         monsters[id].anim.SetBool("isIdle", false);
         monsters[id].nav.destination = player.position;
+        chasing = true; //TODO: stop monster chasing player for ever and never letting other monster attack
       }
       // play the scales
       else if (activated)
       {
-        if (!monsters[id].nav.isStopped)
+        monsters[id].anim.SetBool("isRunning", false);
+        monsters[id].anim.SetBool("isWalking", false);
+        monsters[id].anim.SetBool("isAttacking", false);
+        monsters[id].anim.SetBool("isIdle", true);
+      if (!monsters[id].nav.isStopped)
         {
           monsters[id].nav.ResetPath();
           monsters[id].nav.isStopped = true;
@@ -263,9 +235,7 @@ public class MonsterManager : MonoBehaviour
         else
         {
           Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
-          //monsters[id].transform.LookAt(player);   //TODO: we need this but need to change the player transform somehow as it's the wrong angle
-          monsters[id].anim.SetBool("isRunning", false);
-          monsters[id].anim.SetBool("isWalking", false);
+          monsters[id].transform.LookAt(player);   //TODO: we need this but need to change the player transform somehow as it's the wrong angle
 
           // check each key
           foreach (bool mask in key_mask)
@@ -280,8 +250,6 @@ public class MonsterManager : MonoBehaviour
                 note_state[c_pos][note_pos] = NoteState.RIGHT;
                 sign_state[c_pos][note_pos] = midiToSignState(note_midi);
                 c_pos++;
-                monsters[id].anim.SetBool("isAttacking", false);
-                monsters[id].anim.SetBool("isIdle", true);
               }
               else
               {

@@ -7,11 +7,13 @@ public class pauseMenu : MonoBehaviour {
 	public Transform PauseMenu;
 	public Transform SettingsMenu;
 	public Transform Player;
+  private AudioSource music;
 
 	void Start(){
 		PauseMenu.gameObject.SetActive(false);
 		SettingsMenu.gameObject.SetActive(false);
 		Time.timeScale = 1;
+    music = PauseMenu.gameObject.GetComponent<AudioSource>();
 	}
 	
 	public void Update(){
@@ -34,11 +36,14 @@ public class pauseMenu : MonoBehaviour {
 			Player.GetComponent<CharacterController>().enabled = false;   
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
-		}else if(Time.timeScale == 0){
+      music.Play();
+    }
+    else if(Time.timeScale == 0){
 			//Canvas.gameObject.SetActive(false);
 			Time.timeScale = 1;
-			Player.GetComponent<CharacterController>().enabled = true;   
-        }
+			Player.GetComponent<CharacterController>().enabled = true;
+      music.Stop();
+    }
 	}
 	
 	public void Menu(string i){
