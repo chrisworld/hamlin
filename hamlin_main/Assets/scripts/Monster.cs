@@ -20,11 +20,14 @@ public class Monster : MonoBehaviour {
   public int[] box_midi;
   [HideInInspector]
   public bool defeated;
+  [HideInInspector]
+  public int playerDamageQueue;
 
   void Start () {
     anim = GetComponent<Animator>();
     nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
     defeated = false;
+    playerDamageQueue = 0;
   }
 
   void Update () {
@@ -38,6 +41,11 @@ public class Monster : MonoBehaviour {
     //only attack once
     anim.SetBool("isAttacking", false);
     anim.SetBool("isIdle", true);
+    playerDamageQueue--;
+    //attack animation takes time - player may have played other wrong notes in the meantime
+    if(playerDamageQueue > 0){
+      DamagePlayer();
+    }
   }
 
 }

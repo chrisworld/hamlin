@@ -278,6 +278,7 @@ public class MonsterManager : MonoBehaviour
                 error_counter++;
                 monsters[id].anim.SetBool("isAttacking", true);
                 monsters[id].anim.SetBool("isIdle", false);
+                monsters[id].playerDamageQueue++;
               }
             }
             key++;
