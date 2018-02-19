@@ -2949,6 +2949,8 @@ MonoBehaviour:
   sound_player: {fileID: 661535745}
   infowindow: {fileID: 2051402562}
   infobox: {fileID: 1608228609}
+  monstersToDefeat: 2
+  nextScene: {fileID: 102900000, guid: e1ff2fa1172510c4c80ba08933ac1bd4, type: 3}
   monsters: []
   viewDistance: 2
   attackDistance: 0.3

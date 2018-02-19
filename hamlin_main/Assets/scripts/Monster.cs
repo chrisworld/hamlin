@@ -18,10 +18,13 @@ public class Monster : MonoBehaviour {
   public int[] box_scale;
   [HideInInspector]
   public int[] box_midi;
+  [HideInInspector]
+  public bool defeated;
 
   void Start () {
     anim = GetComponent<Animator>();
     nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
+    defeated = false;
   }
 
   void Update () {

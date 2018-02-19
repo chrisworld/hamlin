@@ -15,6 +15,7 @@ public class MonsterManager : MonoBehaviour
   public SoundPlayer sound_player;
   public GameObject infowindow;
   public Text infobox;
+  public Object nextScene;
 
   [HideInInspector]
   public Monster[] monsters;  //do NOT make this private
@@ -95,7 +96,6 @@ public class MonsterManager : MonoBehaviour
     monsters = (Monster[]) GameObject.FindObjectsOfType(typeof(Monster));
     chasing = false;
     activated = false;
-
   }
 
   void Update()
@@ -144,7 +144,7 @@ public class MonsterManager : MonoBehaviour
             monsters[i].anim.SetBool("isIdle", true);
             if (i == (monsters.Length - 1) && !monsterActivatedThisTurn)
             {
-              //this fixes a bug where monsters where stopping then instantly reactivating due to player proximity
+              //this fixes a bug where monsters were stopping then instantly reactivating due to player proximity
               activated = false;
             }
           }
@@ -157,6 +157,19 @@ public class MonsterManager : MonoBehaviour
         player_controller.setMoveActivate(true);
         StartCoroutine(ShowMessage("You lose :'(", 3f, true));
       }
+
+      //load next level if player has defeated all the monsters
+      bool allMonstersDefeated = true;
+      foreach (Monster monster in monsters){
+        if(monster.defeated == false){
+          allMonstersDefeated = false;
+          break;
+        }
+      }
+      if(allMonstersDefeated){
+        SceneManager.LoadScene(nextScene.name);
+      }
+
     }
 
 
@@ -286,10 +299,8 @@ public class MonsterManager : MonoBehaviour
 
 
 
-
-
-
-
+  // ***************************************************************************
+  // Functions for note/scale management
 
 
 
