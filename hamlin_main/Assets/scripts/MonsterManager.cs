@@ -16,6 +16,7 @@ public class MonsterManager : MonoBehaviour
   public GameObject infowindow;
   public Text infobox;
   public Object nextScene;
+  public bool autoLoadNextScene;
 
   [HideInInspector]
   public Monster[] monsters;  //do NOT make this private
@@ -166,7 +167,7 @@ public class MonsterManager : MonoBehaviour
           break;
         }
       }
-      if(allMonstersDefeated){
+      if(allMonstersDefeated && autoLoadNextScene){
         SceneManager.LoadScene(nextScene.name);
       }
 
