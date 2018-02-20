@@ -153,23 +153,17 @@ public class ContainerManager : MonoBehaviour {
 						note_container[n].enabled = false; 
 						break;
 					case NoteState.NORMAL:
-            //Chris - this access to note_sprites (and the other NoteState cases too) is what's causing the index out of bounds error. Max index for note_sprites is 2 unless you add more sprites.
-            //I have commented out the lineoffset accesses for now as I'm not sure how to fix this - I don't understand what the line offsets were for.
-
-            //note_container[n].sprite = note_sprites[0 + lineOffset(n)];
-            note_container[n].sprite = note_sprites[0];
+            note_container[n].sprite = note_sprites[0 + lineOffset(n)];
             note_container[n].enabled = true;
 						//Debug.Log("normal: " + c +"/"+ n);
 						break;
 					case NoteState.WRONG:
-						//note_container[n].sprite = note_sprites[1 + lineOffset(n)];
-            note_container[n].sprite = note_sprites[1];
+						note_container[n].sprite = note_sprites[1 + lineOffset(n)];
             note_container[n].enabled = true;
 						//Debug.Log("wrong: " + c +"/"+ n);
 						break;
 					case NoteState.RIGHT:
-						//note_container[n].sprite = note_sprites[2 + lineOffset(n)];
-            note_container[n].sprite = note_sprites[2];
+						note_container[n].sprite = note_sprites[2 + lineOffset(n)];
             note_container[n].enabled = true;
 						//Debug.Log("right: " + c +"/"+ n);
 						break;
@@ -182,7 +176,7 @@ public class ContainerManager : MonoBehaviour {
 	}
 
 	public int lineOffset(int note_pos){
-		int offset = 2;  //was 3 but causing index out of bounds errors as max index of sprites array is 2
+		int offset = 3;
 		switch (note_pos)
 		{
 			case 0: return offset;
