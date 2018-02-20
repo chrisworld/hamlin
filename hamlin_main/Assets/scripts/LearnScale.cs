@@ -10,6 +10,7 @@ public class LearnScale : MonoBehaviour {
 	public Health health;
 	public ContainerManager container;
 	public SoundPlayer sound_player;
+	public Score score;
 	[HideInInspector]
 	public Animator anim;
 
@@ -103,6 +104,9 @@ public class LearnScale : MonoBehaviour {
     if(container == null){
     	 container = GameObject.Find("ContainerManager").GetComponent<ContainerManager>();
     }
+    if(score == null){
+    	 score = GameObject.Find("GameState").GetComponent<Score>();
+    }
     anim = GetComponent<Animator>();
 	}
 	
@@ -147,8 +151,10 @@ public class LearnScale : MonoBehaviour {
 	  			sound_player.activate_sound.Play();
 	  			sound_player.inLearning = false;
 	  			player_controller.setMoveActivate(true);
+	  			activated = false;
 	  			resetNoteState();
 	  			resetSignState();
+	  			score.updateScaleScore(scale_name);
 	  			DestroyClef();
 	  			return;
 	  		}

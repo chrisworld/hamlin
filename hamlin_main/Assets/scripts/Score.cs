@@ -18,10 +18,12 @@ public class Score : MonoBehaviour {
     Debug.Log("Amount of Learn Scales: " + learn_scales.Length);
     // set to zero
     for (int i = 0; i < num_sNames; i++){
-      //num_scales = new int[Enum.GetNames(typeof(ScaleNames)).Length];
-      //cur_scales = new int[Enum.GetNames(typeof(ScaleNames)).Length];
       cur_scales[i] = 0;
       num_scales[i] = 0;
+    }
+    // get num scales from scene
+    foreach (LearnScale l_scale in learn_scales){
+      num_scales[(int)l_scale.scale_name]++;
     }
 	}
 	
@@ -30,7 +32,7 @@ public class Score : MonoBehaviour {
 		
 	}
 
-  void updateScaleScore(ScaleNames scale_name){
-
+  public void updateScaleScore(ScaleNames s_name){
+    cur_scales[(int)s_name]++;
   }
 }

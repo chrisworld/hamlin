@@ -618,6 +618,57 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300004, guid: 2e25cc2d42cdffc4792db7ebbf70105b, type: 3}
+--- !u!1001 &1123227551
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4781092797949368, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781092797949368, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.063
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781092797949368, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781092797949368, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781092797949368, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781092797949368, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781092797949368, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781092797949368, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951174355392056, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+      propertyPath: m_Name
+      value: LearnScale (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114561849938605780, guid: abd26f0a7c26446d7bff67b08b0ffe0d,
+        type: 2}
+      propertyPath: scale_name
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1125607019
 GameObject:
   m_ObjectHideFlags: 0
