@@ -16,7 +16,9 @@ public class MonsterManager : MonoBehaviour
   public GameObject infowindow;
   public Text infobox;
   public Object nextScene;
-  public bool autoLoadNextScene;
+  public bool autoLoadNextScene = false;
+  public int monstersToGenerate = 0;
+  public bool hideBaseMonster = false;  //if generating monsters, we need a template monster already in the scene - this bool determines if this monster is hidden or not
 
   [HideInInspector]
   public Monster[] monsters;  //do NOT make this private
@@ -94,9 +96,33 @@ public class MonsterManager : MonoBehaviour
   void Start()
   {
     infowindow.SetActive(false);
-    monsters = (Monster[]) GameObject.FindObjectsOfType(typeof(Monster));
+    monsters = (Monster[]) GameObject.FindObjectsOfType(typeof(Monster));    //there must be at least one monster already in the game!!!
     chasing = false;
     activated = false;
+
+    //auto spawn monsters for prcoedurally generated levels
+    if(monstersToGenerate > 0){
+      
+      //TODO: need to know the coordinate bounds of the world - this will come from the terrain generation scripts
+
+      int tempMonsterCount = monstersToGenerate;
+      while(tempMonsterCount > 0){
+        Monster monster = Instantiate<Monster>(monsters[0]);  //TODO: MUST change coords
+
+        //TODO: have list of learnt scales and this random selection should be limited to the list of scales the player has learnt
+        monster.scale_name = (ScaleNames) Random.Range(0, 16);
+        monster.base_key = (NoteBaseKey) Random.Range(48, 59);
+        monsters[monsters.Length] = monster;
+        tempMonsterCount--;
+      }
+
+      if(hideBaseMonster){
+        monsters[0].defeated = true;
+        monsters[0].gameObject.SetActive(false);
+      }
+
+    }
+
   }
 
   void Update()
