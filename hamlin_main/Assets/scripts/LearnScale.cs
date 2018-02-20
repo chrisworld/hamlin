@@ -11,7 +11,7 @@ public class LearnScale : MonoBehaviour {
 	public ContainerManager container;
 	public SoundPlayer sound_player;
 	[HideInInspector]
-	public static Animator anim;
+	public Animator anim;
 
 	// settings
 	public float distance_activation;
@@ -111,7 +111,6 @@ public class LearnScale : MonoBehaviour {
 		// check distance
 		if(Vector3.Distance(player.position, this.transform.position) < distance_activation)
 		{	
-			print("In");
 			// animation
 			anim.SetBool ("isWaiting", false);
 			anim.SetBool ("isListening", true);
