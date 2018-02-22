@@ -15,6 +15,10 @@ public class MonsterManager : MonoBehaviour
   public SoundPlayer sound_player;
   public GameObject infowindow;
   public Text infobox;
+  public Object nextScene;
+  public bool autoLoadNextScene = false;
+  public int monstersToGenerate = 0;
+  public bool hideBaseMonster = false;  //if generating monsters, we need a template monster already in the scene - this bool determines if this monster is hidden or not
 
   [HideInInspector]
   public Monster[] monsters;  //do NOT make this private
@@ -31,12 +35,12 @@ public class MonsterManager : MonoBehaviour
   private int currentMonsterId;
   private bool initialisedMonsters;
 
-  private int num_c = 11;
-  private int num_n = 15;
+  private int num_c = 12;   //was 11
+  private int num_n = 15;   //was 15
   private int c_pos;
   private int error_counter;
-  private NoteState[][] note_state = new NoteState[11][];
-  private SignState[][] sign_state = new SignState[11][];
+  private NoteState[][] note_state = new NoteState[12][];
+  private SignState[][] sign_state = new SignState[12][];
   private KeyCode[] valid_keys = {
     KeyCode.Y,
     KeyCode.S,
@@ -92,9 +96,32 @@ public class MonsterManager : MonoBehaviour
   void Start()
   {
     infowindow.SetActive(false);
-    monsters = (Monster[]) GameObject.FindObjectsOfType(typeof(Monster));
+    monsters = (Monster[]) GameObject.FindObjectsOfType(typeof(Monster));    //there must be at least one monster already in the game!!!
     chasing = false;
     activated = false;
+
+    //auto spawn monsters for prcoedurally generated levels
+    if(monstersToGenerate > 0){
+      
+      //TODO: need to know the coordinate bounds of the world - this will come from the terrain generation scripts
+
+      int tempMonsterCount = monstersToGenerate;
+      while(tempMonsterCount > 0){
+        Monster monster = Instantiate<Monster>(monsters[0]);  //TODO: MUST change coords
+
+        //TODO: have list of learnt scales and this random selection should be limited to the list of scales the player has learnt
+        monster.scale_name = (ScaleNames) Random.Range(0, 16);
+        monster.base_key = (NoteBaseKey) Random.Range(48, 59);
+        monsters[monsters.Length] = monster;
+        tempMonsterCount--;
+      }
+
+      if(hideBaseMonster){
+        monsters[0].defeated = true;
+        monsters[0].gameObject.SetActive(false);
+      }
+
+    }
 
   }
 
@@ -144,7 +171,7 @@ public class MonsterManager : MonoBehaviour
             monsters[i].anim.SetBool("isIdle", true);
             if (i == (monsters.Length - 1) && !monsterActivatedThisTurn)
             {
-              //this fixes a bug where monsters where stopping then instantly reactivating due to player proximity
+              //this fixes a bug where monsters were stopping then instantly reactivating due to player proximity
               activated = false;
             }
           }
@@ -157,6 +184,19 @@ public class MonsterManager : MonoBehaviour
         player_controller.setMoveActivate(true);
         StartCoroutine(ShowMessage("You lose :'(", 3f, true));
       }
+
+      //load next level if player has defeated all the monsters
+      bool allMonstersDefeated = true;
+      foreach (Monster monster in monsters){
+        if(monster.defeated == false){
+          allMonstersDefeated = false;
+          break;
+        }
+      }
+      if(allMonstersDefeated && autoLoadNextScene){
+        SceneManager.LoadScene(nextScene.name);
+      }
+
     }
 
 
@@ -167,6 +207,12 @@ public class MonsterManager : MonoBehaviour
 
   //return values: 0 no action, 1 player lost
   int UpdateMonster(int id) {
+
+    //do nothing if player has already defeated monster
+    if(monsters[id].defeated == true){
+      //TODO: make monster run away / disappear
+      return 0;
+    }
 
     Vector3 direction = player.position - monsters[id].transform.position;
     // start the scale
@@ -224,6 +270,7 @@ public class MonsterManager : MonoBehaviour
           resetNoteState();
           resetSignState();
           player_controller.setMoveActivate(true);
+          monsters[id].defeated = true;
           return 0;
         }
         else if (health.GetHealthAmount() == 0)         //game ends if they run out of health
@@ -258,6 +305,7 @@ public class MonsterManager : MonoBehaviour
                 error_counter++;
                 monsters[id].anim.SetBool("isAttacking", true);
                 monsters[id].anim.SetBool("isIdle", false);
+                monsters[id].playerDamageQueue++;
               }
             }
             key++;
@@ -286,10 +334,8 @@ public class MonsterManager : MonoBehaviour
 
 
 
-
-
-
-
+  // ***************************************************************************
+  // Functions for note/scale management
 
 
 

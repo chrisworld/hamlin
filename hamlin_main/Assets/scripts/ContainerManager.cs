@@ -71,7 +71,7 @@ public class ContainerManager : MonoBehaviour {
 		sign_container_big.Add(sign_container11);
 		sign_container_big.Add(sign_container12);
 
-		resetContainers ();
+    resetContainers ();
 		resetCleffs ();
 
 	}
@@ -141,7 +141,8 @@ public class ContainerManager : MonoBehaviour {
 	}
 
 	public void updateNoteContainer(NoteState[][] note_state){
-		int c = 0;
+
+    int c = 0;
 		foreach (NoteState[] notes in note_state){
 			int n = 0;
 			Image[] note_container = (Image[])note_container_big[c];
@@ -151,20 +152,20 @@ public class ContainerManager : MonoBehaviour {
 					case NoteState.DISABLED: 
 						note_container[n].enabled = false; 
 						break;
-					case NoteState.NORMAL:		
-						note_container[n].sprite = note_sprites[0 + lineOffset(n)];
-						note_container[n].enabled = true;
+					case NoteState.NORMAL:
+            note_container[n].sprite = note_sprites[0 + lineOffset(n)];
+            note_container[n].enabled = true;
 						//Debug.Log("normal: " + c +"/"+ n);
 						break;
 					case NoteState.WRONG:
 						note_container[n].sprite = note_sprites[1 + lineOffset(n)];
-						note_container[n].enabled = true;
-						Debug.Log("wrong: " + c +"/"+ n);
+            note_container[n].enabled = true;
+						//Debug.Log("wrong: " + c +"/"+ n);
 						break;
 					case NoteState.RIGHT:
 						note_container[n].sprite = note_sprites[2 + lineOffset(n)];
-						note_container[n].enabled = true;
-						Debug.Log("right: " + c +"/"+ n);
+            note_container[n].enabled = true;
+						//Debug.Log("right: " + c +"/"+ n);
 						break;
 					default: break;
 				}
