@@ -11,6 +11,10 @@ public class ContainerManager : MonoBehaviour {
 
 	int[] f_scale;
 	public Sprite[] note_sprites;
+	public Sprite[] sign_sprites;
+
+	public Image[] scale_ind_sharp;
+	public Image[] scale_ind_flat;
 
 	public Image[] note_container1;
 	public Image[] note_container2;
@@ -110,6 +114,52 @@ public class ContainerManager : MonoBehaviour {
         }
     }
 		
+	}
+
+	public void updateScaleInd (ScaleNames sn, NoteBaseKey bk){
+		NoteBaseKey[] sharp_keys = {
+			NoteBaseKey.BASE_G,
+			NoteBaseKey.BASE_D,
+			NoteBaseKey.BASE_A,
+			NoteBaseKey.BASE_E,
+			NoteBaseKey.BASE_H,
+			NoteBaseKey.BASE_Fsh
+		};
+		NoteBaseKey[] flat_keys = {
+			NoteBaseKey.BASE_F,		
+			NoteBaseKey.BASE_Ash,			
+			NoteBaseKey.BASE_Dsh,	//Es-Dur			
+			NoteBaseKey.BASE_Gsh,			
+			NoteBaseKey.BASE_Csh			
+		};
+		// determine indicator signs
+		foreach (NoteBaseKey shk in sharp_keys){
+			if (bk == shk){
+				getAmountOfSigns(bk); //ToDo
+				return;
+			}
+		}
+	}
+
+	public int getAmountOfSigns (NoteBaseKey bk)
+	{
+		switch (bk)
+		{
+			case NoteBaseKey.BASE_C: 		return 0;
+			case NoteBaseKey.BASE_Csh: 	return 5;
+			case NoteBaseKey.BASE_D: 		return 2;
+			case NoteBaseKey.BASE_Dsh: 	return 3;
+			case NoteBaseKey.BASE_E: 		return 4;
+			case NoteBaseKey.BASE_F: 		return 1;
+			case NoteBaseKey.BASE_Fsh: 	return 6;
+			case NoteBaseKey.BASE_G: 		return 1;
+			case NoteBaseKey.BASE_Gsh: 	return 4;
+			case NoteBaseKey.BASE_A: 		return 3;
+			case NoteBaseKey.BASE_Ash: 	return 2;
+			case NoteBaseKey.BASE_H: 		return 5;
+			default: print("BaseKey not found"); break;
+		}
+		return 0;
 	}
 
 	// sets the scale on screen
