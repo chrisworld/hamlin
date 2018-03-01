@@ -75,6 +75,7 @@ public class ContainerManager : MonoBehaviour {
 		sign_container_big.Add(sign_container11);
 		sign_container_big.Add(sign_container12);
 
+		resetScaleInd ();
     resetContainers ();
 		resetCleffs ();
 
@@ -116,8 +117,18 @@ public class ContainerManager : MonoBehaviour {
 		
 	}
 
+	public void resetScaleInd(){
+		foreach (Image sharp in scale_ind_sharp) {
+			sharp.enabled = false;
+		}
+		foreach (Image flat in scale_ind_flat) {
+			flat.enabled = false;
+		}
+	}
+
 	public void updateScaleInd (ScaleNames sn, NoteBaseKey bk){
 		NoteBaseKey[] sharp_keys = {
+			NoteBaseKey.BASE_C,
 			NoteBaseKey.BASE_G,
 			NoteBaseKey.BASE_D,
 			NoteBaseKey.BASE_A,
@@ -132,13 +143,25 @@ public class ContainerManager : MonoBehaviour {
 			NoteBaseKey.BASE_Gsh,			
 			NoteBaseKey.BASE_Csh			
 		};
+		resetScaleInd();
 		// determine indicator signs
 		foreach (NoteBaseKey shk in sharp_keys){
 			if (bk == shk){
-				getAmountOfSigns(bk); //ToDo
+				for (int si = 0; si < getAmountOfSigns(bk); si++){
+					scale_ind_sharp[si].enabled = true;
+				}
 				return;
 			}
 		}
+		foreach (NoteBaseKey flk in flat_keys){
+			if (bk == flk){
+				for (int si = 0; si < getAmountOfSigns(bk); si++){
+					scale_ind_flat[si].enabled = true;
+				}
+				return;
+			}
+		}
+		print("Error: Couldn't determine scale key indicator");
 	}
 
 	public int getAmountOfSigns (NoteBaseKey bk)
