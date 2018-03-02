@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     public float inAirControl = 1;          //controls how much the player can turn while in mid air
 
     private bool move_activated = true;
+    private int jump_hash = Animator.StringToHash("jump");
 
     float turnSmoothVelocity;
     float speedSmoothVelocity;
@@ -39,6 +40,11 @@ public class PlayerController : MonoBehaviour {
         {
           Jump();
           move_activated = true;     //escape combat
+        }
+
+        if (checkValidFluteKey())
+        {
+          animator.SetTrigger("takeFlute");
         }
 
        
@@ -83,6 +89,8 @@ public class PlayerController : MonoBehaviour {
         {
             float jumpVelocity = Mathf.Sqrt(-2 * gravity * jumpHeight);
             velocityY = jumpVelocity;
+            //animator.ResetTrigger("jump");
+            animator.SetTrigger(jump_hash);
         }
     }
 
@@ -127,6 +135,20 @@ public class PlayerController : MonoBehaviour {
             KeyCode.LeftShift,
             KeyCode.Keypad1,
             KeyCode.RightShift
+        };
+        // check valid key
+        foreach (KeyCode key in valid_keys){
+            if(Input.GetKey(key)){ 
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // check valid play flute keys
+    public bool checkValidFluteKey(){
+        KeyCode[] valid_keys = {
+            KeyCode.KeypadEnter
         };
         // check valid key
         foreach (KeyCode key in valid_keys){
