@@ -23,8 +23,12 @@ public class Monster : MonoBehaviour {
   [HideInInspector]
   public int playerDamageQueue;
 
-  void Start () {
+  private void Awake()
+  {
     anim = GetComponent<Animator>();
+  }
+
+  void Start () {
     nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
     defeated = false;
     playerDamageQueue = 0;

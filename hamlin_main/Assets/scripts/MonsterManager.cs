@@ -17,11 +17,12 @@ public class MonsterManager : MonoBehaviour
   public Text infobox;
   public Object nextScene;
   public bool autoLoadNextScene = false;
-  public int monstersToGenerate = 0;
+  public int numMonstersPerChunk = 0;
   public bool hideBaseMonster = false;  //if generating monsters, we need a template monster already in the scene - this bool determines if this monster is hidden or not
+  public EndlessTerrain terrainGenerator;
 
   [HideInInspector]
-  public Monster[] monsters;  //do NOT make this private
+  public List<Monster> monsters;  //do NOT make this private
 
   // settings
   public float viewDistance = 2f;
@@ -96,31 +97,31 @@ public class MonsterManager : MonoBehaviour
   void Start()
   {
     infowindow.SetActive(false);
-    monsters = (Monster[]) GameObject.FindObjectsOfType(typeof(Monster));    //there must be at least one monster already in the game!!!
+    Monster[] tempMonsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));  //there must be at least one monster already in the game!!! this is the baseMonster for PCG
+    foreach (Monster monster in tempMonsters){
+      monsters.Add(monster);
+    }   
     chasing = false;
     activated = false;
 
-    //auto spawn monsters for prcoedurally generated levels
-    if(monstersToGenerate > 0){
-      
-      //TODO: need to know the coordinate bounds of the world - this will come from the terrain generation scripts
+    //TODO: have list of learnt scales and this random selection should be limited to the list of scales the player has learnt
+    //right now we use any scale and any base key
+    List<ScaleNames> pcgScaleNames = new List<ScaleNames>();
+    List<NoteBaseKey> pcgBaseKeys = new List<NoteBaseKey>();
+    for(int i=0; i < numMonstersPerChunk; i++){
+      pcgScaleNames.Add( (ScaleNames) Random.Range(0, 16) );
+      pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 59) );
+    }
+    terrainGenerator.scaleNames = pcgScaleNames;
+    terrainGenerator.baseKeys = pcgBaseKeys;
+    terrainGenerator.monsterManager = this;
+    terrainGenerator.numMonstersPerChunk = numMonstersPerChunk;
+    terrainGenerator.baseMonster = monsters[0];
 
-      int tempMonsterCount = monstersToGenerate;
-      while(tempMonsterCount > 0){
-        Monster monster = Instantiate<Monster>(monsters[0]);  //TODO: MUST change coords
-
-        //TODO: have list of learnt scales and this random selection should be limited to the list of scales the player has learnt
-        monster.scale_name = (ScaleNames) Random.Range(0, 16);
-        monster.base_key = (NoteBaseKey) Random.Range(48, 59);
-        monsters[monsters.Length] = monster;
-        tempMonsterCount--;
-      }
-
-      if(hideBaseMonster){
-        monsters[0].defeated = true;
-        monsters[0].gameObject.SetActive(false);
-      }
-
+    if (hideBaseMonster)
+    {
+      monsters[0].defeated = true;
+      monsters[0].gameObject.SetActive(false);
     }
 
   }
@@ -131,7 +132,7 @@ public class MonsterManager : MonoBehaviour
     int result = 0;
 
     if (!initialisedMonsters && monsters != null){
-      for (int i = 0; i < monsters.Length; i++)
+      for (int i = 0; i < monsters.Count; i++)
       {
         resetNoteState();
         resetSignState();
@@ -153,7 +154,7 @@ public class MonsterManager : MonoBehaviour
       }
       else
       {                  //cycle through all monsters and activate first one which is within combat distance, if any
-        for (int i = 0; i < monsters.Length; i++)
+        for (int i = 0; i < monsters.Count; i++)
         {
 
           if (!monsterActivatedThisTurn && Vector3.Distance(player.position, monsters[i].transform.position) < viewDistance && Vector3.Angle(player.position - monsters[i].transform.position, monsters[i].transform.forward) < viewAngle)
@@ -169,7 +170,7 @@ public class MonsterManager : MonoBehaviour
             monsters[i].anim.SetBool("isWalking", false);
             monsters[i].anim.SetBool("isAttacking", false);
             monsters[i].anim.SetBool("isIdle", true);
-            if (i == (monsters.Length - 1) && !monsterActivatedThisTurn)
+            if (i == (monsters.Count - 1) && !monsterActivatedThisTurn)
             {
               //this fixes a bug where monsters were stopping then instantly reactivating due to player proximity
               activated = false;

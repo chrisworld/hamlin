@@ -21,16 +21,26 @@ public class EndlessTerrain : MonoBehaviour {
 	int chunkSize;
 	int chunksVisibleInViewDst;
 
-	Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
+  //set by MonsterManager itself
+  [HideInInspector]
+  public MonsterManager monsterManager;
+  [HideInInspector]
+  public Monster baseMonster;
+  [HideInInspector]
+  public int numMonstersPerChunk;
+  [HideInInspector]
+  public List<ScaleNames> scaleNames;
+  [HideInInspector]
+  public List<NoteBaseKey> baseKeys;
+
+  Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
 	static List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
 	void Start() {
 		mapGenerator = FindObjectOfType<MapGenerator> ();
-
 		maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 		chunkSize = mapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
-
 		UpdateVisibleChunks ();
 	}
 
@@ -43,9 +53,19 @@ public class EndlessTerrain : MonoBehaviour {
 			}
 		}
 
+    //only add monsters to current chunk, and only add if we have just changed chunk
+    //TODO: for performance should probably remove old monsters stored in MonsterManager?
 		if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
 			viewerPositionOld = viewerPosition;
 			UpdateVisibleChunks ();
+      if(scaleNames.Count > 0 && baseKeys.Count > 0){
+        GenerateMonsters();
+      }
+      else {
+        print("not generating monsters yet as scale names and base keys not initialised");
+        print(scaleNames.Count);
+        print(baseKeys.Count);
+      }
 		}
 	}
 		
@@ -58,6 +78,9 @@ public class EndlessTerrain : MonoBehaviour {
 			
 		int currentChunkCoordX = Mathf.RoundToInt (viewerPosition.x / chunkSize);
 		int currentChunkCoordY = Mathf.RoundToInt (viewerPosition.y / chunkSize);
+
+
+
 
 		for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++) {
 			for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++) {
@@ -74,13 +97,69 @@ public class EndlessTerrain : MonoBehaviour {
 		}
 	}
 
+  //helper method for addMonsters
+  bool PositionIsValid(List<Vector2> invalidPositions, Vector2 position){
+
+    int posX = Mathf.RoundToInt(position.x);
+    int posY = Mathf.RoundToInt(position.y);
+    bool result = true;
+
+    foreach(Vector2 invalidPos in invalidPositions){
+      if(Mathf.RoundToInt(invalidPos.x) == posX && Mathf.RoundToInt(invalidPos.y) == posY){
+        result = false;
+      }
+    }
+    
+    return result;
+  }
+
+  public void GenerateMonsters(){
+
+    //TODO: may need to get rid of this scaling as using for instantiating? idk. or swap y to z
+    Vector3 viewerPos = new Vector3(viewer.position.x, viewer.position.y, viewer.position.z);
+
+    //make the specified num of monsters
+    for(int i = 0; i < numMonstersPerChunk; i++){
+
+      //create random position within chunk, making sure it is not same position as player or existing monsters
+      //NOTE: we assume no monsters are in the chunk when this method runs!!! when to call it to be sure??
+      float offset = chunkSize / 2;
+      Vector3 position = viewerPos;
+      while (position.x == viewerPos.x && position.z == viewerPos.z) //in case by chance it is the same position
+      {
+        //DEBUG
+        position.x = position.x + Random.Range(0, 3);
+        position.z = position.z - Random.Range(0, 3);
+        //need to adjust position.y to match height of mesh i.e. where ground is
+
+
+        //position.x = position.x - offset + Random.Range(0, chunkSize);
+        //position.z = position.z + offset - Random.Range(0, chunkSize);
+        print(position.x);
+        print(position.z);
+      }
+
+      //TODO: maybe change this to be random rotation
+      Quaternion rotation = Quaternion.identity;
+
+      //create monster and add to MonsterManager's monsters list
+      Monster monster = Instantiate<Monster>(baseMonster, position, rotation);
+      monster.scale_name = scaleNames[ Random.Range(0, scaleNames.Count - 1) ];
+      monster.base_key = baseKeys[ Random.Range(0, baseKeys.Count - 1) ];
+      monster.gameObject.SetActive(true);
+      monsterManager.monsters.Add(monster);
+    }
+
+  }
+
+
 	public class TerrainChunk {
 
 		public Vector2 coord;
 
 		GameObject meshObject;
 		Vector2 position;
-		Bounds bounds;
+		public Bounds bounds;
 
 		MeshRenderer meshRenderer;
 		MeshFilter meshFilter;
@@ -90,7 +169,7 @@ public class EndlessTerrain : MonoBehaviour {
 		LODMesh[] lodMeshes;
 		int colliderLODIndex;
 
-		MapData mapData;
+		public MapData mapData;
 		bool mapDataReceived;
 		int previousLODIndex = -1;
 		bool hasSetCollider;
