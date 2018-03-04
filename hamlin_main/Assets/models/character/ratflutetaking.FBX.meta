@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 4cd2e0da54c24a94a92c55e29aff219c
-timeCreated: 1519584389
+guid: adc6ffe4fc24e4b46ae93c517e0a93a7
+timeCreated: 1520001155
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -177,6 +177,15 @@ ModelImporter:
     400166: Pupil2
     400168: //RootNode
     400170: Tooth
+    2100000: Skin2
+    2100002: Belt
+    2100004: Wood English Oak
+    2100006: Metal_Aluminum Satin
+    2100008: Wood Birch - Natural Polished
+    2100010: White
+    2100012: Black
+    2100014: Hat
+    2100016: feather
     2300000: Belt
     2300002: bigote004
     2300004: bigote005
@@ -235,60 +244,15 @@ ModelImporter:
     4300034: Hat
     4300036: Feather
     4300038: Ear2
-    7400000: hamlin_running
+    7400000: hamlin_taking
     9500000: //RootNode
     13700000: Body
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Belt
-    second: {fileID: 2100000, guid: 9a82bd56938ab7e42b2d795b3a681e0b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Black
-    second: {fileID: 2100000, guid: 5ef9aadc93731d943a014074b79ba6bc, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Hat
-    second: {fileID: 2100000, guid: beaba92135242964da6846fadaebc78d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Metal_Aluminum Satin
-    second: {fileID: 2100000, guid: bc0384dd0c1fec848828934a379fdff2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Skin2
-    second: {fileID: 2100000, guid: 64ef39844673d7c4cb843d85c4810d57, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: White
-    second: {fileID: 2100000, guid: 9fa837b8d6917ce4e96515461e0d86f1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wood Birch - Natural Polished
-    second: {fileID: 2100000, guid: e4c91cc1c1beb0447a7959ebbbf21a96, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wood English Oak
-    second: {fileID: 2100000, guid: 87034ec09837d014f81b1798c7e47cc3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: feather
-    second: {fileID: 2100000, guid: e331da23e03bbd342865063f24f20768, type: 2}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -311,18 +275,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: hamlin_running
+      name: hamlin_taking
       takeName: Take 001
-      firstFrame: 0
-      lastFrame: 20
+      firstFrame: 12
+      lastFrame: 30
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
