@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 77b278e7f541d6c48b59cb3de6b70748
-timeCreated: 1515599262
+timeCreated: 1519897129
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -83,12 +83,12 @@ TextureImporter:
       name: notes_accidenal_0
       rect:
         serializedVersion: 2
-        x: 89
-        y: 140
-        width: 300
-        height: 445
+        x: 40
+        y: 65
+        width: 151
+        height: 218
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -97,12 +97,12 @@ TextureImporter:
       name: notes_accidenal_1
       rect:
         serializedVersion: 2
-        x: 711
-        y: 2
-        width: 148
-        height: 586
+        x: 341
+        y: 64
+        width: 67
+        height: 219
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -126,6 +126,7 @@ public class LearnScale : MonoBehaviour {
 	    	// put scale
 	    	setNoteStateToScale(box_scale);
 	    	setSignStateToScale(box_scale);
+	    	container.updateScaleInd(scale_name, base_key);
 				c_pos = 0;
 				error_counter = 0;
 				sound_player.inLearning = true;
@@ -140,6 +141,7 @@ public class LearnScale : MonoBehaviour {
 	  		player_controller.setMoveActivate(true);
 	  		resetNoteState();
 				resetSignState();
+				container.resetScaleInd();
 	  	}
 	  	// play the scales
 	  	else if(activated)
@@ -154,6 +156,7 @@ public class LearnScale : MonoBehaviour {
 	  			activated = false;
 	  			resetNoteState();
 	  			resetSignState();
+	  			container.resetScaleInd();
 	  			score.updateScaleScore(scale_name);
 	  			DestroyClef();
 	  			return;
@@ -166,6 +169,7 @@ public class LearnScale : MonoBehaviour {
 	  			//activate_sound.Play();
 	  			resetNoteState();
 	  			resetSignState();
+	  			container.resetScaleInd();
 	  			player_controller.setMoveActivate(true);
 	  			return;
 	  		}
