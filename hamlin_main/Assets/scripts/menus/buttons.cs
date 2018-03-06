@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class buttons : MonoBehaviour {
 	
 	public void PlayButton(){
-		
 		SceneManager.LoadScene("rat_test_lab");
 	}
 	

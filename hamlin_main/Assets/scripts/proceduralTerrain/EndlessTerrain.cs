@@ -113,6 +113,7 @@ public class EndlessTerrain : MonoBehaviour {
     return result;
   }
 
+  //right now this only creates monsters within the viewer's current chunk
   public void GenerateMonsters(){
 
     //TODO: may need to get rid of this scaling as using for instantiating? idk. or swap y to z
@@ -127,14 +128,10 @@ public class EndlessTerrain : MonoBehaviour {
       Vector3 position = viewerPos;
       while (position.x == viewerPos.x && position.z == viewerPos.z) //in case by chance it is the same position
       {
+        //TODO: replace skeleton with Jan's monsters, update animation logic in MonsterManager, make monsters more spaced out and some closer to player, leave out nav?
+        position.x = position.x - offset + Random.Range(0, chunkSize);
+        position.z = position.z + offset - Random.Range(0, chunkSize);
         //DEBUG
-        position.x = position.x + Random.Range(0, 3);
-        position.z = position.z - Random.Range(0, 3);
-        //need to adjust position.y to match height of mesh i.e. where ground is
-
-
-        //position.x = position.x - offset + Random.Range(0, chunkSize);
-        //position.z = position.z + offset - Random.Range(0, chunkSize);
         print(position.x);
         print(position.z);
       }
