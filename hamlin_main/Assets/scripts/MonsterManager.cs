@@ -35,6 +35,8 @@ public class MonsterManager : MonoBehaviour
   private bool chasing;
   private int currentMonsterId;
   private bool initialisedMonsters;
+  private bool proceduralMode;
+
 
   private int num_c = 12;   //was 11
   private int num_n = 15;   //was 15
@@ -96,6 +98,7 @@ public class MonsterManager : MonoBehaviour
 
   void Start()
   {
+    proceduralMode = (numMonstersPerChunk > 0) ? true : false;
     infowindow.SetActive(false);
     Monster[] tempMonsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));  //there must be at least one monster already in the game!!! this is the baseMonster for PCG
     foreach (Monster monster in tempMonsters){
@@ -128,6 +131,7 @@ public class MonsterManager : MonoBehaviour
 
   void Update()
   {
+
     bool monsterActivatedThisTurn = false;
     int result = 0;
 
@@ -237,7 +241,7 @@ public class MonsterManager : MonoBehaviour
         resetNoteState();
         resetSignState();
         sound_player.inCombat = false;
-        monsters[id].nav.isStopped = false;
+        if(!proceduralMode) monsters[id].nav.isStopped = false;
         return 0;
      }
       else if (activated && (direction.magnitude > attackDistance))     //too far away to attack, chase player
@@ -246,8 +250,8 @@ public class MonsterManager : MonoBehaviour
         monsters[id].anim.SetBool("isWalking", true);
         monsters[id].anim.SetBool("isAttacking", false);
         monsters[id].anim.SetBool("isIdle", false);
-        monsters[id].nav.destination = player.position;
-        chasing = true; //TODO: stop monster chasing player for ever and never letting other monster attack
+        if(!proceduralMode)  monsters[id].nav.destination = player.position;  //chasing currently NOT implemented for proceduralMode as no nav mesh
+        chasing = true; 
       }
       // play the scales
       else if (activated)
@@ -256,7 +260,7 @@ public class MonsterManager : MonoBehaviour
         monsters[id].anim.SetBool("isWalking", false);
         monsters[id].anim.SetBool("isAttacking", false);
         monsters[id].anim.SetBool("isIdle", true);
-      if (!monsters[id].nav.isStopped)
+      if (!proceduralMode && !monsters[id].nav.isStopped)
         {
           monsters[id].nav.ResetPath();
           monsters[id].nav.isStopped = true;
