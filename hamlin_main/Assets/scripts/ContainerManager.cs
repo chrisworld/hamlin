@@ -191,7 +191,7 @@ public class ContainerManager : MonoBehaviour {
       gotData = true;
   }
 
-	void resetContainer () {
+	public void resetContainer () {
 		for (int j = 0; j < 15; j++) {
 			note_container1[j].enabled = false;
 		}
