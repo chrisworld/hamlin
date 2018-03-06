@@ -113,6 +113,7 @@ public class EndlessTerrain : MonoBehaviour {
     return result;
   }
 
+  //right now this only creates monsters within the viewer's current chunk
   public void GenerateMonsters(){
 
     //TODO: may need to get rid of this scaling as using for instantiating? idk. or swap y to z
@@ -128,10 +129,21 @@ public class EndlessTerrain : MonoBehaviour {
       while (position.x == viewerPos.x && position.z == viewerPos.z) //in case by chance it is the same position
       {
         //DEBUG
-        position.x = position.x + Random.Range(0, 3);
-        position.z = position.z - Random.Range(0, 3);
-        //need to adjust position.y to match height of mesh i.e. where ground is
+        //position.x = position.x + Random.Range(0, 3);
+        //position.z = position.z - Random.Range(0, 3);
 
+        position.x = position.x + 0.5f;
+        position.z = position.x + 0.5f;
+
+        //need to adjust position.y to match height of mesh i.e. where ground is, can't just copy viewer.position.y
+        //position.y = [HEIGHT OF MESH AT THESE X, Z COORDS]
+        RaycastHit hit;
+        //Ray ray = new Ray(new Vector3(x, maxHeight, y), Vector3.down);
+        //somehow find out which chunk we are in
+        //TODO: below should be run on specific chunk
+        //if(TerrainChunk.meshCollider.Raycast(ray, out hit, 2.0f * maxHeight){
+          //Debug.Log("Hit point: " + hit.point);
+        //}
 
         //position.x = position.x - offset + Random.Range(0, chunkSize);
         //position.z = position.z + offset - Random.Range(0, chunkSize);
