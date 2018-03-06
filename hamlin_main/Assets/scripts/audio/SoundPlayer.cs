@@ -35,6 +35,8 @@ public class SoundPlayer : MonoBehaviour {
 	public AudioSource c2;
 	public AudioSource activate_sound;
 
+  public PlayerController player_controller;
+
   //managed by CombatManager
   [HideInInspector]
   public bool inCombat;
@@ -45,6 +47,9 @@ public class SoundPlayer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+    if(player_controller == null){
+      player_controller = GameObject.Find("Player").GetComponent<Transform>().GetComponent<PlayerController>();
+    }
     inCombat = false;
     inLearning = false;
     inLearning = false;
@@ -56,108 +61,133 @@ public class SoundPlayer : MonoBehaviour {
       if (Input.GetKeyDown(KeyCode.Y))
       {
         c.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.S))
       {
         c_sh.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.Comma))
       {
         c1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.X))
       {
         d.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.D))
       {
         d_sh.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.C))
       {
         e.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.V))
       {
         f.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.G))
       {
         f_sh.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.B))
       {
         g.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.H))
       {
         g_sh.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.M))
       {
         h.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.N))
       {
         a.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.J))
       {
         a_sh.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.Q))
       {
         c1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.Alpha2))
       {
         c_sh1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.I))
       {
         c2.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.W))
       {
         d1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.Alpha3))
       {
         d_sh1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.E))
       {
         e1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.R))
       {
         f1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.Alpha5))
       {
         f_sh1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.T))
       {
         g1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.Alpha6))
       {
         g_sh1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.U))
       {
         h1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.Z))
       {
         a1.Play();
+        player_controller.playNote();
       }
       if (Input.GetKeyDown(KeyCode.Alpha7))
       {
         a_sh1.Play();
+        player_controller.playNote();
       }
     }
-
 	}
 }

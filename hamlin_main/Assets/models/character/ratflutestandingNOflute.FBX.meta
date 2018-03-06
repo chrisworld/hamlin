@@ -1,0 +1,391 @@
+fileFormatVersion: 2
+guid: 13e3166e5f8194749b92070a7221fa0a
+timeCreated: 1520360632
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Arc for the ear
+    100002: Belt
+    100004: bigote004
+    100006: bigote005
+    100008: bigote006
+    100010: bigote1
+    100012: bigote2
+    100014: bigote3
+    100016: Bip001
+    100018: Bip001 Footsteps
+    100020: Bip001 Head
+    100022: Bip001 HeadNub
+    100024: Bip001 L Calf
+    100026: Bip001 L Clavicle
+    100028: Bip001 L Finger0
+    100030: Bip001 L Finger01
+    100032: Bip001 L Finger02
+    100034: Bip001 L Finger0Nub
+    100036: Bip001 L Finger1
+    100038: Bip001 L Finger11
+    100040: Bip001 L Finger12
+    100042: Bip001 L Finger1Nub
+    100044: Bip001 L Finger2
+    100046: Bip001 L Finger21
+    100048: Bip001 L Finger22
+    100050: Bip001 L Finger2Nub
+    100052: Bip001 L Finger3
+    100054: Bip001 L Finger31
+    100056: Bip001 L Finger32
+    100058: Bip001 L Finger3Nub
+    100060: Bip001 L Foot
+    100062: Bip001 L Forearm
+    100064: Bip001 L Hand
+    100066: Bip001 L Thigh
+    100068: Bip001 L Toe0
+    100070: Bip001 L Toe01
+    100072: Bip001 L Toe0Nub
+    100074: Bip001 L UpperArm
+    100076: Bip001 Neck
+    100078: Bip001 Pelvis
+    100080: Bip001 R Calf
+    100082: Bip001 R Clavicle
+    100084: Bip001 R Finger0
+    100086: Bip001 R Finger01
+    100088: Bip001 R Finger02
+    100090: Bip001 R Finger0Nub
+    100092: Bip001 R Finger1
+    100094: Bip001 R Finger11
+    100096: Bip001 R Finger12
+    100098: Bip001 R Finger1Nub
+    100100: Bip001 R Finger2
+    100102: Bip001 R Finger21
+    100104: Bip001 R Finger22
+    100106: Bip001 R Finger2Nub
+    100108: Bip001 R Finger3
+    100110: Bip001 R Finger31
+    100112: Bip001 R Finger32
+    100114: Bip001 R Finger3Nub
+    100116: Bip001 R Foot
+    100118: Bip001 R Forearm
+    100120: Bip001 R Hand
+    100122: Bip001 R Thigh
+    100124: Bip001 R Toe0
+    100126: Bip001 R Toe01
+    100128: Bip001 R Toe0Nub
+    100130: Bip001 R UpperArm
+    100132: Bip001 Spine
+    100134: Bip001 Spine1
+    100136: Bip001 Spine2
+    100138: Bip001 Spine3
+    100140: Bip001 Tail
+    100142: Bip001 TailNub
+    100144: Body
+    100146: Ear1
+    100148: Ear2
+    100150: Eye003
+    100152: Eye2
+    100154: Eyelid003
+    100156: Eyelid2
+    100158: Feather
+    100160: Flute
+    100162: Hat
+    100164: Pupil003
+    100166: Pupil2
+    100168: //RootNode
+    100170: Tooth
+    400000: Arc for the ear
+    400002: Belt
+    400004: bigote004
+    400006: bigote005
+    400008: bigote006
+    400010: bigote1
+    400012: bigote2
+    400014: bigote3
+    400016: Bip001
+    400018: Bip001 Footsteps
+    400020: Bip001 Head
+    400022: Bip001 HeadNub
+    400024: Bip001 L Calf
+    400026: Bip001 L Clavicle
+    400028: Bip001 L Finger0
+    400030: Bip001 L Finger01
+    400032: Bip001 L Finger02
+    400034: Bip001 L Finger0Nub
+    400036: Bip001 L Finger1
+    400038: Bip001 L Finger11
+    400040: Bip001 L Finger12
+    400042: Bip001 L Finger1Nub
+    400044: Bip001 L Finger2
+    400046: Bip001 L Finger21
+    400048: Bip001 L Finger22
+    400050: Bip001 L Finger2Nub
+    400052: Bip001 L Finger3
+    400054: Bip001 L Finger31
+    400056: Bip001 L Finger32
+    400058: Bip001 L Finger3Nub
+    400060: Bip001 L Foot
+    400062: Bip001 L Forearm
+    400064: Bip001 L Hand
+    400066: Bip001 L Thigh
+    400068: Bip001 L Toe0
+    400070: Bip001 L Toe01
+    400072: Bip001 L Toe0Nub
+    400074: Bip001 L UpperArm
+    400076: Bip001 Neck
+    400078: Bip001 Pelvis
+    400080: Bip001 R Calf
+    400082: Bip001 R Clavicle
+    400084: Bip001 R Finger0
+    400086: Bip001 R Finger01
+    400088: Bip001 R Finger02
+    400090: Bip001 R Finger0Nub
+    400092: Bip001 R Finger1
+    400094: Bip001 R Finger11
+    400096: Bip001 R Finger12
+    400098: Bip001 R Finger1Nub
+    400100: Bip001 R Finger2
+    400102: Bip001 R Finger21
+    400104: Bip001 R Finger22
+    400106: Bip001 R Finger2Nub
+    400108: Bip001 R Finger3
+    400110: Bip001 R Finger31
+    400112: Bip001 R Finger32
+    400114: Bip001 R Finger3Nub
+    400116: Bip001 R Foot
+    400118: Bip001 R Forearm
+    400120: Bip001 R Hand
+    400122: Bip001 R Thigh
+    400124: Bip001 R Toe0
+    400126: Bip001 R Toe01
+    400128: Bip001 R Toe0Nub
+    400130: Bip001 R UpperArm
+    400132: Bip001 Spine
+    400134: Bip001 Spine1
+    400136: Bip001 Spine2
+    400138: Bip001 Spine3
+    400140: Bip001 Tail
+    400142: Bip001 TailNub
+    400144: Body
+    400146: Ear1
+    400148: Ear2
+    400150: Eye003
+    400152: Eye2
+    400154: Eyelid003
+    400156: Eyelid2
+    400158: Feather
+    400160: Flute
+    400162: Hat
+    400164: Pupil003
+    400166: Pupil2
+    400168: //RootNode
+    400170: Tooth
+    2300000: Belt
+    2300002: bigote004
+    2300004: bigote005
+    2300006: bigote006
+    2300008: bigote1
+    2300010: bigote2
+    2300012: bigote3
+    2300014: Ear1
+    2300016: Ear2
+    2300018: Eye003
+    2300020: Eye2
+    2300022: Eyelid003
+    2300024: Eyelid2
+    2300026: Feather
+    2300028: Flute
+    2300030: Hat
+    2300032: Pupil003
+    2300034: Pupil2
+    2300036: Tooth
+    3300000: Belt
+    3300002: bigote004
+    3300004: bigote005
+    3300006: bigote006
+    3300008: bigote1
+    3300010: bigote2
+    3300012: bigote3
+    3300014: Ear1
+    3300016: Ear2
+    3300018: Eye003
+    3300020: Eye2
+    3300022: Eyelid003
+    3300024: Eyelid2
+    3300026: Feather
+    3300028: Flute
+    3300030: Hat
+    3300032: Pupil003
+    3300034: Pupil2
+    3300036: Tooth
+    4300000: Body
+    4300002: Belt
+    4300004: Flute
+    4300006: Tooth
+    4300008: bigote004
+    4300010: bigote005
+    4300012: bigote006
+    4300014: bigote1
+    4300016: bigote2
+    4300018: bigote3
+    4300020: Eyelid003
+    4300022: Eye003
+    4300024: Pupil003
+    4300026: Eyelid2
+    4300028: Eye2
+    4300030: Pupil2
+    4300032: Ear1
+    4300034: Hat
+    4300036: Feather
+    4300038: Ear2
+    7400000: hamlin_idle_noFlute
+    9500000: //RootNode
+    13700000: Body
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Belt
+    second: {fileID: 2100000, guid: 9a82bd56938ab7e42b2d795b3a681e0b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black
+    second: {fileID: 2100000, guid: 5ef9aadc93731d943a014074b79ba6bc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hat
+    second: {fileID: 2100000, guid: beaba92135242964da6846fadaebc78d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_Aluminum Satin
+    second: {fileID: 2100000, guid: bc0384dd0c1fec848828934a379fdff2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin2
+    second: {fileID: 2100000, guid: 64ef39844673d7c4cb843d85c4810d57, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White
+    second: {fileID: 2100000, guid: 9fa837b8d6917ce4e96515461e0d86f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Birch - Natural Polished
+    second: {fileID: 2100000, guid: e4c91cc1c1beb0447a7959ebbbf21a96, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood English Oak
+    second: {fileID: 2100000, guid: 87034ec09837d014f81b1798c7e47cc3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: feather
+    second: {fileID: 2100000, guid: e331da23e03bbd342865063f24f20768, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: hamlin_idle_noFlute
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 600
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

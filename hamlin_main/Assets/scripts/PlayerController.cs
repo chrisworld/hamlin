@@ -107,6 +107,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     // play the flute
+    public void playNote()
+    {   
+			anim.SetTrigger("notePlay");
+    }
+
+    // play the flute
     private void goPlayMode()
     {   
         int idle_hash = Animator.StringToHash("Base Layer.idle");
