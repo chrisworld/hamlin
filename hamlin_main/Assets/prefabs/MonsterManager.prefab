@@ -59,6 +59,10 @@ MonoBehaviour:
   infowindow: {fileID: 0}
   infobox: {fileID: 0}
   nextScene: {fileID: 102900000, guid: e1ff2fa1172510c4c80ba08933ac1bd4, type: 3}
+  autoLoadNextScene: 0
+  numMonstersPerChunk: 0
+  hideBaseMonster: 0
+  terrainGenerator: {fileID: 0}
   monsters: []
   viewDistance: 2
   attackDistance: 0.3
