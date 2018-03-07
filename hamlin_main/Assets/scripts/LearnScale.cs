@@ -11,6 +11,8 @@ public class LearnScale : NoteStateControl {
 	public PlayerController player_controller;
 	public Health health;
 
+
+
 	public Score score;
 	[HideInInspector]
 	public Animator anim;
@@ -27,8 +29,117 @@ public class LearnScale : NoteStateControl {
 	private int error_counter;
 
 
+	string castScale(int scale){
+
+		if (scale == 0) {
+			return "CHROMATIC";
+		}
+		if (scale == 1){
+			return "MAJOR";
+		}
+		if (scale == 2) {
+				return "MINOR";
+		}
+		if (scale == 3) {
+				return "HARMONIC MINOR";
+		}
+		if (scale == 4) {
+				return "MELODIC MINOR";
+		}
+		if (scale == 5) {
+				return "NATURAL MINOR";
+		}
+		if (scale == 6) {
+				return "DIATONIC MINOR";
+		}
+		if (scale == 7) {
+				return "AEOLIAN";
+		}
+		if (scale == 8) {
+				return "PHRYGIAN";
+		}
+		if (scale == 9) {
+				return "LOCRIAN";
+		}
+		if (scale == 10) {
+				return "DORIAN";
+		}
+		if (scale == 11) {
+				return "LYDIAN";
+		}
+		if (scale == 12) {
+				return "MIXOLYDIAN";
+		}
+		if (scale == 13) {
+				return "PENTATONIC";
+		}
+		if (scale == 14) {
+				return "BLUES";
+		}
+		if (scale == 15) {
+				return "TURKISH";
+		}
+		if (scale == 16) {
+				return "INDIAN";
+		}
+			else{
+				return "";
+			}
+	}
+
+
+	string castBaseKey(int key){
+
+		if (key == 0) {
+			return "C";
+		}
+		if (key == 1){
+			return "C#/Db";
+		}
+		if (key == 2) {
+			return "D";
+		}
+		if (key == 3) {
+			return "D#/Eb";
+		}
+		if (key == 4) {
+			return "E";
+		}
+		if (key == 5) {
+			return "F";
+		}
+		if (key == 6) {
+			return "F#/Gb";
+		}
+		if (key == 7) {
+			return "G";
+		}
+		if (key == 8) {
+			return "G#/Ab";
+		}
+		if (key == 9) {
+			return "A";
+		}
+		if (key == 10) {
+			return "A#/Bb";
+		}
+		if (key == 11) {
+			return "B";
+		}
+		else{
+			return "";
+		}
+	}
+
 	// start
+
+
+
 	void Start () {
+
+
+
+
 		// get the scale for the scalebox
 		box_scale = allScales[(int)scale_name];
 		box_midi = scaleToMidi(box_scale);
@@ -150,16 +261,22 @@ public class LearnScale : NoteStateControl {
 
 	// init Learn Scale
 	private void initLearnScale (){
+
 		c_pos = 0;
 		error_counter = 0;
 		activated = true;
 		sound_player.inLearning = true;
 	 	sound_player.activate_sound.Play();
+	
   	player_controller.enterPlayMode();
   	// put scale
   	setNoteStateToScale(box_scale);
   	setSignStateToScale(box_scale);
   	container.updateScaleInd(scale_name, base_key);
+		Debug.Log (scale_name);
+		player_controller.changeScaleText (castScale((int)scale_name));
+		player_controller.changeBaseKeyText (castBaseKey((int)(base_key-48)));
+
 	}	
 
 	// leave Learn Scale
