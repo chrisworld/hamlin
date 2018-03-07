@@ -333,7 +333,7 @@ public class MonsterManager : MonoBehaviour
     yield return new WaitForSeconds(delay);
     infowindow.SetActive (false);
     if(endGame){
-      SceneManager.LoadScene("MainMenu");
+      SceneManager.LoadScene("MainMenu_pablo");
     }
   }
 
