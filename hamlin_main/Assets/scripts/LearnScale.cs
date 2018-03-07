@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// MIDI ADDED
+
 public class LearnScale : NoteStateControl {
 
 	// GameObjects
@@ -112,6 +114,28 @@ public class LearnScale : NoteStateControl {
 	  			}
 	  			key++;
 	  		}
+				if (sound_player.MidiKeyPressed == true) {
+					int note_midi = sound_player.MidiKeyPressedNr;
+
+					int note_pos = midiToContainerMapping(note_midi);
+					// right note
+					if(note_midi == box_midi[c_pos]){
+						note_state[c_pos][note_pos] = NoteState.RIGHT;
+						sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+						anim.Play("rightNote");
+						c_pos++;
+					}
+					// wrong note
+					else{
+						note_state[c_pos][note_pos] = NoteState.WRONG;
+						sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+						error_counter++;
+					}
+					container.updateNoteContainer(note_state);
+					container.updateSignContainer(sign_state);
+
+					sound_player.MidiKeyPressed = false;
+				}
 	  	}
 		}
 		// not in distance
