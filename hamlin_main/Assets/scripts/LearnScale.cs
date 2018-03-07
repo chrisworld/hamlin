@@ -10,7 +10,7 @@ public class LearnScale : NoteStateControl {
 	public Transform player;
 	public PlayerController player_controller;
 	public Health health;
-	public SoundPlayer sound_player;
+
 	public Score score;
 	[HideInInspector]
 	public Animator anim;
@@ -65,7 +65,7 @@ public class LearnScale : NoteStateControl {
 			anim.SetBool ("isWaiting", false);
 			anim.SetBool ("isListening", true);
 	  	// start the scale
-	  	if(!activated && checkValidMusicKey() && player_controller.hold_flute){
+			if(!activated && (checkValidMusicKey() || sound_player.MidiKeyPressed == true) && player_controller.hold_flute){
 	  		initLearnScale();
 	  	}
 	  	// stop the scale
@@ -134,7 +134,7 @@ public class LearnScale : NoteStateControl {
 					container.updateNoteContainer(note_state);
 					container.updateSignContainer(sign_state);
 
-					sound_player.MidiKeyPressed = false;
+					//sound_player.MidiKeyPressed = false;
 				}
 	  	}
 		}
