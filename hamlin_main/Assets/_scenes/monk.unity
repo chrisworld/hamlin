@@ -442,6 +442,48 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1551358183}
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!1001 &608652869
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4133520561581786, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 436.425
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133520561581786, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 228.67874
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133520561581786, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133520561581786, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133520561581786, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133520561581786, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133520561581786, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133520561581786, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
+  m_IsPrefabParent: 0
 --- !u!114 &706595777 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114406180015584332, guid: 26ecccdefe1232b41832c6f9bcb6fb5b,
@@ -8568,6 +8610,48 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: abd26f0a7c26446d7bff67b08b0ffe0d, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &1674945088
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4542412933231256, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 1.051
+      objectReference: {fileID: 0}
+    - target: {fileID: 4542412933231256, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.00000007027052
+      objectReference: {fileID: 0}
+    - target: {fileID: 4542412933231256, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 1.766
+      objectReference: {fileID: 0}
+    - target: {fileID: 4542412933231256, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4542412933231256, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4542412933231256, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4542412933231256, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4542412933231256, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1693135827
 GameObject:
