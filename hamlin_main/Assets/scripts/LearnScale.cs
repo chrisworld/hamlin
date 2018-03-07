@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// MIDI ADDED
+
 public class LearnScale : NoteStateControl {
 
 	// GameObjects
 	public Transform player;
 	public PlayerController player_controller;
 	public Health health;
-	public SoundPlayer sound_player;
+
 	public Score score;
 	[HideInInspector]
 	public Animator anim;
@@ -63,7 +65,7 @@ public class LearnScale : NoteStateControl {
 			anim.SetBool ("isWaiting", false);
 			anim.SetBool ("isListening", true);
 	  	// start the scale
-	  	if(!activated && checkValidMusicKey() && player_controller.hold_flute){
+			if(!activated && (checkValidMusicKey() || sound_player.MidiKeyPressed == true) && player_controller.hold_flute){
 	  		initLearnScale();
 	  	}
 	  	// stop the scale
@@ -112,6 +114,28 @@ public class LearnScale : NoteStateControl {
 	  			}
 	  			key++;
 	  		}
+				if (sound_player.MidiKeyPressed == true) {
+					int note_midi = sound_player.MidiKeyPressedNr;
+
+					int note_pos = midiToContainerMapping(note_midi);
+					// right note
+					if(note_midi == box_midi[c_pos]){
+						note_state[c_pos][note_pos] = NoteState.RIGHT;
+						sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+						anim.Play("rightNote");
+						c_pos++;
+					}
+					// wrong note
+					else{
+						note_state[c_pos][note_pos] = NoteState.WRONG;
+						sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+						error_counter++;
+					}
+					container.updateNoteContainer(note_state);
+					container.updateSignContainer(sign_state);
+
+					//sound_player.MidiKeyPressed = false;
+				}
 	  	}
 		}
 		// not in distance

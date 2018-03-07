@@ -8,6 +8,8 @@ abstract public class NoteStateControl : MonoBehaviour {
 	// settings
 	public NoteBaseKey base_key;
 
+	public SoundPlayer sound_player;
+
 	public NoteState[][] note_state = new NoteState[12][];
 	public SignState[][] sign_state = new SignState[12][];
 	public int[][] allScales =   // Scales Definition
@@ -163,11 +165,17 @@ abstract public class NoteStateControl : MonoBehaviour {
 	// check if valid music key is pressed
 	public bool checkValidMusicKey(){
 		foreach (KeyCode key in valid_keys){
-			if(Input.GetKeyDown(key)){ 
+			if(Input.GetKeyDown(key) ){ 
 				return true;
 			}
+
 		}
-		return false;
+
+
+
+
+			return false;
+
 	}
 
 	// get mask of pressed keys

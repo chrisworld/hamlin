@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MidiJack;
+
+// MIDI TEST
 
 
 // BasicSoundPlayer, just plays sounds by pressing Keys
@@ -35,6 +38,9 @@ public class SoundPlayer : MonoBehaviour {
 	public AudioSource c2;
 	public AudioSource activate_sound;
 
+	public bool MidiKeyPressed = false;
+	public int MidiKeyPressedNr;
+
   public PlayerController player_controller;
 
   //managed by CombatManager
@@ -45,6 +51,41 @@ public class SoundPlayer : MonoBehaviour {
   [HideInInspector]
   public bool inPlay;
 
+	void NoteOn(MidiChannel channel, int note, float velocity)
+	{
+		MidiKeyPressed = true;
+		Debug.Log("NoteOn: " + note);
+		MidiKeyPressedNr = note;
+
+	}
+
+
+	void NoteOff(MidiChannel channel, int note)
+	{
+		MidiKeyPressed = false;
+		Debug.Log("NoteOff: " + channel + "," + note);
+	}
+
+	void Knob(MidiChannel channel, int knobNumber, float knobValue)
+	{
+		Debug.Log("Knob: " + knobNumber + "," + knobValue);
+	}
+
+	void OnEnable()
+	{
+		MidiMaster.noteOnDelegate += NoteOn;
+		MidiMaster.noteOffDelegate += NoteOff;
+		MidiMaster.knobDelegate += Knob;
+	}
+
+	void OnDisable()
+	{
+		MidiMaster.noteOnDelegate -= NoteOn;
+		MidiMaster.noteOffDelegate -= NoteOff;
+		MidiMaster.knobDelegate -= Knob;
+	}
+
+
 	// Use this for initialization
 	void Start () {
     if(player_controller == null){
@@ -54,139 +95,172 @@ public class SoundPlayer : MonoBehaviour {
     inLearning = false;
     inLearning = false;
 	}
-	
+
+
 	// Update is called once per frame
 	void Update () {
+
+
+
+
     if(inCombat || inLearning || inPlay){ 
-      if (Input.GetKeyDown(KeyCode.Y))
+			if (Input.GetKeyDown(KeyCode.Y) || (MidiKeyPressed == true && MidiKeyPressedNr == 48))
       {
-        c.Play();
+        
+		
+		c.Play();
         player_controller.playNote();
+	    MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.S))
+			if (Input.GetKeyDown(KeyCode.S) || (MidiKeyPressed == true && MidiKeyPressedNr == 49))
       {
         c_sh.Play();
         player_controller.playNote();
+		MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.Comma))
+			if (Input.GetKeyDown(KeyCode.Comma) || (MidiKeyPressed == true && MidiKeyPressedNr == 60))
       {
         c1.Play();
         player_controller.playNote();
+		MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.X))
+			if (Input.GetKeyDown(KeyCode.X) || (MidiKeyPressed == true && MidiKeyPressedNr == 50))
       {
         d.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.D))
+			if (Input.GetKeyDown(KeyCode.D) || (MidiKeyPressed == true && MidiKeyPressedNr == 51))
       {
         d_sh.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.C))
+			if (Input.GetKeyDown(KeyCode.C) || (MidiKeyPressed == true && MidiKeyPressedNr == 52))
       {
         e.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.V))
+			if (Input.GetKeyDown(KeyCode.V) || (MidiKeyPressed == true && MidiKeyPressedNr == 53))
       {
         f.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.G))
+			if (Input.GetKeyDown(KeyCode.G)|| (MidiKeyPressed == true && MidiKeyPressedNr == 54))
       {
         f_sh.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.B))
+			if (Input.GetKeyDown(KeyCode.B) || (MidiKeyPressed == true && MidiKeyPressedNr == 55))
       {
         g.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.H))
+			if (Input.GetKeyDown(KeyCode.H) || (MidiKeyPressed == true && MidiKeyPressedNr == 56))
       {
         g_sh.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.M))
+			if (Input.GetKeyDown(KeyCode.M) || (MidiKeyPressed == true && MidiKeyPressedNr == 59))
       {
         h.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.N))
+			if (Input.GetKeyDown(KeyCode.N) || (MidiKeyPressed == true && MidiKeyPressedNr == 57))
       {
         a.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.J))
+			if (Input.GetKeyDown(KeyCode.J) || (MidiKeyPressed == true && MidiKeyPressedNr == 58))
       {
         a_sh.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
       if (Input.GetKeyDown(KeyCode.Q))
       {
         c1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.Alpha2))
+			if (Input.GetKeyDown(KeyCode.Alpha2) || (MidiKeyPressed == true && MidiKeyPressedNr == 61))
       {
         c_sh1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.I))
+			if (Input.GetKeyDown(KeyCode.I) || (MidiKeyPressed == true && MidiKeyPressedNr == 72))
       {
         c2.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.W))
+			if (Input.GetKeyDown(KeyCode.W) || (MidiKeyPressed == true && MidiKeyPressedNr == 62))
       {
         d1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.Alpha3))
+			if (Input.GetKeyDown(KeyCode.Alpha3) || (MidiKeyPressed == true && MidiKeyPressedNr == 63))
       {
         d_sh1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.E))
+			if (Input.GetKeyDown(KeyCode.E) || (MidiKeyPressed == true && MidiKeyPressedNr == 64))
       {
         e1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.R))
+			if (Input.GetKeyDown(KeyCode.R) || (MidiKeyPressed == true && MidiKeyPressedNr == 65))
       {
         f1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.Alpha5))
+			if (Input.GetKeyDown(KeyCode.Alpha5) || (MidiKeyPressed == true && MidiKeyPressedNr == 66))
       {
         f_sh1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.T))
+			if (Input.GetKeyDown(KeyCode.T) || (MidiKeyPressed == true && MidiKeyPressedNr == 67))
       {
         g1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.Alpha6))
+			if (Input.GetKeyDown(KeyCode.Alpha6) || (MidiKeyPressed == true && MidiKeyPressedNr == 68))
       {
         g_sh1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.U))
+			if (Input.GetKeyDown(KeyCode.U) || (MidiKeyPressed == true && MidiKeyPressedNr == 71))
       {
         h1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.Z))
+			if (Input.GetKeyDown(KeyCode.Z) || (MidiKeyPressed == true && MidiKeyPressedNr == 69) )
       {
         a1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
-      if (Input.GetKeyDown(KeyCode.Alpha7))
+			if (Input.GetKeyDown(KeyCode.Alpha7)|| (MidiKeyPressed == true && MidiKeyPressedNr == 70))
       {
         a_sh1.Play();
         player_controller.playNote();
+				MidiKeyPressed = false;
       }
     }
 	}
