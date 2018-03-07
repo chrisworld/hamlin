@@ -9,9 +9,14 @@ public class MapGenerator : MonoBehaviour {
 	public enum DrawMode {NoiseMap, Mesh, FalloffMap};
 	public DrawMode drawMode;
 
+  public NoiseData defaultNoiseData;
+  //public TerrainData defaultTerrainData;
+  public TextureData textureData;
+
+  //[HideInInspector]
 	public TerrainData terrainData;
+  [HideInInspector]
 	public NoiseData noiseData;
-	public TextureData textureData;
 
 	public Material terrainMaterial;
 
@@ -29,9 +34,40 @@ public class MapGenerator : MonoBehaviour {
 	Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
 	Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new Queue<MapThreadInfo<MeshData>>();
 
+  //TODO: tune these, for randomly generating noise params
+  const int octaveMin = 5;
+  const int octaveMax = 10;
+  const int seedMin = 0;
+  const int seedMax = 100;
+  const float persistanceMin = 0.3f;
+  const float persistanceMax = 0.7f;
+  
+  int getOctaves() { return UnityEngine.Random.Range(octaveMin, octaveMax); }
+  int getSeed() { return UnityEngine.Random.Range(seedMin, seedMax); }
+  float getPersistance() { return UnityEngine.Random.Range(persistanceMin, persistanceMax); }
 
-	void Awake() {
-		textureData.ApplyToMaterial (terrainMaterial);
+  //int[] octaves;
+  //int[] seeds;
+  //float[] persistances;
+
+  //void generateNoiseDatas(){
+    
+  //}
+
+
+
+
+  void Awake() {
+
+    //generate noiseData
+    noiseData = Instantiate<NoiseData>(defaultNoiseData);
+    noiseData.octaves = getOctaves();
+    print("Octaves: " + noiseData.octaves);
+    noiseData.seed = getSeed();
+    print("Seed: " + noiseData.seed);
+    noiseData.persistance = getPersistance();
+    print("Persistance: " + noiseData.persistance);
+    textureData.ApplyToMaterial (terrainMaterial);
 		textureData.UpdateMeshHeights (terrainMaterial, terrainData.minHeight, terrainData.maxHeight);
 	}
 
@@ -100,6 +136,12 @@ public class MapGenerator : MonoBehaviour {
 	}
 
 	void Update() {
+
+    //MOVE THIS SOMEWHERE ELSE IT DOESN'T WORK HERE
+    //noiseData.seed = getSeed();
+    //noiseData.persistance = getPersistance();
+    //noiseData.octaves = getOctaves();
+
 		if (mapDataThreadInfoQueue.Count > 0) {
 			for (int i = 0; i < mapDataThreadInfoQueue.Count; i++) {
 				MapThreadInfo<MapData> threadInfo = mapDataThreadInfoQueue.Dequeue ();
