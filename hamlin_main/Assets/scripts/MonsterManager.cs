@@ -9,10 +9,10 @@ public class MonsterManager : NoteStateControl
 {
   // GameObjects
   public Transform player;
+  public Transform hud;
   public PlayerController player_controller;
   public Health health;
-  public SoundPlayer sound_player;
-  public Image info_image;
+  public GameObject info_image;
   public Text infobox;
   public Object nextScene;
   public Score score;
@@ -57,13 +57,20 @@ public class MonsterManager : NoteStateControl
     if(score == null){
       score = GameObject.Find("GameState").GetComponent<Score>();
     }
-    if(info_image == null){
-      //info_image = GameObject.Find("Info").GetComponent<Image>();
+    if(hud == null){
+      hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
+      info_image = hud.transform.GetChild(3).gameObject;
+      
       //infobox = info_image.GetComponent<Text>();
     }
     // init vars
-    info_image.enabled = false;
+    //info_image.enabled = false;
+    info_image.SetActive(false);
     proceduralMode = (numMonstersPerChunk > 0) ? true : false;
+
+    // proc mode set false ToDO
+    //proceduralMode = false;
+
     Monster[] tempMonsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));  //there must be at least one monster already in the game!!! this is the baseMonster for PCG
     foreach (Monster monster in tempMonsters){
       monsters.Add(monster);
@@ -271,6 +278,7 @@ public class MonsterManager : NoteStateControl
                 note_state[c_pos][note_pos] = NoteState.WRONG;
                 sign_state[c_pos][note_pos] = midiToSignState(note_midi);
                 error_counter++;
+                player_controller.getAttacked();
                 monsters[id].anim.SetBool("isAttacking", true);
                 monsters[id].anim.SetBool("isIdle", false);
                 monsters[id].playerDamageQueue++;
@@ -279,7 +287,6 @@ public class MonsterManager : NoteStateControl
             key++;
           }
         }
-
         container.updateNoteContainer(note_state);
         container.updateSignContainer(sign_state);
       }
@@ -291,9 +298,9 @@ public class MonsterManager : NoteStateControl
   IEnumerator ShowMessage(string message, float delay, bool endGame)
   {
     infobox.text = message;
-    info_image.enabled = true;
+    //info_image.enabled = true;
+    info_image.SetActive(false);
     yield return new WaitForSeconds(delay);
-    info_image.enabled = false;
     if(endGame){
       SceneManager.LoadScene("MainMenu");
     }

@@ -112,6 +112,12 @@ public class PlayerController : MonoBehaviour {
 		anim.SetTrigger("notePlay");
   }
 
+  // play the flute
+  public void getAttacked()
+  {   
+    anim.SetTrigger("getAttacked");
+  }
+
   // enter play mode
   public void enterPlayMode()
   {   
