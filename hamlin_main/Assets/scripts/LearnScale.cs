@@ -63,7 +63,7 @@ public class LearnScale : NoteStateControl {
 			anim.SetBool ("isWaiting", false);
 			anim.SetBool ("isListening", true);
 	  	// start the scale
-	  	if(!activated && checkValidMusicKey()){
+	  	if(!activated && checkValidMusicKey() && player_controller.hold_flute){
 	  		initLearnScale();
 	  	}
 	  	// stop the scale
@@ -131,7 +131,7 @@ public class LearnScale : NoteStateControl {
 		activated = true;
 		sound_player.inLearning = true;
 	 	sound_player.activate_sound.Play();
-  	player_controller.setMoveActivate(false);
+  	player_controller.enterPlayMode();
   	// put scale
   	setNoteStateToScale(box_scale);
   	setSignStateToScale(box_scale);
@@ -144,7 +144,7 @@ public class LearnScale : NoteStateControl {
 		c_pos = 0;
 		error_counter = 0;
 		sound_player.inLearning = false;
-		player_controller.setMoveActivate(true);
+		player_controller.exitPlayMode();
 		resetNoteState();
 		resetSignState();
 		container.resetScaleInd();
