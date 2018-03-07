@@ -78,11 +78,14 @@ public class MonsterManager : NoteStateControl
       pcgScaleNames.Add( (ScaleNames) Random.Range(0, 16) );
       pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 59) );
     }
-    //terrainGenerator.scaleNames = pcgScaleNames;
-    //terrainGenerator.baseKeys = pcgBaseKeys;
-    //terrainGenerator.monsterManager = this;
-    //terrainGenerator.numMonstersPerChunk = numMonstersPerChunk;
-    //terrainGenerator.baseMonster = monsters[0];
+    //don't comment this out, this is important
+    if(terrainGenerator){
+      terrainGenerator.scaleNames = pcgScaleNames;
+      terrainGenerator.baseKeys = pcgBaseKeys;
+      terrainGenerator.monsterManager = this;
+      terrainGenerator.numMonstersPerChunk = numMonstersPerChunk;
+      terrainGenerator.baseMonster = monsters[0];
+    }
 
     if (hideBaseMonster)
     {
@@ -129,7 +132,7 @@ public class MonsterManager : NoteStateControl
             currentMonsterId = i;
             result = UpdateMonster(i);
           }
-          else
+          else if(monsters[i].gameObject.activeSelf)  //don't do this for disabled baseMonster
           {
             //deactivate everything
             monsters[i].anim.SetBool("isRunning", false);
