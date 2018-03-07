@@ -9,6 +9,7 @@ public class MonsterManager : NoteStateControl
 {
   // GameObjects
   public Transform player;
+  public Transform hud;
   public PlayerController player_controller;
   public Health health;
   public GameObject info_image;
@@ -56,13 +57,16 @@ public class MonsterManager : NoteStateControl
     if(score == null){
       score = GameObject.Find("GameState").GetComponent<Score>();
     }
-    if(info_image == null){
-      //info_image = GameObject.Find("Info").GetComponent<Image>();
+    if(hud == null){
+      hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
+      info_image = hud.transform.GetChild(3).gameObject;
+      
       //infobox = info_image.GetComponent<Text>();
     }
     // init vars
     info_image.SetActive(false);
     proceduralMode = (numMonstersPerChunk > 0) ? true : false;
+
     Monster[] tempMonsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));  //there must be at least one monster already in the game!!! this is the baseMonster for PCG
     foreach (Monster monster in tempMonsters){
       monsters.Add(monster);
@@ -79,7 +83,7 @@ public class MonsterManager : NoteStateControl
       pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 59) );
     }
     //don't comment this out, this is important
-    if(terrainGenerator){
+    if (terrainGenerator){
       terrainGenerator.scaleNames = pcgScaleNames;
       terrainGenerator.baseKeys = pcgBaseKeys;
       terrainGenerator.monsterManager = this;
@@ -132,7 +136,7 @@ public class MonsterManager : NoteStateControl
             currentMonsterId = i;
             result = UpdateMonster(i);
           }
-          else if(monsters[i].gameObject.activeSelf)  //don't do this for disabled baseMonster
+          else if (monsters[i].gameObject.activeSelf)  //don't do this for disabled baseMonster
           {
             //deactivate everything
             monsters[i].anim.SetBool("isRunning", false);
@@ -273,6 +277,7 @@ public class MonsterManager : NoteStateControl
                 note_state[c_pos][note_pos] = NoteState.WRONG;
                 sign_state[c_pos][note_pos] = midiToSignState(note_midi);
                 error_counter++;
+                player_controller.getAttacked();
                 monsters[id].anim.SetBool("isAttacking", true);
                 monsters[id].anim.SetBool("isIdle", false);
                 monsters[id].playerDamageQueue++;
@@ -281,7 +286,6 @@ public class MonsterManager : NoteStateControl
             key++;
           }
         }
-
         container.updateNoteContainer(note_state);
         container.updateSignContainer(sign_state);
       }
@@ -293,9 +297,9 @@ public class MonsterManager : NoteStateControl
   IEnumerator ShowMessage(string message, float delay, bool endGame)
   {
     infobox.text = message;
-    info_image.SetActive(true);
-    yield return new WaitForSeconds(delay);
+    //info_image.enabled = true;
     info_image.SetActive(false);
+    yield return new WaitForSeconds(delay);
     if(endGame){
       SceneManager.LoadScene("MainMenu_pablo");
     }

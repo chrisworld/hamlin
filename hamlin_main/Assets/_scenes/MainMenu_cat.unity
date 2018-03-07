@@ -176,6 +176,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &387291746 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114305931923385510, guid: 463945825b0db8d48975d923d1c22d69,
+    type: 2}
+  m_PrefabInternal: {fileID: 1106995122}
+  m_Script: {fileID: -113659843, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &535535919
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,11 +360,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d33bd2b0c74a64eac52d93b3a29859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullscreenToggle: {fileID: 0}
-  resolutionDropdown: {fileID: 0}
-  antialiasingDropdown: {fileID: 0}
-  vSyncDropdown: {fileID: 0}
-  musicVolumeSlider: {fileID: 0}
+  fullscreenToggle: {fileID: 1306182598}
+  resolutionDropdown: {fileID: 1221879229}
+  antialiasingDropdown: {fileID: 1653539157}
+  vSyncDropdown: {fileID: 1194160733}
+  musicVolumeSlider: {fileID: 387291746}
   musicSource: {fileID: 0}
   gameSettings: {fileID: 0}
 --- !u!114 &543025164
@@ -1082,6 +1088,18 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 463945825b0db8d48975d923d1c22d69, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1194160733 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114268156940478186, guid: 463945825b0db8d48975d923d1c22d69,
+    type: 2}
+  m_PrefabInternal: {fileID: 1106995122}
+  m_Script: {fileID: 853051423, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+--- !u!114 &1221879229 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114395272399370580, guid: 463945825b0db8d48975d923d1c22d69,
+    type: 2}
+  m_PrefabInternal: {fileID: 1106995122}
+  m_Script: {fileID: 853051423, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1252933317
 GameObject:
   m_ObjectHideFlags: 0
@@ -1209,6 +1227,12 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1252933317}
+--- !u!114 &1306182598 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114227416186680542, guid: 463945825b0db8d48975d923d1c22d69,
+    type: 2}
+  m_PrefabInternal: {fileID: 1106995122}
+  m_Script: {fileID: 2109663825, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1346117830
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,6 +1472,12 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1653539157 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114217518440931792, guid: 463945825b0db8d48975d923d1c22d69,
+    type: 2}
+  m_PrefabInternal: {fileID: 1106995122}
+  m_Script: {fileID: 853051423, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &2066029431
 GameObject:
   m_ObjectHideFlags: 0

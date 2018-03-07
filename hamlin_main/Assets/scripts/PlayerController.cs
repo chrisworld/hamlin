@@ -1,9 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerController : MonoBehaviour {
 	// public
+  
+
+  public Text ScaleText;
+  public Text BaseKeyText;
+
+
   public Transform player;
   public Transform hud;
   public SoundPlayer sound_player;
@@ -33,7 +41,18 @@ public class PlayerController : MonoBehaviour {
   CharacterController controller;
 
   // start
+
+	public void changeScaleText(string text){
+		ScaleText.text = text;
+	}
+	public void changeBaseKeyText(string text){
+		BaseKeyText.text = text;
+	}
+
 	void Start () {
+
+
+
         anim = GetComponentInChildren<Animator>();
         cameraT = Camera.main.transform;
         controller = GetComponent<CharacterController>();
@@ -110,6 +129,12 @@ public class PlayerController : MonoBehaviour {
   public void playNote()
   {   
 		anim.SetTrigger("notePlay");
+  }
+
+  // play the flute
+  public void getAttacked()
+  {   
+    anim.SetTrigger("getAttacked");
   }
 
   // enter play mode
