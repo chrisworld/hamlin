@@ -299,18 +299,9 @@ public class MonsterManager : NoteStateControl
   IEnumerator ShowMessage(string message, float delay, bool endGame)
   {
     infobox.text = message;
-    int oldFontSize = infobox.fontSize;
-    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
-    Vector2 oldSize = canvasTransform.sizeDelta;
-    infobox.fontSize = 40;
-
-    //make textbook size bigger
-    //make textbook font size smaller
     info_image.SetActive(true);
     yield return new WaitForSeconds(delay);
     info_image.SetActive(false);
-    //restore textbox size
-    //restore textbook font size
     if(endGame){
       SceneManager.LoadScene("MainMenu_pablo");
     }
