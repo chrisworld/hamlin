@@ -17,6 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_scenes/procedural_terrain.unity
     guid: e1ff2fa1172510c4c80ba08933ac1bd4
-  - enabled: 0
+  - enabled: 1
     path: Assets/_scenes/MainMenu_pablo.unity
     guid: a275c4ecbbeab6343bf044626a9d742b
