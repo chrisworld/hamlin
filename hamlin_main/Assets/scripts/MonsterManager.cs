@@ -199,6 +199,8 @@ public class MonsterManager : NoteStateControl
       c_pos = 0;
       error_counter = 0;
       sound_player.inCombat = true;
+			player_controller.changeScaleText (castScale((int)monsters[id].scale_name));
+			player_controller.changeBaseKeyText (castBaseKey((int)(monsters[id].base_key-48)));
      }
      // stop the scale
      else if (activated && player_controller.checkValidJumpKey())
@@ -312,6 +314,107 @@ public class MonsterManager : NoteStateControl
     if(endGame){
       SceneManager.LoadScene("MainMenu_pablo");
     }
-  }
 
+  }
+	public string castScale(int scale){
+
+		if (scale == 0) {
+			return "CHROMATIC";
+		}
+		if (scale == 1){
+			return "MAJOR";
+		}
+		if (scale == 2) {
+			return "MINOR";
+		}
+		if (scale == 3) {
+			return "HARMONIC MINOR";
+		}
+		if (scale == 4) {
+			return "MELODIC MINOR";
+		}
+		if (scale == 5) {
+			return "NATURAL MINOR";
+		}
+		if (scale == 6) {
+			return "DIATONIC MINOR";
+		}
+		if (scale == 7) {
+			return "AEOLIAN";
+		}
+		if (scale == 8) {
+			return "PHRYGIAN";
+		}
+		if (scale == 9) {
+			return "LOCRIAN";
+		}
+		if (scale == 10) {
+			return "DORIAN";
+		}
+		if (scale == 11) {
+			return "LYDIAN";
+		}
+		if (scale == 12) {
+			return "MIXOLYDIAN";
+		}
+		if (scale == 13) {
+			return "PENTATONIC";
+		}
+		if (scale == 14) {
+			return "BLUES";
+		}
+		if (scale == 15) {
+			return "TURKISH";
+		}
+		if (scale == 16) {
+			return "INDIAN";
+		}
+		else{
+			return "";
+		}
+	}
+
+	// cast Base Key
+	public string castBaseKey(int key){
+
+		if (key == 0) {
+			return "C";
+		}
+		if (key == 1){
+			return "C#/Db";
+		}
+		if (key == 2) {
+			return "D";
+		}
+		if (key == 3) {
+			return "D#/Eb";
+		}
+		if (key == 4) {
+			return "E";
+		}
+		if (key == 5) {
+			return "F";
+		}
+		if (key == 6) {
+			return "F#/Gb";
+		}
+		if (key == 7) {
+			return "G";
+		}
+		if (key == 8) {
+			return "G#/Ab";
+		}
+		if (key == 9) {
+			return "A";
+		}
+		if (key == 10) {
+			return "A#/Bb";
+		}
+		if (key == 11) {
+			return "B";
+		}
+		else{
+			return "";
+		}
+	}
 }
