@@ -30,6 +30,9 @@ public class Monster : MonoBehaviour {
 
   void Start () {
     nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
+    if(nav == null){
+      print("nav is null!!!!");
+    }
     defeated = false;
     playerDamageQueue = 0;
     if(health == null){
