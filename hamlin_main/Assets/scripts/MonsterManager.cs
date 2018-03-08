@@ -297,9 +297,17 @@ public class MonsterManager : NoteStateControl
   IEnumerator ShowMessage(string message, float delay, bool endGame)
   {
     infobox.text = message;
+    //infobox.fontSize
+    //info_image.GetComponent<RectTransform>();
+    //store textbox size
+    //store textbox font size
+    //make textbook size bigger
+    //make textbook font size smaller
     info_image.SetActive(true);
     yield return new WaitForSeconds(delay);
     info_image.SetActive(false);
+    //restore textbox size
+    //restore textbook font size
     if(endGame){
       SceneManager.LoadScene("MainMenu_pablo");
     }

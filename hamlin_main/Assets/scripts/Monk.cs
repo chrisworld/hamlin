@@ -9,14 +9,14 @@ public class Monk : MonoBehaviour {
   public GameObject info_image;
   public Text infobox;
   public Transform player;
-  public Queue script;
+  public Queue<string> script;
   bool playerNear;
   bool scriptFinished;
 
   //This is the *only* place you need to edit text to change the dialogue between the player and monk
   void initScript() {
 
-    script = new Queue();
+    script = new Queue<string>();
     script.Enqueue("Monk: Hello there my friend!");
     script.Enqueue("Hamlin: Have we met?");
     script.Enqueue("Monk: We have not, but any music believer is a friend of mine. Tell me, where did you find that flute of yours, and where are you going? " +
