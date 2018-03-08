@@ -70,24 +70,18 @@ public class PlayerController : MonoBehaviour {
     else if (switch_model) switchModel();
     // take the flute and put it back
     else if (checkValidTakeFluteKey()){
-      // take flute and switch model when not in distance
-      if (!play_mode && (!inDistance || !hold_flute)){
+      if (hold_flute && !play_mode){
+        enterPlayMode();
+      }
+      else{
         anim.SetTrigger("takeFlute");
         switch_model = true;
       }
-      // change in playing mode when pressing enter
-      else if (!play_mode && inDistance && hold_flute){
-        enterPlayMode();
-      }
-      // exit play mode
-      else {
-      	exitPlayMode();
-      }
     }
     // enter play mode
-    else if (checkValidPlayFluteKey() && !play_mode && hold_flute){
-    	enterPlayMode();
-    }
+    //else if (checkValidPlayFluteKey() && !play_mode && hold_flute){
+    //	enterPlayMode();
+    //}
 
     // control stuff
     Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -150,7 +144,7 @@ public class PlayerController : MonoBehaviour {
 	    play_mode = true;
 	    sound_player.inPlay = true;
 	    move_activated = false;
-      inDistance = false;
+        inDistance = false;
   	}
   }
 
@@ -158,7 +152,7 @@ public class PlayerController : MonoBehaviour {
   public void exitPlayMode()
   {
   	if (play_mode){
-	  	anim.SetTrigger("stopPlay");
+	  	    anim.SetTrigger("stopPlay");
 			play_mode = false;
 			sound_player.inPlay = false;
 			move_activated = true;
@@ -180,10 +174,7 @@ public class PlayerController : MonoBehaviour {
       anim = GetComponentInChildren<Animator>();
       switch_model = false;
       hold_flute = true;
-      if (inDistance){ 
-        enterPlayMode();
-        Debug.Log("enter play mode with distance");
-      }
+      enterPlayMode();
     }
     else if (stateInfo.fullPathHash == woFlute_hash){
       player.transform.GetChild(1).gameObject.SetActive(true);
