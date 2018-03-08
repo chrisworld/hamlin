@@ -6,14 +6,10 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 	// public
-  
-
-  public Text ScaleText;
-  public Text BaseKeyText;
-
-
   public Transform player;
   public Transform hud;
+  public Text ScaleText;
+  public Text BaseKeyText;
   public SoundPlayer sound_player;
   public float walkSpeed = 1;
   public float runSpeed = 3;
@@ -23,10 +19,12 @@ public class PlayerController : MonoBehaviour {
   public float jumpHeight = 0.5f;
   public float inAirControl = 1;          //controls how much the player can turn while in mid air
   public bool hold_flute = false;
+  public bool inDistance = false;
+  public bool play_mode = false;
+
   // private
   private bool move_activated = true;
   private bool switch_model = false;
-  private bool play_mode = false;
   // anim hashes
   //private int idle_hash = Animator.StringToHash("Base Layer.idle");
   //private int cont_play_hash = Animator.StringToHash("Base Layer.hamlin_cont_play");
@@ -41,29 +39,24 @@ public class PlayerController : MonoBehaviour {
   CharacterController controller;
 
   // start
-
-	public void changeScaleText(string text){
-		ScaleText.text = text;
-	}
-	public void changeBaseKeyText(string text){
-		BaseKeyText.text = text;
-	}
-
 	void Start () {
-
-
-
-        anim = GetComponentInChildren<Animator>();
-        cameraT = Camera.main.transform;
-        controller = GetComponent<CharacterController>();
-        move_activated = true;
-        if(player == null){
-            player = GameObject.Find("Player").GetComponent<Transform>();
-        }
-        if(hud == null){
-            hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
-        }
-        hud.transform.GetChild(1).gameObject.SetActive(false);
+      anim = GetComponentInChildren<Animator>();
+      cameraT = Camera.main.transform;
+      controller = GetComponent<CharacterController>();
+      move_activated = true;
+      if(player == null){
+          player = GameObject.Find("Player").GetComponent<Transform>();
+      }
+      if(hud == null){
+        hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
+      }
+      if(ScaleText == null){
+        ScaleText = GameObject.Find("HUDCanvas/Note/ScaleText").GetComponent<Text>();
+      }
+      if(BaseKeyText == null){
+        BaseKeyText = GameObject.Find("HUDCanvas/Note/BaseKey").GetComponent<Text>();
+      }
+      hud.transform.GetChild(1).gameObject.SetActive(false);
     }
 	
 	// update
@@ -77,10 +70,14 @@ public class PlayerController : MonoBehaviour {
     else if (switch_model) switchModel();
     // take the flute and put it back
     else if (checkValidTakeFluteKey()){
-      // take flute and switch model
-      if (!play_mode){
+      // take flute and switch model when not in distance
+      if (!play_mode && (!inDistance || !hold_flute)){
         anim.SetTrigger("takeFlute");
         switch_model = true;
+      }
+      // change in playing mode when pressing enter
+      else if (!play_mode && inDistance && hold_flute){
+        enterPlayMode();
       }
       // exit play mode
       else {
@@ -125,6 +122,14 @@ public class PlayerController : MonoBehaviour {
     }
 	}
 
+  // change text
+  public void changeScaleText(string text){
+    ScaleText.text = text;
+  }
+  public void changeBaseKeyText(string text){
+    BaseKeyText.text = text;
+  }
+
   // play the flute
   public void playNote()
   {   
@@ -145,6 +150,7 @@ public class PlayerController : MonoBehaviour {
 	    play_mode = true;
 	    sound_player.inPlay = true;
 	    move_activated = false;
+      inDistance = false;
   	}
   }
 
@@ -174,6 +180,10 @@ public class PlayerController : MonoBehaviour {
       anim = GetComponentInChildren<Animator>();
       switch_model = false;
       hold_flute = true;
+      if (inDistance){ 
+        enterPlayMode();
+        Debug.Log("enter play mode with distance");
+      }
     }
     else if (stateInfo.fullPathHash == woFlute_hash){
       player.transform.GetChild(1).gameObject.SetActive(true);
