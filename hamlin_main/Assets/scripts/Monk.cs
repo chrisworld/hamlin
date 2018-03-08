@@ -10,6 +10,7 @@ public class Monk : MonoBehaviour
   public GameObject info_image;
   public Text infobox;
   public Transform player;
+  public Sprite[] images;
 
   LearnScale baseScale;
   PlayerController playerController;
@@ -25,6 +26,7 @@ public class Monk : MonoBehaviour
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(0);
     story.Enqueue("Monk: We have not, but any music believer is a friend of mine.");
     story.Enqueue("Tell me, where did you find that flute of yours, and where are you going?");
     story.Enqueue("It can be very dangerous travelling these parts openly carrying an instrument - they hate it, you know.");
@@ -106,19 +108,19 @@ public class Monk : MonoBehaviour
 
     //**A MINOR**
     //TODO introduce A minor
-    TeachScale(2, 57);
+    //TODO TeachScale(2, 57);
 
     //**MONSTER 2**
     //todo Battle 2 - D major or A minor monster
 
     //**E MINOR**
-    TeachScale(2, 52);
+    //TODO TeachScale(2, 52);
 
     //**B MINOR**
     story.Enqueue("By the way, I heard that this isn't called B minor in every part of Espero. In some towns they call it H minor too.");
     story.Enqueue("Imagine that! The variety of the other tongues we have here in Espero has always fascinated me.");
     story.Enqueue("But anyway, I am digressing into my books again...");
-    TeachScale(2, 59);
+    //TODO TeachScale(2, 59);
 
     //**Circle of fifths**
     story.Enqueue("Let me tell you another secret. The circle of fifths is your handy cheat-sheet to the world of major and minor scales;");
@@ -186,12 +188,59 @@ public class Monk : MonoBehaviour
   //manages dialogue
   IEnumerator Talk(string message){
     infobox.text = message;
-    //infobox.fontSize = 30;
-    //canvasTransform.sizeDelta = new Vector2(400, oldSize.y);
     info_image.SetActive(true);
     yield return new WaitUntil( () => (dialogueClicked == true) );   //wait for click event (hideDialogueOnClick)
     info_image.SetActive(false);
     dialogueClicked = false;
+  }
+
+  //manages image display (for keyboard, circle of fifths images etc)
+  IEnumerator ShowImage(int imageIndex)
+  {
+    //store old dialogue box values to restore later
+    Sprite oldSprite = info_image.GetComponent<Image>().sprite;
+    Color oldColor = info_image.GetComponent<Image>().color;
+    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
+    Vector2 oldSize = canvasTransform.sizeDelta;
+    Vector3 oldPosition = canvasTransform.position;
+    infobox.gameObject.SetActive(false);
+
+    //set new values to display image
+    Sprite newSprite = images[imageIndex];
+    info_image.GetComponent<Image>().sprite = newSprite;
+    info_image.GetComponent<Image>().color = Color.white;
+    Vector3 newPosition = new Vector3(oldPosition.x, oldPosition.y + 150, oldPosition.z);
+    canvasTransform.sizeDelta = new Vector2(425, 210); //this size is for churchScales, need to find a more flexible solution
+    canvasTransform.position = newPosition;
+    info_image.SetActive(true);
+    yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+
+    //hide box and restore to old values
+    infobox.gameObject.SetActive(true);
+    info_image.SetActive(false);
+    info_image.GetComponent<Image>().sprite = oldSprite;
+    canvasTransform.sizeDelta = oldSize;
+    info_image.GetComponent<Image>().color = oldColor;
+    canvasTransform.position = oldPosition;
+    dialogueClicked = false;
+  }
+
+  void StoryEvent(int codeTrigger){
+
+    switch(codeTrigger){
+
+        //show churchScales image
+        case 0:
+          StartCoroutine(ShowImage(0));
+          break;
+
+        //TODO: a billion more cases
+
+        default:
+          break;
+
+    }
+
   }
 
   void Start()
@@ -203,7 +252,6 @@ public class Monk : MonoBehaviour
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
     playerController = player.GetComponent<PlayerController>();
     baseScale.gameObject.SetActive(false); //this must be done here, not before, otherwise it cannot find the object
-
     StoryInit(); //queue up all the dialogue
 
     //setup scene:
@@ -222,14 +270,21 @@ public class Monk : MonoBehaviour
     }
 
     //show next line of dialogue
-    if (playerNear && info_image.activeSelf == false && !storyStopped)       //we use info_image's active status as a lock for showing messages, otherwise previous messages get skipped
+    if (playerNear && info_image.activeSelf == false && !storyStopped)       //we use info_image's active status as a lock for showing messages so we don't unqueue them too fast
     {
-      StartCoroutine(Talk((string) story.Dequeue()));
-      if (story.Count < 1)
+      if (story.Peek().GetType() == typeof(string))                         //event is dialogue, display in infobox
       {
-        storyStopped = true;
+        StartCoroutine( Talk((string)story.Dequeue()) );
       }
+      else                                                                   //event is an int code trigger
+      {
+        StoryEvent((int)story.Dequeue());
+      }
+    }
 
+    if (story.Count < 1)                                                     //story finished
+    {
+      storyStopped = true;
     }
 
     if(Input.GetMouseButtonDown(0)){

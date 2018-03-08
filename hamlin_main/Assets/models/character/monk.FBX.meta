@@ -18,7 +18,17 @@ ModelImporter:
     7400008: listening fail
     9500000: //RootNode
     13700000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: monk body
+    second: {fileID: 2100000, guid: 4bc8f82f98847ea43ac804de9ed61996, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: monk rope
+    second: {fileID: 2100000, guid: a21af914b57c03f42aba23e83ba09c09, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
