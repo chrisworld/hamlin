@@ -34,10 +34,11 @@ public class EndlessTerrain : MonoBehaviour {
   public List<NoteBaseKey> baseKeys;
 
   Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
-	static List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
+  static List<TerrainChunk> visibleTerrainChunks;
 
 	void Start() {
 		mapGenerator = FindObjectOfType<MapGenerator> ();
+    visibleTerrainChunks = new List<TerrainChunk>();
 		maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 		chunkSize = mapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
