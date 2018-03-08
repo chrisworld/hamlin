@@ -4,9 +4,19 @@ using UnityEngine.SceneManagement;
 
 public class buttons : MonoBehaviour {
 	
-	public void PlayButton(){
+  //legacy
+  public void PlayButton(){
+    SceneManager.LoadScene("rat_test_lab");
+  }
+
+	public void StoryModeButton(){
 		SceneManager.LoadScene("rat_test_lab");
+    //TODO: this should load monk level instead (when complete)
 	}
+
+  public void AdventureModeButton(){
+    SceneManager.LoadScene("procedural_terrain");
+  }
 	
 	public void ExitButton(){
 		

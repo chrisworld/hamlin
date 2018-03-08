@@ -21,7 +21,7 @@ public class savingOptions : MonoBehaviour {
 		PlayerPrefs.SetFloat("Cam_y", Player.eulerAngles.y);
 		if(Quit){
 			Time.timeScale = 1;
-			SceneManager.LoadScene("MainMenu");
+			SceneManager.LoadScene("MainMenu_cat");
 		}
 	}
 }

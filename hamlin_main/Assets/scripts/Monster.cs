@@ -32,6 +32,9 @@ public class Monster : MonoBehaviour {
     nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
     defeated = false;
     playerDamageQueue = 0;
+    if(health == null){
+       health = GameObject.Find("Player").GetComponent<Health>();
+    }
   }
 
   void Update () {
