@@ -297,9 +297,9 @@ public class MonsterManager : NoteStateControl
   IEnumerator ShowMessage(string message, float delay, bool endGame)
   {
     infobox.text = message;
-    //info_image.enabled = true;
-    info_image.SetActive(false);
+    info_image.SetActive(true);
     yield return new WaitForSeconds(delay);
+    info_image.SetActive(false);
     if(endGame){
       SceneManager.LoadScene("MainMenu_pablo");
     }
