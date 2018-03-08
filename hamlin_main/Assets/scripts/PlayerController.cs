@@ -18,8 +18,12 @@ public class PlayerController : MonoBehaviour {
   public float gravity = -12;
   public float jumpHeight = 0.5f;
   public float inAirControl = 1;          //controls how much the player can turn while in mid air
+  
+  [HideInInspector]
   public bool hold_flute = false;
+  [HideInInspector]
   public bool inDistance = false;
+  [HideInInspector]
   public bool play_mode = false;
 
   // private
@@ -152,7 +156,7 @@ public class PlayerController : MonoBehaviour {
   public void exitPlayMode()
   {
   	if (play_mode){
-	  	    anim.SetTrigger("stopPlay");
+	  	anim.SetTrigger("stopPlay");
 			play_mode = false;
 			sound_player.inPlay = false;
 			move_activated = true;

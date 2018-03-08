@@ -21,6 +21,8 @@ public class Monster : MonoBehaviour {
   [HideInInspector]
   public bool defeated;
   [HideInInspector]
+  public bool dying;
+  [HideInInspector]
   public int playerDamageQueue;
 
   private void Awake()
@@ -57,5 +59,6 @@ public class Monster : MonoBehaviour {
       DamagePlayer();
     }
   }
+
 
 }

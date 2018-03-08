@@ -98,81 +98,83 @@ public class MonsterManager : NoteStateControl
     }
   }
 
+  // update
   void Update()
   {
 
     bool monsterActivatedThisTurn = false;
     int result = 0;
 
+
+    // init
     if (!initialisedMonsters && monsters != null){
+      initMonsters();
+      return;
+    }
+    // monster update
+    if (activated)
+    {           
+      //update just the active monster, activated = false when combat has finished
+      result = UpdateMonster(currentMonsterId);
+      monsterActivatedThisTurn = true;
+    }
+    else
+    {                  
+      //cycle through all monsters and activate first one which is within combat distance, if any
       for (int i = 0; i < monsters.Count; i++)
-      {
-        resetNoteState();
-        resetSignState();
-        // container position
-        c_pos = 0;
-        error_counter = 0;
-        monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
-        monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
-        container.updateNoteContainer(note_state);
-        container.updateSignContainer(sign_state);
-      }
-      initialisedMonsters = true;
-    }
-    else {
-      if (activated)
-      {           //update just the active monster, activated = false when combat has finished
-        result = UpdateMonster(currentMonsterId);
-        monsterActivatedThisTurn = true;
-      }
-      else
-      {                  //cycle through all monsters and activate first one which is within combat distance, if any
-        for (int i = 0; i < monsters.Count; i++)
+      { 
+        // monsters dying
+        if (monsters[i].dying){
+          continue;
+        }
+        // defeated monser
+        if (monsters[i].defeated){
+          // ToDo anim
+          monsters[i].dying = true;
+          Camera.main.fieldOfView = 60f;
+          player_controller.exitPlayMode();
+          score.updateDefMonster();
+          Destroy(monsters[i].gameObject, 1);
+        }
+        // something
+        else if (!monsterActivatedThisTurn && Vector3.Distance(player.position, monsters[i].transform.position) < viewDistance && Vector3.Angle(player.position - monsters[i].transform.position, monsters[i].transform.forward) < viewAngle)
         {
-
-          if (!monsterActivatedThisTurn && Vector3.Distance(player.position, monsters[i].transform.position) < viewDistance && Vector3.Angle(player.position - monsters[i].transform.position, monsters[i].transform.forward) < viewAngle)
+          monsterActivatedThisTurn = true;
+          currentMonsterId = i;
+          result = UpdateMonster(i);
+        }
+        //don't do this for disabled baseMonster
+        else if (monsters[i].gameObject.activeSelf)  
+        {
+          //deactivate everything
+          monsters[i].anim.SetBool("isRunning", false);
+          monsters[i].anim.SetBool("isWalking", false);
+          monsters[i].anim.SetBool("isAttacking", false);
+          monsters[i].anim.SetBool("isIdle", true);
+          if (i == (monsters.Count - 1) && !monsterActivatedThisTurn)
           {
-            monsterActivatedThisTurn = true;
-            currentMonsterId = i;
-            result = UpdateMonster(i);
-          }
-          else if (monsters[i].gameObject.activeSelf)  //don't do this for disabled baseMonster
-          {
-            //deactivate everything
-            monsters[i].anim.SetBool("isRunning", false);
-            monsters[i].anim.SetBool("isWalking", false);
-            monsters[i].anim.SetBool("isAttacking", false);
-            monsters[i].anim.SetBool("isIdle", true);
-            if (i == (monsters.Count - 1) && !monsterActivatedThisTurn)
-            {
-              //this fixes a bug where monsters were stopping then instantly reactivating due to player proximity
-              activated = false;
-            }
+            //this fixes a bug where monsters were stopping then instantly reactivating due to player proximity
+            activated = false;
           }
         }
       }
-      if (result == 1 || health.GetHealthAmount() == 0)
-      {
-        resetNoteState();
-        resetSignState();
-        player_controller.setMoveActivate(true);
-        StartCoroutine(ShowMessage("You lose :'(", 3f, true));
-      }
-
-      //load next level if player has defeated all the monsters
-      bool allMonstersDefeated = true;
-      foreach (Monster monster in monsters){
-        if(monster.defeated == false){
-          allMonstersDefeated = false;
-          break;
-        }
-      }
-      if(allMonstersDefeated && autoLoadNextScene){
-        SceneManager.LoadScene(nextScene.name);
-      }
-
+    }
+    // loose
+    if (result == 1 || health.GetHealthAmount() == 0){
+      looseGame();
     }
 
+    //load next level if player has defeated all the monsters
+    bool allMonstersDefeated = true;
+    foreach (Monster monster in monsters){
+      if(monster.defeated == false){
+        allMonstersDefeated = false;
+        break;
+      }
+    }
+    if(allMonstersDefeated && autoLoadNextScene){
+      SceneManager.LoadScene(nextScene.name);
+    }
 
   //TODO: add key listener for buttons that activate scales
   // set soundPlayer.inLearning = true;
@@ -185,6 +187,8 @@ public class MonsterManager : NoteStateControl
     //do nothing if player has already defeated monster
     if(monsters[id].defeated == true){
       //TODO: make monster run away / disappear
+      // update score
+      score.updateDefMonster();
       return 0;
     }
 
@@ -255,7 +259,8 @@ public class MonsterManager : NoteStateControl
         }
         else
         {
-          Camera.main.fieldOfView = 40f;                          //zoom in camera to go into 'combat mode'
+          //zoom in camera to go into 'combat mode'
+          Camera.main.fieldOfView = 40f;
           monsters[id].transform.LookAt(player);   //TODO: we need this but need to change the player transform somehow as it's the wrong angle
 
           // check each key
@@ -291,6 +296,31 @@ public class MonsterManager : NoteStateControl
       }
     return 0;
 
+  }
+
+  // init monster
+  private void initMonsters(){
+    for (int i = 0; i < monsters.Count; i++)
+      {
+        resetNoteState();
+        resetSignState();
+        // container position
+        c_pos = 0;
+        error_counter = 0;
+        monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
+        monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
+        container.updateNoteContainer(note_state);
+        container.updateSignContainer(sign_state);
+      }
+      initialisedMonsters = true;
+  }
+
+  // loose condition
+  private void looseGame(){
+    resetNoteState();
+    resetSignState();
+    player_controller.setMoveActivate(true);
+    StartCoroutine(ShowMessage("You lose :'(", 3f, true));
   }
 
   //do not call directly, call with StartCoroutine(ShowMessage(...))
