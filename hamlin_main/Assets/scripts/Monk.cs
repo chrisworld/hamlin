@@ -13,6 +13,8 @@ public class Monk : MonoBehaviour {
   bool playerNear;
   bool scriptFinished;
 
+  //TODO: monk needs to move - either idle 
+
   //This is the *only* place you need to edit text to change the dialogue between the player and monk
   void initScript() {
 
