@@ -185,6 +185,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1551358183}
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &222611255 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114268701607626034, guid: 68f711281f5854d199defab5795154cc,
+    type: 2}
+  m_PrefabInternal: {fileID: 1551358183}
+  m_Script: {fileID: 11500000, guid: 4cf2676e8547e4695abcc4092e28cbc4, type: 3}
 --- !u!114 &294572672 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114449487582487692, guid: 26ecccdefe1232b41832c6f9bcb6fb5b,
@@ -601,6 +607,11 @@ Prefab:
       propertyPath: hideBaseMonster
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114499371242208822, guid: 1c1a6076a23ede745a10bb0cadc681e7,
+        type: 2}
+      propertyPath: container
+      value: 
+      objectReference: {fileID: 222611255}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1c1a6076a23ede745a10bb0cadc681e7, type: 2}
   m_IsPrefabParent: 0
@@ -8745,6 +8756,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 68f711281f5854d199defab5795154cc, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1567687655 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114499371242208822, guid: 1c1a6076a23ede745a10bb0cadc681e7,
+    type: 2}
+  m_PrefabInternal: {fileID: 608652869}
+  m_Script: {fileID: 11500000, guid: 9d8d09db40095ef498c8c70fceddb09d, type: 3}
 --- !u!1001 &1600584631
 Prefab:
   m_ObjectHideFlags: 0
@@ -8849,6 +8866,11 @@ Prefab:
       propertyPath: m_Name
       value: BaseMonster
       objectReference: {fileID: 0}
+    - target: {fileID: 114005875767500178, guid: 8d0ee62c67c88b94289db1de985cfaa8,
+        type: 2}
+      propertyPath: health
+      value: 
+      objectReference: {fileID: 294572672}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d0ee62c67c88b94289db1de985cfaa8, type: 2}
   m_IsPrefabParent: 0
@@ -9315,7 +9337,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 76bce5690f05f2042b07ba65ecc17d00, type: 3}
   - {fileID: 21300000, guid: 26b7c34be381e9641acafde5e8de0970, type: 3}
   - {fileID: 21300000, guid: f49ccd757a8427a408f6b7a02feb060d, type: 3}
-  monsterManager: {fileID: 0}
+  monsterManager: {fileID: 1567687655}
 --- !u!95 &2097599445
 Animator:
   serializedVersion: 3

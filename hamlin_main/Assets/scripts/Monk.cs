@@ -27,15 +27,6 @@ public class Monk : MonoBehaviour
   void StoryInit(){
 
     //**Introduction**
-
-    //DEBUG REMOVE ME
-    story.Enqueue(6); //C major TeachScale
-    story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
-    story.Enqueue("Hamlin: Have we met?");
-    story.Enqueue("Monk: We have not, but any music believer is a friend of mine.");
-    story.Enqueue(7);
-    story.Enqueue(8);
-
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
     story.Enqueue("Monk: We have not, but any music believer is a friend of mine.");
@@ -191,13 +182,14 @@ public class Monk : MonoBehaviour
 
   IEnumerator MonsterBattle(int codeTrigger, int rand){
     
-    //TODO
+    //TODO - should monster run from afar? unrealistic to just spawn next to you
     Vector3 position = new Vector3(player.position.x, player.position.y, player.position.z - 0.2f);
     Monster monster = Instantiate<Monster>(monsterManager.monsters[0], position, Quaternion.identity);
 
     if (codeTrigger == 12){  //Battle 1, C major or G major monster
       monster.scale_name = (ScaleNames)1;
-      monster.base_key = (rand == 0) ? (NoteBaseKey)48 : (NoteBaseKey)55;
+      //monster.base_key = (rand == 0) ? (NoteBaseKey)48 : (NoteBaseKey)55;
+      monster.base_key = (NoteBaseKey)55;
     }
     else if(codeTrigger == 13){ //Battle 2, D major or A minor monster
       monster.scale_name = (rand == 0) ? (ScaleNames)1 : (ScaleNames)2;
@@ -209,10 +201,15 @@ public class Monk : MonoBehaviour
     }
     monster.gameObject.SetActive(true);
     monsterManager.monsters.Add(monster);
-    int index = monsterManager.monsters.Count - 1;
+    monsterManager.initMonsters();
+    playerController.forceActivateCombat = true;
     storyStopped = true;
-    yield return new WaitUntil(() => (monsterManager.monsters[index].defeated == true));
-    //monsterManager.monsters.Remove(monster);
+    yield return new WaitUntil(() => monster == null);
+
+    //this is to get the stave to disappear - works but slow, would like a better method
+    playerController.hold_flute = false;
+    playerController.forceActivateCombat = true;
+
     storyStopped = false;
 
   }
@@ -298,7 +295,6 @@ public class Monk : MonoBehaviour
     info_image.GetComponent<Image>().color = oldColor;
     canvasTransform.position = oldPosition;
     dialogueClicked = false;
-    print("sanity check that code does get here");
   }
 
   void StoryEvent(int codeTrigger){

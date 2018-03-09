@@ -29,7 +29,6 @@ public class MonsterManager : NoteStateControl
   public float viewDistance = 2f;
   public float attackDistance = 1f;
   public float viewAngle = 60f;
-  public ScaleNames scale_name;
 
   private bool activated;
   //private bool chasing;
@@ -128,7 +127,8 @@ public class MonsterManager : NoteStateControl
           continue;
         }
         // defeated monser
-        if (monsters[i].defeated){
+        // DO NOT DELETE BASE MONSTER (0);
+        if (i != 0 && monsters[i].defeated){
           // ToDo anim
           monsters[i].dying = true;
           Camera.main.fieldOfView = 60f;
@@ -198,6 +198,7 @@ public class MonsterManager : NoteStateControl
     {
       activated = true;
       // put scale
+      base_key = monsters[id].base_key; //hack to avoid refactoring NoteStateControl
       setNoteStateToScale(monsters[id].box_scale);
       setSignStateToScale(monsters[id].box_scale);
       c_pos = 0;
@@ -246,10 +247,12 @@ public class MonsterManager : NoteStateControl
         if (c_pos >= monsters[id].box_scale.Length)          //player has beaten monster
         {
           activated = false;
-          StartCoroutine(ShowMessage("You win!", 3f, false));
+          StartCoroutine(ShowMessage("You defeated the monster!", 3f, false));
           resetNoteState();
           resetSignState();
-          player_controller.setMoveActivate(true);
+          container.resetScaleInd();
+          //player_controller.setMoveActivate(true);
+          player_controller.exitPlayMode();
           monsters[id].defeated = true;
           return 0;
         }
@@ -301,7 +304,7 @@ public class MonsterManager : NoteStateControl
   }
 
   // init monster
-  private void initMonsters(){
+  public void initMonsters(){
     for (int i = 0; i < monsters.Count; i++)
       {
         resetNoteState();
@@ -309,8 +312,13 @@ public class MonsterManager : NoteStateControl
         // container position
         c_pos = 0;
         error_counter = 0;
+        base_key = monsters[i].base_key;  //hack to avoid refactoring NoteStateControl
         monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
         monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
+        setNoteStateToScale(monsters[i].box_scale);
+        setSignStateToScale(monsters[i].box_scale);
+        container.updateScaleInd(monsters[i].scale_name, monsters[i].base_key);
+
         container.updateNoteContainer(note_state);
         container.updateSignContainer(sign_state);
       }
