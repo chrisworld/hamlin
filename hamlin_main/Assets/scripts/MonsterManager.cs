@@ -316,8 +316,15 @@ public class MonsterManager : NoteStateControl
     setNoteStateToScale(monsters[id].box_scale);
     setSignStateToScale(monsters[id].box_scale);
     container.updateScaleInd(scale_name, base_key);
-    player_controller.changeScaleText (castScale((int)monsters[id].scale_name));
-    player_controller.changeBaseKeyText (castBaseKey((int)(monsters[id].base_key_monster-48)));
+    string scaleText = castScale((int)monsters[id].scale_name);
+    string baseKeyText = castBaseKey((int)(monsters[id].base_key_monster - 48));
+    player_controller.changeScaleText(scaleText);
+    player_controller.changeBaseKeyText(baseKeyText);
+    if(proceduralMode){
+      //E.g. "A wild C Dorian monster appears!". A bit of fun :)
+      infobox.text = "A wild " + baseKeyText + " " + scaleText + " monster appears!";
+      info_image.SetActive(true);
+    }
   }
 
   // start the fight
@@ -337,6 +344,7 @@ public class MonsterManager : NoteStateControl
     sound_player.inCombat = true;
     player_controller.forceActivateCombat = true;
     monsters[id].anim.SetTrigger("fight");
+    if (proceduralMode) info_image.SetActive(true);
   }
 
   // start the fight
@@ -344,6 +352,7 @@ public class MonsterManager : NoteStateControl
     fight_mode = false;
     sound_player.inCombat = false;
     //player_controller.setMoveActivate(false);
+    if (proceduralMode) info_image.SetActive(false);
   }
 
   // exit Monster Scale
