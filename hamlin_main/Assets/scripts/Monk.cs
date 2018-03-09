@@ -83,7 +83,6 @@ public class Monk : MonoBehaviour
 
     //**D MAJOR**
     story.Enqueue("Ah, so you're back for more? How about we try D major this time?");
-    story.Enqueue("");
     story.Enqueue(8); //D major TeachScale
 
     //**HALF AND WHOLE TONES, MAJOR VS MINOR**
@@ -185,8 +184,7 @@ public class Monk : MonoBehaviour
 
     if (codeTrigger == 12){  //Battle 1, C major or G major monster
       monster.scale_name = (ScaleNames)1;
-      //monster.base_key_monster = (rand == 0) ? (NoteBaseKey)48 : (NoteBaseKey)55;
-      monster.base_key_monster = (NoteBaseKey)55;
+      monster.base_key_monster = (rand == 0) ? (NoteBaseKey)48 : (NoteBaseKey)55;
     }
     else if(codeTrigger == 13){ //Battle 2, D major or A minor monster
       monster.scale_name = (rand == 0) ? (ScaleNames)1 : (ScaleNames)2;
@@ -199,7 +197,6 @@ public class Monk : MonoBehaviour
     monster.gameObject.SetActive(true);
     monsterManager.monsters.Add(monster);
     monsterManager.initMonsters();
-    playerController.forceActivateCombat = true;
     storyStopped = true;
     yield return new WaitUntil(() => monster == null);
 
