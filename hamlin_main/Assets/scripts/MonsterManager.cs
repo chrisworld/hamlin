@@ -381,7 +381,7 @@ public class MonsterManager : NoteStateControl
   }
 
   // init monster
-  private void initMonsters(){
+  public void initMonsters(){
     for (int i = 0; i < monsters.Count; i++)
     {
       base_key = monsters[i].base_key_monster;
