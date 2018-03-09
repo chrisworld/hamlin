@@ -10,7 +10,7 @@ public class LearnScale : NoteStateControl {
 	public Transform player;
 	public PlayerController player_controller;
 	public Health health;
-
+  public bool unlimitedWrongNotes = false;    //used by Monk.cs, **do not remove**
 	public Score score;
 	[HideInInspector]
 	public Animator anim;
@@ -82,7 +82,7 @@ public class LearnScale : NoteStateControl {
 	  			return;
 	  		}
 	  		// loose condition
-	  		else if (error_counter > 5){
+	  		else if (error_counter > 5 && !unlimitedWrongNotes){
 	  			// ToDo: ErrorSound
 	  			//activate_sound.Play();
 	  			exitLearnScale();
@@ -180,7 +180,7 @@ public class LearnScale : NoteStateControl {
 		resetNoteState();
 		resetSignState();
 		container.resetScaleInd();
-	}
+  }
 
 	// win the Learn Scale
 	private void winLearnScale (){

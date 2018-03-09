@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -174,9 +174,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 0}
 --- !u!114 &70795434 stripped
@@ -271,6 +271,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -371,9 +372,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300008, guid: 2e25cc2d42cdffc4792db7ebbf70105b, type: 3}
 --- !u!1 &598981751
@@ -594,9 +595,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300004, guid: 2e25cc2d42cdffc4792db7ebbf70105b, type: 3}
 --- !u!114 &1069089994 stripped
@@ -893,9 +894,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300006, guid: 2e25cc2d42cdffc4792db7ebbf70105b, type: 3}
 --- !u!1001 &1529906946
@@ -8359,7 +8360,7 @@ Prefab:
     - target: {fileID: 224282825649170232, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224900695532289564, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8379,7 +8380,7 @@ Prefab:
     - target: {fileID: 224900695532289564, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224519173876915774, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8399,7 +8400,7 @@ Prefab:
     - target: {fileID: 224519173876915774, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224357497426978050, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8419,7 +8420,7 @@ Prefab:
     - target: {fileID: 224357497426978050, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224644481224411292, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8439,7 +8440,7 @@ Prefab:
     - target: {fileID: 224644481224411292, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224532825951238182, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8459,7 +8460,7 @@ Prefab:
     - target: {fileID: 224532825951238182, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224820629143739040, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8479,7 +8480,7 @@ Prefab:
     - target: {fileID: 224820629143739040, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224411270893409920, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8499,7 +8500,7 @@ Prefab:
     - target: {fileID: 224411270893409920, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224199316342950776, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8519,7 +8520,7 @@ Prefab:
     - target: {fileID: 224199316342950776, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586738243814594, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8539,7 +8540,7 @@ Prefab:
     - target: {fileID: 224586738243814594, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224911526352528370, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8559,7 +8560,7 @@ Prefab:
     - target: {fileID: 224911526352528370, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224926646466867650, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8579,7 +8580,7 @@ Prefab:
     - target: {fileID: 224926646466867650, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224478017314187532, guid: 68f711281f5854d199defab5795154cc,
         type: 2}
@@ -8875,9 +8876,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 2e25cc2d42cdffc4792db7ebbf70105b, type: 3}
 --- !u!114 &1736520073 stripped
