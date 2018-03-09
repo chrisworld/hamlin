@@ -188,7 +188,12 @@ namespace MidiJack
         }
 
         void Update()
-        {
+        {   
+            // disabled if linux
+            if (SystemInfo.operatingSystem.Contains("Linux")){
+              return;
+            }
+
             // Update the note state array.
             foreach (var cs in _channelArray)
             {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Monster : MonoBehaviour {
 
   public ScaleNames scale_name;
-  public NoteBaseKey base_key;
+  public NoteBaseKey base_key_monster;
   public Health health;
 
   //these all need to be public so MonsterManager can access them
@@ -48,8 +48,9 @@ public class Monster : MonoBehaviour {
   {
     health.takeDamage(1);
     //only attack once
-    anim.SetBool("isAttacking", false);
-    anim.SetBool("isIdle", true);
+    //anim.SetBool("isAttacking", false);
+    //anim.SetBool("isIdle", true);
+
     playerDamageQueue--;
     //attack animation takes time - player may have played other wrong notes in the meantime
     if(playerDamageQueue > 0){

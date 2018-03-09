@@ -143,7 +143,7 @@ public class EndlessTerrain : MonoBehaviour {
       //create monster and add to MonsterManager's monsters list
       Monster monster = Instantiate<Monster>(baseMonster, position, rotation);
       monster.scale_name = scaleNames[ Random.Range(0, scaleNames.Count - 1) ];
-      monster.base_key = baseKeys[ Random.Range(0, baseKeys.Count - 1) ];
+      monster.base_key_monster = baseKeys[ Random.Range(0, baseKeys.Count - 1) ];
       monster.gameObject.SetActive(true);
       monsterManager.monsters.Add(monster);
     }

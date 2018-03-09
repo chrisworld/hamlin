@@ -58,6 +58,8 @@ public class Score : MonoBehaviour {
   // defeated a monster add to score
   public void updateDefMonster(){
     defeated_monsters++;
+    countCurScore();
+    ScoreText.text = "Score: " + score_cur + " / " + score_total;
   }
 
   // count the current score

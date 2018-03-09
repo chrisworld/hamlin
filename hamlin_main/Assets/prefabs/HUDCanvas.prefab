@@ -11840,7 +11840,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'score: 10 / 10 '
+  m_Text: 'Score: 10 / 10 '
 --- !u!114 &114342851351415804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -25223,8 +25223,8 @@ RectTransform:
   - {fileID: 4591527445162824}
   - {fileID: 224242181376860880}
   - {fileID: 224758557861185902}
-  - {fileID: 224478017314187532}
   - {fileID: 224988809112703774}
+  - {fileID: 224478017314187532}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -26761,7 +26761,7 @@ RectTransform:
   m_Children:
   - {fileID: 224415965986653298}
   m_Father: {fileID: 224299821333855114}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -30940,7 +30940,7 @@ RectTransform:
   m_Children:
   - {fileID: 224495271831337714}
   m_Father: {fileID: 224299821333855114}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}

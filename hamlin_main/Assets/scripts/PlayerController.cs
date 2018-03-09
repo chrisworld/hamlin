@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class PlayerController : MonoBehaviour {
-	// public
+  // public
   public Transform player;
   public Transform hud;
   public Text ScaleText;
@@ -46,24 +45,24 @@ public class PlayerController : MonoBehaviour {
 
   // start
 	void Start () {
-      anim = GetComponentInChildren<Animator>();
-      cameraT = Camera.main.transform;
-      controller = GetComponent<CharacterController>();
-      move_activated = true;
-      if(player == null){
-          player = GameObject.Find("Player").GetComponent<Transform>();
-      }
-      if(hud == null){
-        hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
-      }
-      if(ScaleText == null){
-        ScaleText = GameObject.Find("HUDCanvas/Note/ScaleText").GetComponent<Text>();
-      }
-      if(BaseKeyText == null){
-        BaseKeyText = GameObject.Find("HUDCanvas/Note/BaseKey").GetComponent<Text>();
-      }
-      hud.transform.GetChild(1).gameObject.SetActive(false);
+    anim = GetComponentInChildren<Animator>();
+    cameraT = Camera.main.transform;
+    controller = GetComponent<CharacterController>();
+    move_activated = true;
+    if(player == null){
+        player = GameObject.Find("Player").GetComponent<Transform>();
     }
+    if(hud == null){
+      hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
+    }
+    if(ScaleText == null){
+      ScaleText = GameObject.Find("HUDCanvas/Note/ScaleText").GetComponent<Text>();
+    }
+    if(BaseKeyText == null){
+      BaseKeyText = GameObject.Find("HUDCanvas/Note/BaseKey").GetComponent<Text>();
+    }
+    hud.transform.GetChild(1).gameObject.SetActive(false);
+  }
 	
 	// update
 	void Update () {
@@ -151,7 +150,7 @@ public class PlayerController : MonoBehaviour {
 	    play_mode = true;
 	    sound_player.inPlay = true;
 	    move_activated = false;
-        inDistance = false;
+      inDistance = false;
   	}
   }
 
@@ -192,6 +191,20 @@ public class PlayerController : MonoBehaviour {
       hold_flute = false;
       exitPlayMode();
     }
+  }
+
+  // ready to play (cont. playing state)
+  public bool hamlinReadyToPlay(){
+    if (play_mode){
+      int cont_hash = Animator.StringToHash("Base Layer.hamlin_cont_play");
+      int play_hash = Animator.StringToHash("Base Layer.hamlin_play_note");
+      // switch the model
+      AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+      if (stateInfo.fullPathHash == cont_hash || stateInfo.fullPathHash == play_hash){
+        return true;
+      }
+    }
+    return false;
   }
   
   //should work even when movement disabled

@@ -12,15 +12,15 @@ ModelImporter:
     2100004: monster_white
     2100006: monster_teeth
     4300000: monster2_1_001
-    7400000: Attackmode off
-    7400002: Idlemode move
-    7400004: Idlemode idle
-    7400006: Attackmode on
-    7400008: Attackmode move
-    7400010: Attackmode idle
-    7400012: Attackmode attack
-    7400014: Attackmode hit
-    7400016: Attackmode death
+    7400000: spikes_off
+    7400002: move
+    7400004: idle
+    7400006: spikes_on
+    7400008: move_spikes
+    7400010: idle_attack
+    7400012: attack
+    7400014: getHurt
+    7400016: death
     9500000: //RootNode
     13700000: //RootNode
   externalObjects: {}
@@ -51,7 +51,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Attackmode off
+      name: spikes_off
       takeName: Take 001
       firstFrame: 0
       lastFrame: 20
@@ -79,7 +79,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Idlemode move
+      name: move
       takeName: Take 001
       firstFrame: 20
       lastFrame: 50
@@ -89,8 +89,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -107,7 +107,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Idlemode idle
+      name: idle
       takeName: Take 001
       firstFrame: 50
       lastFrame: 85
@@ -117,8 +117,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -135,7 +135,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attackmode on
+      name: spikes_on
       takeName: Take 001
       firstFrame: 85
       lastFrame: 105
@@ -163,7 +163,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attackmode move
+      name: move_spikes
       takeName: Take 001
       firstFrame: 105
       lastFrame: 130
@@ -173,8 +173,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -191,7 +191,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attackmode idle
+      name: idle_attack
       takeName: Take 001
       firstFrame: 130
       lastFrame: 175
@@ -201,8 +201,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -219,7 +219,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attackmode attack
+      name: attack
       takeName: Take 001
       firstFrame: 174
       lastFrame: 220
@@ -247,7 +247,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attackmode hit
+      name: getHurt
       takeName: Take 001
       firstFrame: 220
       lastFrame: 260
@@ -275,7 +275,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Attackmode death
+      name: death
       takeName: Take 001
       firstFrame: 260
       lastFrame: 290
@@ -318,8 +318,6 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

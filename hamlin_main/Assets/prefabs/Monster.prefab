@@ -950,7 +950,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1315182886761472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.075788, y: -0.00000007027052, z: 0.5894719}
+  m_LocalPosition: {x: 1.051, y: -0.00000007027052, z: 1.766}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4227393577619918}
@@ -1189,7 +1189,7 @@ Animator:
   m_GameObject: {fileID: 1315182886761472}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 5a35c5f0a89b9654d897ccd7c8f81bd0, type: 3}
-  m_Controller: {fileID: 9100000, guid: 4b8b666ca64f7d9418fed0a52589e452, type: 2}
+  m_Controller: {fileID: 9100000, guid: b948de3f1b87d44fbb075dee4da4ff93, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1209,12 +1209,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scale_name: 1
-  base_key: 48
+  base_key_monster: 48
   health: {fileID: 0}
   anim: {fileID: 0}
   nav: {fileID: 0}
   box_scale: 
   box_midi: 
+  defeated: 0
+  dying: 0
+  playerDamageQueue: 0
 --- !u!137 &137046968917316708
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

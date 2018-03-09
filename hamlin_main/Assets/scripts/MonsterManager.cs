@@ -29,16 +29,17 @@ public class MonsterManager : NoteStateControl
   public float viewDistance = 2f;
   public float attackDistance = 1f;
   public float viewAngle = 60f;
+  [HideInInspector]
   public ScaleNames scale_name;
 
   private bool activated;
-  //private bool chasing;
+  private bool chasing;
+  private bool fight_mode;
   private int currentMonsterId;
   private bool initialisedMonsters;
   private bool proceduralMode;
 
   private int c_pos;
-  private int error_counter;
 
   void Start()
   {
@@ -60,9 +61,11 @@ public class MonsterManager : NoteStateControl
     if(hud == null){
       hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
       info_image = hud.transform.GetChild(3).gameObject;
-      
-      //infobox = info_image.GetComponent<Text>();
     }
+    if(infobox == null){
+      infobox = GameObject.Find("HUDCanvas/Info/Text").GetComponent<Text>();
+    }
+    infobox.text = "message";
     // init vars
     info_image.SetActive(false);
     proceduralMode = (numMonstersPerChunk > 0) ? true : false;
@@ -71,7 +74,8 @@ public class MonsterManager : NoteStateControl
     foreach (Monster monster in tempMonsters){
       monsters.Add(monster);
     }   
-    //chasing = false;
+    chasing = false;
+    fight_mode = false;
     activated = false;
 
     //TODO: have list of learnt scales and this random selection should be limited to the list of scales the player has learnt
@@ -101,70 +105,83 @@ public class MonsterManager : NoteStateControl
   // update
   void Update()
   {
-
     bool monsterActivatedThisTurn = false;
     int result = 0;
-
 
     // init
     if (!initialisedMonsters && monsters != null){
       initMonsters();
       return;
     }
-    // monster update
-    if (activated)
+    // current monster activated
+    else if (activated)
     {           
       //update just the active monster, activated = false when combat has finished
       result = UpdateMonster(currentMonsterId);
       monsterActivatedThisTurn = true;
     }
+    // search for monster to activate
     else
     {                  
       //cycle through all monsters and activate first one which is within combat distance, if any
       for (int i = 0; i < monsters.Count; i++)
       { 
-        // monsters dying
+        // trash dying monsters
         if (monsters[i].dying){
+          int death_hash = Animator.StringToHash("Base Layer.death");
+          AnimatorStateInfo stateInfo = monsters[i].anim.GetCurrentAnimatorStateInfo(0);
+          if (stateInfo.fullPathHash == death_hash){
+            score.updateDefMonster();
+            Destroy(monsters[i].gameObject);
+            monsters.RemoveAt(i);
+          }
           continue;
         }
-        // defeated monser
-        if (monsters[i].defeated){
+        // defeated monster
+        else if (monsters[i].defeated){
           // ToDo anim
           monsters[i].dying = true;
           Camera.main.fieldOfView = 60f;
           player_controller.exitPlayMode();
-          score.updateDefMonster();
-          Destroy(monsters[i].gameObject, 1);
+          monsters[i].anim.SetTrigger("die");
         }
-        // something
+        // player in view
         else if (!monsterActivatedThisTurn && Vector3.Distance(player.position, monsters[i].transform.position) < viewDistance && Vector3.Angle(player.position - monsters[i].transform.position, monsters[i].transform.forward) < viewAngle)
         {
           monsterActivatedThisTurn = true;
           currentMonsterId = i;
+          base_key = monsters[i].base_key_monster;
           result = UpdateMonster(i);
+          monsters[i].anim.SetTrigger("spotPlayer");
+          Debug.Log("Player spotted");
         }
         //don't do this for disabled baseMonster
+        /*
         else if (monsters[i].gameObject.activeSelf)  
         {
           //deactivate everything
-          monsters[i].anim.SetBool("isRunning", false);
-          monsters[i].anim.SetBool("isWalking", false);
-          monsters[i].anim.SetBool("isAttacking", false);
-          monsters[i].anim.SetBool("isIdle", true);
+          //monsters[i].anim.SetBool("isRunning", false);
+          //monsters[i].anim.SetBool("isWalking", false);
+          //monsters[i].anim.SetBool("isAttacking", false);
+          //monsters[i].anim.SetBool("isIdle", true);
+          monsters[i].anim.SetTrigger("goIdle");
           if (i == (monsters.Count - 1) && !monsterActivatedThisTurn)
           {
             //this fixes a bug where monsters were stopping then instantly reactivating due to player proximity
             activated = false;
           }
         }
+        */
       }
     }
+
     // loose
     if (result == 1 || health.GetHealthAmount() == 0){
       looseGame();
     }
 
     //load next level if player has defeated all the monsters
+    /*
     bool allMonstersDefeated = true;
     foreach (Monster monster in monsters){
       if(monster.defeated == false){
@@ -175,6 +192,7 @@ public class MonsterManager : NoteStateControl
     if(allMonstersDefeated && autoLoadNextScene){
       SceneManager.LoadScene(nextScene.name);
     }
+    */
 
   //TODO: add key listener for buttons that activate scales
   // set soundPlayer.inLearning = true;
@@ -184,137 +202,158 @@ public class MonsterManager : NoteStateControl
   //return values: 0 no action, 1 player lost
   int UpdateMonster(int id) {
 
-    //do nothing if player has already defeated monster
-    if(monsters[id].defeated == true){
-      //TODO: make monster run away / disappear
-      // update score
-      score.updateDefMonster();
-      return 0;
-    }
-
     Vector3 direction = player.position - monsters[id].transform.position;
     // start the scale
     if (!activated && Input.anyKey)
     {
-      activated = true;
-      // put scale
-      setNoteStateToScale(monsters[id].box_scale);
-      setSignStateToScale(monsters[id].box_scale);
-      c_pos = 0;
-      error_counter = 0;
-      sound_player.inCombat = true;
-			player_controller.changeScaleText (castScale((int)monsters[id].scale_name));
-			player_controller.changeBaseKeyText (castBaseKey((int)(monsters[id].base_key-48)));
-     }
-     // stop the scale
-     else if (activated && player_controller.checkValidJumpKey())
-     {
-        activated = false;
-        player_controller.setMoveActivate(true);
-        c_pos = 0;
-        error_counter = 0;
-        resetNoteState();
-        resetSignState();
-        sound_player.inCombat = false;
-        if(!proceduralMode) monsters[id].nav.isStopped = false;
-        return 0;
-     }
-      else if (activated && (direction.magnitude > attackDistance))     //too far away to attack, chase player
-      {
-        monsters[id].anim.SetBool("isRunning", false);
-        monsters[id].anim.SetBool("isWalking", true);
-        monsters[id].anim.SetBool("isAttacking", false);
-        monsters[id].anim.SetBool("isIdle", false);
-        if(!proceduralMode)  monsters[id].nav.destination = player.position;  //chasing currently NOT implemented for proceduralMode as no nav mesh
-        //chasing = true; 
-      }
-      // play the scales
-      else if (activated)
-      {
-        monsters[id].anim.SetBool("isRunning", false);
-        monsters[id].anim.SetBool("isWalking", false);
-        monsters[id].anim.SetBool("isAttacking", false);
-        monsters[id].anim.SetBool("isIdle", true);
+      initMonsterScale(id);
+    }
+    //too far away to attack, chase player
+    else if (activated && (direction.magnitude > attackDistance) && !chasing) 
+    {
+      //monsters[id].anim.SetBool("isRunning", false);
+      //monsters[id].anim.SetBool("isWalking", true);
+      //monsters[id].anim.SetBool("isAttacking", false);
+      //monsters[id].anim.SetBool("isIdle", false);
+
+      //chasing currently NOT implemented for proceduralMode as no nav mesh
+      if(!proceduralMode)  monsters[id].nav.destination = player.position;  
+      chasing = true; 
+    }
+    // play the scales, fight mode
+    else if (activated && (direction.magnitude < attackDistance) && !fight_mode)
+    {
+      startFight(id);
+    }
+    // stop the fight
+    /*
+    else if (fight_mode && run)
+    {
+      exitMonsterScale(id);
+      return 0;
+    }
+    */
+    else if (fight_mode && player_controller.hamlinReadyToPlay())
+    {
+      //monsters[id].anim.SetBool("isRunning", false);
+      //monsters[id].anim.SetBool("isWalking", false);
+      //monsters[id].anim.SetBool("isAttacking", false);
+      //monsters[id].anim.SetBool("isIdle", true);
+
       if (!proceduralMode && !monsters[id].nav.isStopped)
-        {
-          monsters[id].nav.ResetPath();
-          monsters[id].nav.isStopped = true;
-        }
-        player_controller.setMoveActivate(false);
-        int key = 0;
-        bool[] key_mask = getKeyMask();
-        if (c_pos >= monsters[id].box_scale.Length)          //player has beaten monster
-        {
-          activated = false;
-          StartCoroutine(ShowMessage("You win!", 3f, false));
-          resetNoteState();
-          resetSignState();
-          player_controller.setMoveActivate(true);
-          monsters[id].defeated = true;
-          return 0;
-        }
-        else if (health.GetHealthAmount() == 0)         //game ends if they run out of health
-        {
-          print("player out of health");
-          activated = false;
-          return 1;
-        }
-        else
-        {
-          //zoom in camera to go into 'combat mode'
-          Camera.main.fieldOfView = 40f;
-          monsters[id].transform.LookAt(player);   //TODO: we need this but need to change the player transform somehow as it's the wrong angle
-
-          // check each key
-          foreach (bool mask in key_mask)
-          {
-            if (mask)
-            {
-              cleanWrongNoteState(monsters[id].box_scale);
-              int note_midi = keyToMidiMapping(key);
-              int note_pos = midiToContainerMapping(note_midi);
-              if (note_midi == monsters[id].box_midi[c_pos])
-              {
-                note_state[c_pos][note_pos] = NoteState.RIGHT;
-                sign_state[c_pos][note_pos] = midiToSignState(note_midi);
-                c_pos++;
-              }
-              else
-              {
-                note_state[c_pos][note_pos] = NoteState.WRONG;
-                sign_state[c_pos][note_pos] = midiToSignState(note_midi);
-                error_counter++;
-                player_controller.getAttacked();
-                monsters[id].anim.SetBool("isAttacking", true);
-                monsters[id].anim.SetBool("isIdle", false);
-                monsters[id].playerDamageQueue++;
-              }
-            }
-            key++;
-          }
-        }
-        container.updateNoteContainer(note_state);
-        container.updateSignContainer(sign_state);
+      {
+        monsters[id].nav.ResetPath();
+        monsters[id].nav.isStopped = true;
       }
-    return 0;
+      int key = 0;
+      bool[] key_mask = getKeyMask();
+      //player has beaten monster
+      if (c_pos >= monsters[id].box_scale.Length)
+      {
+        winFight(id);
+        return 0;
+      }
+      //game ends if they run out of health
+      else if (health.GetHealthAmount() == 0)
+      {
+        print("player out of health");
+        activated = false;
+        return 1;
+      }
+      // run the scale
+      else
+      {
+        //zoom in camera to go into 'combat mode'
+        Camera.main.fieldOfView = 40f;
+        monsters[id].transform.LookAt(player);   //TODO: we need this but need to change the player transform somehow as it's the wrong angle
 
+        // check each key
+        foreach (bool mask in key_mask)
+        {
+          if (mask)
+          {
+            cleanWrongNoteState(monsters[id].box_scale);
+            int note_midi = keyToMidiMapping(key);
+            int note_pos = midiToContainerMapping(note_midi);
+            // right note
+            if (note_midi == monsters[id].box_midi[c_pos])
+            {
+              note_state[c_pos][note_pos] = NoteState.RIGHT;
+              sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+              monsters[id].anim.SetTrigger("hurt");
+              c_pos++;
+            }
+            // wrong note
+            else
+            {
+              note_state[c_pos][note_pos] = NoteState.WRONG;
+              sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+              player_controller.getAttacked();
+              monsters[id].anim.SetTrigger("attack");
+              //monsters[id].anim.SetBool("isAttacking", true);
+              //monsters[id].anim.SetBool("isIdle", false);
+              monsters[id].playerDamageQueue++;
+            }
+          }
+          key++;
+        }
+      }
+      container.updateNoteContainer(note_state);
+      container.updateSignContainer(sign_state);
+    }
+    return 0;
   }
 
-  // init monster
-  private void initMonsters(){
-    for (int i = 0; i < monsters.Count; i++)
-      {
-        resetNoteState();
-        resetSignState();
-        // container position
-        c_pos = 0;
-        error_counter = 0;
-        monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
-        monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
-        container.updateNoteContainer(note_state);
-        container.updateSignContainer(sign_state);
-      }
-      initialisedMonsters = true;
+  // init Monster Scale
+  private void initMonsterScale(int id){
+    c_pos = 0;
+    activated = true;
+    //sound_player.activate_sound.Play();
+    // put scale
+    setNoteStateToScale(monsters[id].box_scale);
+    setSignStateToScale(monsters[id].box_scale);
+    container.updateScaleInd(scale_name, base_key);
+    player_controller.changeScaleText (castScale((int)monsters[id].scale_name));
+    player_controller.changeBaseKeyText (castBaseKey((int)(monsters[id].base_key_monster-48)));
+  }
+
+  // start the fight
+  private void winFight(int id){
+    //ToDo win sound
+    //sound_player.activate_sound.Play();
+    //player_controller.setMoveActivate(true);
+    StartCoroutine(ShowMessage("You win!", 3f, false));
+    monsters[id].defeated = true;
+    exitMonsterScale(id);
+  }
+
+  // start the fight
+  private void startFight(int id){
+    Debug.Log("Start Fight");
+    fight_mode = true;
+    sound_player.inCombat = true;
+    player_controller.forceActivateCombat = true;
+    monsters[id].anim.SetTrigger("fight");
+  }
+
+  // start the fight
+  private void exitFight(int id){
+    fight_mode = false;
+    sound_player.inCombat = false;
+    //player_controller.setMoveActivate(false);
+  }
+
+  // exit Monster Scale
+  private void exitMonsterScale(int id){
+    c_pos = 0;
+    activated = false;
+    //player_controller.setMoveActivate(true);
+    exitFight(id);
+    player_controller.exitPlayMode();
+    resetNoteState();
+    resetSignState();
+    container.resetScaleInd();
+    if(!proceduralMode) monsters[id].nav.isStopped = false;
   }
 
   // loose condition
@@ -335,107 +374,22 @@ public class MonsterManager : NoteStateControl
     if(endGame){
       SceneManager.LoadScene("MainMenu_pablo");
     }
-
   }
-	public string castScale(int scale){
 
-		if (scale == 0) {
-			return "CHROMATIC";
-		}
-		if (scale == 1){
-			return "MAJOR";
-		}
-		if (scale == 2) {
-			return "MINOR";
-		}
-		if (scale == 3) {
-			return "HARMONIC MINOR";
-		}
-		if (scale == 4) {
-			return "MELODIC MINOR";
-		}
-		if (scale == 5) {
-			return "NATURAL MINOR";
-		}
-		if (scale == 6) {
-			return "DIATONIC MINOR";
-		}
-		if (scale == 7) {
-			return "AEOLIAN";
-		}
-		if (scale == 8) {
-			return "PHRYGIAN";
-		}
-		if (scale == 9) {
-			return "LOCRIAN";
-		}
-		if (scale == 10) {
-			return "DORIAN";
-		}
-		if (scale == 11) {
-			return "LYDIAN";
-		}
-		if (scale == 12) {
-			return "MIXOLYDIAN";
-		}
-		if (scale == 13) {
-			return "PENTATONIC";
-		}
-		if (scale == 14) {
-			return "BLUES";
-		}
-		if (scale == 15) {
-			return "TURKISH";
-		}
-		if (scale == 16) {
-			return "INDIAN";
-		}
-		else{
-			return "";
-		}
-	}
+  // init monster
+  private void initMonsters(){
+    for (int i = 0; i < monsters.Count; i++)
+    {
+      base_key = monsters[i].base_key_monster;
+      resetNoteState();
+      resetSignState();
+      // container position
+      monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
+      monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
+      container.updateNoteContainer(note_state);
+      container.updateSignContainer(sign_state);
+    }
+    initialisedMonsters = true;
+  }
 
-	// cast Base Key
-	public string castBaseKey(int key){
-
-		if (key == 0) {
-			return "C";
-		}
-		if (key == 1){
-			return "C#/Db";
-		}
-		if (key == 2) {
-			return "D";
-		}
-		if (key == 3) {
-			return "D#/Eb";
-		}
-		if (key == 4) {
-			return "E";
-		}
-		if (key == 5) {
-			return "F";
-		}
-		if (key == 6) {
-			return "F#/Gb";
-		}
-		if (key == 7) {
-			return "G";
-		}
-		if (key == 8) {
-			return "G#/Ab";
-		}
-		if (key == 9) {
-			return "A";
-		}
-		if (key == 10) {
-			return "A#/Bb";
-		}
-		if (key == 11) {
-			return "B";
-		}
-		else{
-			return "";
-		}
-	}
 }

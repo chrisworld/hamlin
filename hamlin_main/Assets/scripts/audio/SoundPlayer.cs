@@ -100,29 +100,24 @@ public class SoundPlayer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
-
-
-    if(inCombat || inLearning || inPlay){ 
+    if((inCombat || inLearning || inPlay) && player_controller.hamlinReadyToPlay()){ 
 			if (Input.GetKeyDown(KeyCode.Y) || (MidiKeyPressed == true && MidiKeyPressedNr == 48))
       {
-        
-		
-		c.Play();
+		    c.Play();
         player_controller.playNote();
-	    MidiKeyPressed = false;
+        MidiKeyPressed = false;
       }
 			if (Input.GetKeyDown(KeyCode.S) || (MidiKeyPressed == true && MidiKeyPressedNr == 49))
       {
         c_sh.Play();
         player_controller.playNote();
-		MidiKeyPressed = false;
+		    MidiKeyPressed = false;
       }
 			if (Input.GetKeyDown(KeyCode.Comma) || (MidiKeyPressed == true && MidiKeyPressedNr == 60))
       {
         c1.Play();
         player_controller.playNote();
-		MidiKeyPressed = false;
+		    MidiKeyPressed = false;
       }
 			if (Input.GetKeyDown(KeyCode.X) || (MidiKeyPressed == true && MidiKeyPressedNr == 50))
       {
