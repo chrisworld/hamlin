@@ -330,7 +330,7 @@ public class MonsterManager : NoteStateControl
     resetNoteState();
     resetSignState();
     player_controller.setMoveActivate(true);
-    StartCoroutine(ShowMessage("You lose :'(", 3f, true));
+    StartCoroutine(ShowMessage("You died :'(", 3f, true));
   }
 
   //do not call directly, call with StartCoroutine(ShowMessage(...))
