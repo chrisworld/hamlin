@@ -11,6 +11,7 @@ public class Monk : MonoBehaviour
   public Text infobox;
   public Transform player;
   public Sprite[] images;
+  public Monster baseMonster;
 
   LearnScale baseScale;
   PlayerController playerController;
@@ -66,10 +67,12 @@ public class Monk : MonoBehaviour
     story.Enqueue("Game: The two rows of keys above that are the notes an octave higher.");
     story.Enqueue(1); //show controls
     story.Enqueue(6); //C major TeachScale
+    story.Enqueue(16); //try scale again loop option
 
     //**G Major and 1st monster battle**
     story.Enqueue("Now let's try G major. ...");
     story.Enqueue(7); //G major TeachScale
+    story.Enqueue(16); //try scale again loop option
     story.Enqueue("Monk: Feel free to take a look around the monastery and practice playing your flute!");
     story.Enqueue("We are always happy to hear music here. And goodness knows the other monks could do with some cheering up.");
     story.Enqueue("But keep an eye out for the creatures. Sometimes they seem to just appear out of nowhere!");
@@ -83,6 +86,7 @@ public class Monk : MonoBehaviour
     story.Enqueue("Ah, so you're back for more? How about we try D major this time?");
     story.Enqueue("");
     story.Enqueue(8); //D major TeachScale
+    story.Enqueue(16); //try scale again loop option
 
     //**HALF AND WHOLE TONES, MAJOR VS MINOR**
     story.Enqueue("Monk: Has this all seemed very complicated to you so far? I remember when I was first learning");
@@ -110,14 +114,17 @@ public class Monk : MonoBehaviour
     //**A MINOR, MONSTER 2**
     //TODO introduce A minor
     story.Enqueue(9); //A minor TeachScale
+    story.Enqueue(16); //try scale again loop option
     story.Enqueue(13); //Battle 2
 
     //**E MINOR, B MINOR**
     story.Enqueue(10); //E minor TeachScale
+    story.Enqueue(16); //try scale again loop option
     story.Enqueue("By the way, I heard that this isn't called B minor in every part of Espero. In some towns they call it H minor too.");
     story.Enqueue("Imagine that! The variety of the other tongues we have here in Espero has always fascinated me.");
     story.Enqueue("But anyway, I am digressing into my books again...");
     story.Enqueue(11); //B minor TeachScale
+    story.Enqueue(16); //try scale again loop option
 
     //**Circle of fifths, MONSTER 3**
     story.Enqueue("Let me tell you another secret. The circle of fifths is your handy cheat-sheet to the world of major and minor scales;");
@@ -175,20 +182,27 @@ public class Monk : MonoBehaviour
     storyStopped = false;
   }
 
-  IEnumerator MonsterBattle(int codeTrigger){
-
+  IEnumerator MonsterBattle(int codeTrigger, int rand){
+    
     //TODO
+    Vector3 position = new Vector3(player.position.x, player.position.y, player.position.z - 0.2f);
+    Monster monster = Instantiate<Monster>(baseMonster, position, Quaternion.identity);
 
-    if(codeTrigger == 12){  //Battle 1, C major or G major monster
-
+    if (codeTrigger == 12){  //Battle 1, C major or G major monster
+      monster.scale_name = (ScaleNames)1;
+      monster.base_key = (rand == 0) ? (NoteBaseKey)48 : (NoteBaseKey)55;
     }
     else if(codeTrigger == 13){ //Battle 2, D major or A minor monster
-
+      monster.scale_name = (rand == 0) ? (ScaleNames)1 : (ScaleNames)2;
+      monster.base_key = (rand == 0) ? (NoteBaseKey)50 : (NoteBaseKey)57;
     }
     else {  //codeTrigger == 14. Battle 3, E minor or B minor monster
-
+      monster.scale_name = (ScaleNames)2;
+      monster.base_key = (rand == 0) ? (NoteBaseKey)52 : (NoteBaseKey)59;
     }
+    monster.gameObject.SetActive(true);
 
+    //TODO CHANGE THIS CONDITION TO MONSTER DEFEATED
     yield return new WaitUntil(() => (monkInteracted == true));
 
   }
@@ -288,12 +302,18 @@ public class Monk : MonoBehaviour
 
     //Monster battles
     else if(codeTrigger <= 14){
-      StartCoroutine(MonsterBattle(codeTrigger));
+      int rand = Random.Range(0, 2);
+      StartCoroutine(MonsterBattle(codeTrigger, rand));
     }
 
     //Pause story waiting for monk interaction
     else if(codeTrigger == 15){
       StartCoroutine(WaitForMonkInteraction());
+    }
+
+    else if(codeTrigger == 16){
+      //TODO
+      //StartCoroutine(Talk("Monk: Do you want to practice that scale again? (y/n)"));
     }
 
     else {

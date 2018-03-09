@@ -79,8 +79,8 @@ public class MonsterManager : NoteStateControl
     List<ScaleNames> pcgScaleNames = new List<ScaleNames>();
     List<NoteBaseKey> pcgBaseKeys = new List<NoteBaseKey>();
     for(int i=0; i < numMonstersPerChunk; i++){
-      pcgScaleNames.Add( (ScaleNames) Random.Range(0, 16) );
-      pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 59) );
+      pcgScaleNames.Add( (ScaleNames) Random.Range(0, 17) );  //note added 1 to max because max val is exclusive
+      pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 60) );  //as above
     }
     //don't comment this out, this is important
     if (terrainGenerator){
