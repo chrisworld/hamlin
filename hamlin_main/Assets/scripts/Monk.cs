@@ -29,6 +29,8 @@ public class Monk : MonoBehaviour
 
   void StoryInit(){
 
+    story.Enqueue("Monk: Ah, so you have yet to discover the wonders of music. You have an epic journey ahead of you, my friend, and it will not");
+
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
@@ -38,7 +40,7 @@ public class Monk : MonoBehaviour
     story.Enqueue("The creatures can’t stand the sound.");
     story.Enqueue("Hamlin: A flute? What’s a flute? I found this thing by the side of the river in Hortondale.");
     story.Enqueue("I guess it must have washed up there from somewhere upstream. What it’s for?");
-    story.Enqueue("Monk: Ah, so you have yet to discover the wonders of music. You have an epic journey ahead of you, my friend");
+    story.Enqueue("Monk: Ah, so you have yet to discover the wonders of music. You have an epic journey ahead of you, my friend,");
     story.Enqueue("and it will not be without peril. The oracle foretold of this, that a hero with the power to liberate us");
     story.Enqueue("from the silence would come - 'but he knows not what power he wields'.");
     story.Enqueue("Hamlin: *stunned silence*");

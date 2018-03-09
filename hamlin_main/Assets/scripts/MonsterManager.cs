@@ -140,7 +140,6 @@ public class MonsterManager : NoteStateControl
         }
 
         // defeated monster
-        //else if (monsters[i].defeated){
         // DO NOT DELETE BASE MONSTER (0);
         else if (i != 0 && monsters[i].defeated){
 
@@ -150,7 +149,7 @@ public class MonsterManager : NoteStateControl
           monsters[i].anim.SetTrigger("die");
         }
         // player in view
-        else if (!monsterActivatedThisTurn && Vector3.Distance(player.position, monsters[i].transform.position) < viewDistance && Vector3.Angle(player.position - monsters[i].transform.position, monsters[i].transform.forward) < viewAngle)
+        else if (!monsterActivatedThisTurn && !monsters[i].defeated && Vector3.Distance(player.position, monsters[i].transform.position) < viewDistance && Vector3.Angle(player.position - monsters[i].transform.position, monsters[i].transform.forward) < viewAngle)
         {
           monsterActivatedThisTurn = true;
           currentMonsterId = i;
