@@ -210,7 +210,7 @@ public class Monk : MonoBehaviour
     info_image.GetComponent<Image>().sprite = newSprite;
     info_image.GetComponent<Image>().color = Color.white;
     Vector3 newPosition = new Vector3(oldPosition.x, oldPosition.y + 150, oldPosition.z);
-    canvasTransform.sizeDelta = new Vector2(425, 210); //this size is for churchScales, need to find a more flexible solution
+    canvasTransform.sizeDelta = new Vector2(newSprite.texture.width * 0.6f, newSprite.texture.height * 0.6f);  //if this still isn't flexible enough just pass in width and height as params
     canvasTransform.position = newPosition;
     info_image.SetActive(true);
     yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
@@ -229,12 +229,25 @@ public class Monk : MonoBehaviour
 
     switch(codeTrigger){
 
-        //show churchScales image
+        //**Displaying images**
+
+        //show piano keyboard
+
+        //show churchScales
         case 0:
           StartCoroutine(ShowImage(0));
           break;
 
+        //show churchScales tonics
+
+        //show circle of fifths
+
+        //show major and minor scales?
+
+
+
         //TODO: a billion more cases
+        //add TeachScale cases
 
         default:
           break;
@@ -263,23 +276,18 @@ public class Monk : MonoBehaviour
   void Update()
   {
 
-    //start dialogue when player is close to monk
-    if (Vector3.Distance(transform.position, player.transform.position) <= 1)
+    //Only play next story event when player is close to monk. We use info_image's active status as a lock for showing messages so we don't unqueue them too fast
+    if (!storyStopped && info_image.activeSelf == false && Vector3.Distance(transform.position, player.transform.position) <= 0.5f)
     {
-      playerNear = true;
-    }
+        if (story.Peek().GetType() == typeof(string))                         //event is dialogue, display in infobox
+        {
+          StartCoroutine(Talk((string)story.Dequeue()));
+        }
+        else                                                                  //event is an int code trigger
+        {
+          StoryEvent((int)story.Dequeue());
+        }
 
-    //show next line of dialogue
-    if (playerNear && info_image.activeSelf == false && !storyStopped)       //we use info_image's active status as a lock for showing messages so we don't unqueue them too fast
-    {
-      if (story.Peek().GetType() == typeof(string))                         //event is dialogue, display in infobox
-      {
-        StartCoroutine( Talk((string)story.Dequeue()) );
-      }
-      else                                                                   //event is an int code trigger
-      {
-        StoryEvent((int)story.Dequeue());
-      }
     }
 
     if (story.Count < 1)                                                     //story finished
