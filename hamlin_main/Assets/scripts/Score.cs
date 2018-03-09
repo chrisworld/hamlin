@@ -48,6 +48,11 @@ public class Score : MonoBehaviour {
 		
 	}
 
+  //Used by Monk.cs, do not remove
+  public void UpdateNumScales(int scale_name){
+    num_scales[scale_name]++;
+  }
+
   // update scale scores, use in Learnin Scales
   public void updateScaleScore(ScaleNames s_name){
     cur_scales[(int)s_name]++;

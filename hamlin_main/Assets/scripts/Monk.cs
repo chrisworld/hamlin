@@ -11,7 +11,8 @@ public class Monk : MonoBehaviour
   public Text infobox;
   public Transform player;
   public Sprite[] images;
-  public Monster baseMonster;
+  public MonsterManager monsterManager;
+  [HideInInspector]
 
   LearnScale baseScale;
   PlayerController playerController;
@@ -19,6 +20,7 @@ public class Monk : MonoBehaviour
   bool storyStopped;
   bool dialogueClicked;
   bool monkInteracted;
+  Score score;
 
   //TODO: trigger monk animations
 
@@ -28,6 +30,11 @@ public class Monk : MonoBehaviour
 
     //DEBUG REMOVE ME
     story.Enqueue(6); //C major TeachScale
+    story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue("Monk: We have not, but any music believer is a friend of mine.");
+    story.Enqueue(7);
+    story.Enqueue(8);
 
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
@@ -186,7 +193,7 @@ public class Monk : MonoBehaviour
     
     //TODO
     Vector3 position = new Vector3(player.position.x, player.position.y, player.position.z - 0.2f);
-    Monster monster = Instantiate<Monster>(baseMonster, position, Quaternion.identity);
+    Monster monster = Instantiate<Monster>(monsterManager.monsters[0], position, Quaternion.identity);
 
     if (codeTrigger == 12){  //Battle 1, C major or G major monster
       monster.scale_name = (ScaleNames)1;
@@ -201,14 +208,17 @@ public class Monk : MonoBehaviour
       monster.base_key = (rand == 0) ? (NoteBaseKey)52 : (NoteBaseKey)59;
     }
     monster.gameObject.SetActive(true);
-
-    //TODO CHANGE THIS CONDITION TO MONSTER DEFEATED
-    yield return new WaitUntil(() => (monkInteracted == true));
+    monsterManager.monsters.Add(monster);
+    int index = monsterManager.monsters.Count - 1;
+    storyStopped = true;
+    yield return new WaitUntil(() => (monsterManager.monsters[index].defeated == true));
+    //monsterManager.monsters.Remove(monster);
+    storyStopped = false;
 
   }
 
 
- void TeachScale(int codeTrigger)
+  IEnumerator TeachScale(int codeTrigger)
   {
     Vector3 position = new Vector3(player.position.x, player.position.y, player.position.z - 0.2f);
     LearnScale scale = Instantiate<LearnScale>(baseScale, position, Quaternion.identity);
@@ -237,9 +247,17 @@ public class Monk : MonoBehaviour
       scale.scale_name = (ScaleNames)2;
       scale.base_key = (NoteBaseKey)59;
     }
+    score.UpdateNumScales((int)scale.scale_name);
     scale.gameObject.SetActive(true);
     playerController.forceActivateCombat = true;
-    StartCoroutine(WaitForMonkInteraction());  //todo this needs to wait for a different condition, x is pressed when playing
+    storyStopped = true;
+    yield return new WaitUntil(() => scale == null);   //wait until player has won scale to start story again
+    
+    //this is to get the stave to disappear - works but slow, would like a better method
+    playerController.hold_flute = false;
+    playerController.forceActivateCombat = true;
+    
+    storyStopped = false;
   }
 
   //manages dialogue
@@ -297,7 +315,7 @@ public class Monk : MonoBehaviour
 
     //Teach a scale
     else if(codeTrigger <= 11){
-      TeachScale(codeTrigger);
+      StartCoroutine(TeachScale(codeTrigger));
     }
 
     //Monster battles
@@ -328,15 +346,11 @@ public class Monk : MonoBehaviour
     dialogueClicked = false;
     monkInteracted = true;
     story = new Queue();
+    score = GameObject.Find("GameState").GetComponent<Score>();
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
     playerController = player.GetComponent<PlayerController>();
     baseScale.gameObject.SetActive(false); //this must be done here, not before, otherwise it cannot find the object
     StoryInit(); //queue up all the dialogue
-
-    //setup scene:
-    //hide all monsters (or instantiate them when needed? probably better)
-    //player should spawn close to monk
-
   }
 
   void Update()

@@ -186,7 +186,7 @@ public class LearnScale : NoteStateControl {
 	private void winLearnScale (){
 		exitLearnScale();
 		sound_player.activate_sound.Play();
-		//score.updateScaleScore(scale_name);    //TODO: re-enable once score working again
+		score.updateScaleScore(scale_name);
 		DestroyClef();
 	}
 
