@@ -20,6 +20,9 @@ public class Monk : MonoBehaviour
   bool storyStopped;
   bool dialogueClicked;
   bool monkInteracted;
+  bool userInputYesNo;
+  bool userInputLock;
+  int lastEvent;
   Score score;
 
   //TODO: trigger monk animations
@@ -65,12 +68,10 @@ public class Monk : MonoBehaviour
     story.Enqueue("Game: The two rows of keys above that are the notes an octave higher.");
     story.Enqueue(1); //show controls
     story.Enqueue(6); //C major TeachScale
-    story.Enqueue(16); //try scale again loop option
 
     //**G Major and 1st monster battle**
     story.Enqueue("Now let's try G major. ...");
     story.Enqueue(7); //G major TeachScale
-    story.Enqueue(16); //try scale again loop option
     story.Enqueue("Monk: Feel free to take a look around the monastery and practice playing your flute!");
     story.Enqueue("We are always happy to hear music here. And goodness knows the other monks could do with some cheering up.");
     story.Enqueue("But keep an eye out for the creatures. Sometimes they seem to just appear out of nowhere!");
@@ -84,7 +85,6 @@ public class Monk : MonoBehaviour
     story.Enqueue("Ah, so you're back for more? How about we try D major this time?");
     story.Enqueue("");
     story.Enqueue(8); //D major TeachScale
-    story.Enqueue(16); //try scale again loop option
 
     //**HALF AND WHOLE TONES, MAJOR VS MINOR**
     story.Enqueue("Monk: Has this all seemed very complicated to you so far? I remember when I was first learning");
@@ -112,17 +112,14 @@ public class Monk : MonoBehaviour
     //**A MINOR, MONSTER 2**
     //TODO introduce A minor
     story.Enqueue(9); //A minor TeachScale
-    story.Enqueue(16); //try scale again loop option
     story.Enqueue(13); //Battle 2
 
     //**E MINOR, B MINOR**
     story.Enqueue(10); //E minor TeachScale
-    story.Enqueue(16); //try scale again loop option
     story.Enqueue("By the way, I heard that this isn't called B minor in every part of Espero. In some towns they call it H minor too.");
     story.Enqueue("Imagine that! The variety of the other tongues we have here in Espero has always fascinated me.");
     story.Enqueue("But anyway, I am digressing into my books again...");
     story.Enqueue(11); //B minor TeachScale
-    story.Enqueue(16); //try scale again loop option
 
     //**Circle of fifths, MONSTER 3**
     story.Enqueue("Let me tell you another secret. The circle of fifths is your handy cheat-sheet to the world of major and minor scales;");
@@ -253,7 +250,14 @@ public class Monk : MonoBehaviour
     //this is to get the stave to disappear - works but slow, would like a better method
     playerController.hold_flute = false;
     playerController.forceActivateCombat = true;
-    
+
+    //check if user wants to practice again
+    userInputYesNo = true;
+    infobox.text = "Monk: Do you want to practice that scale again? (y/n)";
+    info_image.SetActive(true);
+    userInputLock = false;
+    //rest of logic handled in Update if statement
+    yield return new WaitUntil(() => userInputYesNo == false);
     storyStopped = false;
   }
 
@@ -325,15 +329,31 @@ public class Monk : MonoBehaviour
       StartCoroutine(WaitForMonkInteraction());
     }
 
-    else if(codeTrigger == 16){
-      //TODO
-      //StartCoroutine(Talk("Monk: Do you want to practice that scale again? (y/n)"));
-    }
-
     else {
       print("codeTrigger undefined, value was " + codeTrigger);
     }
 
+    lastEvent = codeTrigger;
+
+  }
+
+   IEnumerator StoryEnd(){
+    
+    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
+    infobox.gameObject.SetActive(false);   //what is this for??
+    dialogueClicked = false;
+    Sprite newSprite = images[6];  //TODO CHANGE, it's currently just the menu image
+    info_image.GetComponent<Image>().sprite = newSprite;
+    info_image.GetComponent<Image>().color = Color.white;
+    
+    //need to adjust these so it fills screen, will depend on final image size
+    canvasTransform.sizeDelta = new Vector2(newSprite.texture.width * 0.6f, newSprite.texture.height * 0.6f);
+    canvasTransform.position = new Vector3(canvasTransform.position.x, canvasTransform.position.y + 150, canvasTransform.position.z);
+    
+    info_image.SetActive(true);
+    yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+
+    SceneManager.LoadScene("MainMenu_pablo"); 
   }
 
   void Start()
@@ -341,6 +361,8 @@ public class Monk : MonoBehaviour
     storyStopped = false;
     dialogueClicked = false;
     monkInteracted = true;
+    userInputYesNo = false;
+    lastEvent = 0;
     story = new Queue();
     score = GameObject.Find("GameState").GetComponent<Score>();
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
@@ -369,6 +391,7 @@ public class Monk : MonoBehaviour
     if (story.Count < 1)                                                     //story finished
     {
       storyStopped = true;
+      StartCoroutine(StoryEnd());                                                            //show end game screen and go back to main menu
     }
 
     if(Input.GetMouseButtonDown(0)){                                         //player left clicks to go to next line of dialogue/image
@@ -379,6 +402,21 @@ public class Monk : MonoBehaviour
     if (!monkInteracted && Input.GetKeyDown(KeyCode.X) && Vector3.Distance(transform.position, player.transform.position) <= 0.5f)
     {                                         
       monkInteracted = true;
+    }
+
+    //player presses Y to repeat learning scale or N to skip
+    if(userInputYesNo && !playerController.play_mode && !userInputLock){
+
+      if (Input.GetKeyDown(KeyCode.Y)){
+        userInputLock = true;
+        info_image.SetActive(false);
+        StoryEvent(lastEvent);
+      }
+      else if(Input.GetKeyDown(KeyCode.N)){     //continue story
+        info_image.SetActive(false);
+        userInputYesNo = false;
+      }
+
     }
 
   }
