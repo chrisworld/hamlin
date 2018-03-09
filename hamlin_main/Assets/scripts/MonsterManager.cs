@@ -29,6 +29,7 @@ public class MonsterManager : NoteStateControl
   public float viewDistance = 2f;
   public float attackDistance = 1f;
   public float viewAngle = 60f;
+
   [HideInInspector]
   public ScaleNames scale_name;
 
@@ -83,8 +84,8 @@ public class MonsterManager : NoteStateControl
     List<ScaleNames> pcgScaleNames = new List<ScaleNames>();
     List<NoteBaseKey> pcgBaseKeys = new List<NoteBaseKey>();
     for(int i=0; i < numMonstersPerChunk; i++){
-      pcgScaleNames.Add( (ScaleNames) Random.Range(0, 16) );
-      pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 59) );
+      pcgScaleNames.Add( (ScaleNames) Random.Range(0, 17) );  //note added 1 to max because max val is exclusive
+      pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 60) );  //as above
     }
     //don't comment this out, this is important
     if (terrainGenerator){
@@ -137,9 +138,12 @@ public class MonsterManager : NoteStateControl
           }
           continue;
         }
+
         // defeated monster
-        else if (monsters[i].defeated){
-          // ToDo anim
+        //else if (monsters[i].defeated){
+        // DO NOT DELETE BASE MONSTER (0);
+        else if (i != 0 && monsters[i].defeated){
+
           monsters[i].dying = true;
           Camera.main.fieldOfView = 60f;
           player_controller.exitPlayMode();
@@ -265,8 +269,8 @@ public class MonsterManager : NoteStateControl
       {
         //zoom in camera to go into 'combat mode'
         Camera.main.fieldOfView = 40f;
-        monsters[id].transform.LookAt(player);   //TODO: we need this but need to change the player transform somehow as it's the wrong angle
-
+        monsters[id].transform.LookAt(player);   
+        //TODO: we need this but need to change the player transform somehow as it's the wrong angle
         // check each key
         foreach (bool mask in key_mask)
         {
@@ -361,7 +365,7 @@ public class MonsterManager : NoteStateControl
     resetNoteState();
     resetSignState();
     player_controller.setMoveActivate(true);
-    StartCoroutine(ShowMessage("You lose :'(", 3f, true));
+    StartCoroutine(ShowMessage("You died :'(", 3f, true));
   }
 
   //do not call directly, call with StartCoroutine(ShowMessage(...))

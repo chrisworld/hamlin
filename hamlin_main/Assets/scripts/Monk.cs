@@ -11,6 +11,8 @@ public class Monk : MonoBehaviour
   public Text infobox;
   public Transform player;
   public Sprite[] images;
+  public MonsterManager monsterManager;
+  [HideInInspector]
 
   LearnScale baseScale;
   PlayerController playerController;
@@ -18,16 +20,16 @@ public class Monk : MonoBehaviour
   bool storyStopped;
   bool dialogueClicked;
   bool monkInteracted;
+  bool userInputYesNo;
+  bool userInputLock;
+  int lastEvent;
+  Score score;
 
   //TODO: trigger monk animations
 
   void StoryInit(){
 
     //**Introduction**
-
-    //DEBUG REMOVE ME
-    story.Enqueue(6); //C major TeachScale
-
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
     story.Enqueue("Monk: We have not, but any music believer is a friend of mine.");
@@ -175,26 +177,42 @@ public class Monk : MonoBehaviour
     storyStopped = false;
   }
 
-  IEnumerator MonsterBattle(int codeTrigger){
+  IEnumerator MonsterBattle(int codeTrigger, int rand){
+    
+    //TODO - should monster run from afar? unrealistic to just spawn next to you
+    Vector3 position = new Vector3(player.position.x, player.position.y, player.position.z - 0.2f);
+    Monster monster = Instantiate<Monster>(monsterManager.monsters[0], position, Quaternion.identity);
 
-    //TODO
-
-    if(codeTrigger == 12){  //Battle 1, C major or G major monster
-
+    if (codeTrigger == 12){  //Battle 1, C major or G major monster
+      monster.scale_name = (ScaleNames)1;
+      //monster.base_key = (rand == 0) ? (NoteBaseKey)48 : (NoteBaseKey)55;
+      monster.base_key = (NoteBaseKey)55;
     }
     else if(codeTrigger == 13){ //Battle 2, D major or A minor monster
-
+      monster.scale_name = (rand == 0) ? (ScaleNames)1 : (ScaleNames)2;
+      monster.base_key = (rand == 0) ? (NoteBaseKey)50 : (NoteBaseKey)57;
     }
     else {  //codeTrigger == 14. Battle 3, E minor or B minor monster
-
+      monster.scale_name = (ScaleNames)2;
+      monster.base_key = (rand == 0) ? (NoteBaseKey)52 : (NoteBaseKey)59;
     }
+    monster.gameObject.SetActive(true);
+    monsterManager.monsters.Add(monster);
+    monsterManager.initMonsters();
+    playerController.forceActivateCombat = true;
+    storyStopped = true;
+    yield return new WaitUntil(() => monster == null);
 
-    yield return new WaitUntil(() => (monkInteracted == true));
+    //this is to get the stave to disappear - works but slow, would like a better method
+    playerController.hold_flute = false;
+    playerController.forceActivateCombat = true;
+
+    storyStopped = false;
 
   }
 
 
- void TeachScale(int codeTrigger)
+  IEnumerator TeachScale(int codeTrigger)
   {
     Vector3 position = new Vector3(player.position.x, player.position.y, player.position.z - 0.2f);
     LearnScale scale = Instantiate<LearnScale>(baseScale, position, Quaternion.identity);
@@ -223,9 +241,24 @@ public class Monk : MonoBehaviour
       scale.scale_name = (ScaleNames)2;
       scale.base_key = (NoteBaseKey)59;
     }
+    score.UpdateNumScales((int)scale.scale_name);
     scale.gameObject.SetActive(true);
     playerController.forceActivateCombat = true;
-    StartCoroutine(WaitForMonkInteraction());  //todo this needs to wait for a different condition, x is pressed when playing
+    storyStopped = true;
+    yield return new WaitUntil(() => scale == null);   //wait until player has won scale to start story again
+    
+    //this is to get the stave to disappear - works but slow, would like a better method
+    playerController.hold_flute = false;
+    playerController.forceActivateCombat = true;
+
+    //check if user wants to practice again
+    userInputYesNo = true;
+    infobox.text = "Monk: Do you want to practice that scale again? (y/n)";
+    info_image.SetActive(true);
+    userInputLock = false;
+    //rest of logic handled in Update if statement
+    yield return new WaitUntil(() => userInputYesNo == false);
+    storyStopped = false;
   }
 
   //manages dialogue
@@ -266,7 +299,6 @@ public class Monk : MonoBehaviour
     info_image.GetComponent<Image>().color = oldColor;
     canvasTransform.position = oldPosition;
     dialogueClicked = false;
-    print("sanity check that code does get here");
   }
 
   void StoryEvent(int codeTrigger){
@@ -283,12 +315,13 @@ public class Monk : MonoBehaviour
 
     //Teach a scale
     else if(codeTrigger <= 11){
-      TeachScale(codeTrigger);
+      StartCoroutine(TeachScale(codeTrigger));
     }
 
     //Monster battles
     else if(codeTrigger <= 14){
-      StartCoroutine(MonsterBattle(codeTrigger));
+      int rand = Random.Range(0, 2);
+      StartCoroutine(MonsterBattle(codeTrigger, rand));
     }
 
     //Pause story waiting for monk interaction
@@ -300,6 +333,27 @@ public class Monk : MonoBehaviour
       print("codeTrigger undefined, value was " + codeTrigger);
     }
 
+    lastEvent = codeTrigger;
+
+  }
+
+   IEnumerator StoryEnd(){
+    
+    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
+    infobox.gameObject.SetActive(false);   //what is this for??
+    dialogueClicked = false;
+    Sprite newSprite = images[6];  //TODO CHANGE, it's currently just the menu image
+    info_image.GetComponent<Image>().sprite = newSprite;
+    info_image.GetComponent<Image>().color = Color.white;
+    
+    //need to adjust these so it fills screen, will depend on final image size
+    canvasTransform.sizeDelta = new Vector2(newSprite.texture.width * 0.6f, newSprite.texture.height * 0.6f);
+    canvasTransform.position = new Vector3(canvasTransform.position.x, canvasTransform.position.y + 150, canvasTransform.position.z);
+    
+    info_image.SetActive(true);
+    yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+
+    SceneManager.LoadScene("MainMenu_pablo"); 
   }
 
   void Start()
@@ -307,16 +361,14 @@ public class Monk : MonoBehaviour
     storyStopped = false;
     dialogueClicked = false;
     monkInteracted = true;
+    userInputYesNo = false;
+    lastEvent = 0;
     story = new Queue();
+    score = GameObject.Find("GameState").GetComponent<Score>();
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
     playerController = player.GetComponent<PlayerController>();
     baseScale.gameObject.SetActive(false); //this must be done here, not before, otherwise it cannot find the object
     StoryInit(); //queue up all the dialogue
-
-    //setup scene:
-    //hide all monsters (or instantiate them when needed? probably better)
-    //player should spawn close to monk
-
   }
 
   void Update()
@@ -339,6 +391,7 @@ public class Monk : MonoBehaviour
     if (story.Count < 1)                                                     //story finished
     {
       storyStopped = true;
+      StartCoroutine(StoryEnd());                                                            //show end game screen and go back to main menu
     }
 
     if(Input.GetMouseButtonDown(0)){                                         //player left clicks to go to next line of dialogue/image
@@ -349,6 +402,21 @@ public class Monk : MonoBehaviour
     if (!monkInteracted && Input.GetKeyDown(KeyCode.X) && Vector3.Distance(transform.position, player.transform.position) <= 0.5f)
     {                                         
       monkInteracted = true;
+    }
+
+    //player presses Y to repeat learning scale or N to skip
+    if(userInputYesNo && !playerController.play_mode && !userInputLock){
+
+      if (Input.GetKeyDown(KeyCode.Y)){
+        userInputLock = true;
+        info_image.SetActive(false);
+        StoryEvent(lastEvent);
+      }
+      else if(Input.GetKeyDown(KeyCode.N)){     //continue story
+        info_image.SetActive(false);
+        userInputYesNo = false;
+      }
+
     }
 
   }
