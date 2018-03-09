@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour {
   public bool inDistance = false;
   [HideInInspector]
   public bool play_mode = false;
+  [HideInInspector]
+  public bool forceActivateCombat = false;    //used by Monk.cs,  **do not remove**
 
   // private
   private bool move_activated = true;
@@ -73,11 +75,12 @@ public class PlayerController : MonoBehaviour {
     // switch the model
     else if (switch_model) switchModel();
     // take the flute and put it back
-    else if (checkValidTakeFluteKey()){
+    else if (checkValidTakeFluteKey() || forceActivateCombat){
       if (hold_flute && !play_mode){
         enterPlayMode();
       }
       else{
+        forceActivateCombat = false;
         anim.SetTrigger("takeFlute");
         switch_model = true;
       }

@@ -15,18 +15,21 @@ public class Monk : MonoBehaviour
   LearnScale baseScale;
   PlayerController playerController;
   Queue story;
-  bool playerNear;
   bool storyStopped;
   bool dialogueClicked;
+  bool monkInteracted;
 
   //TODO: trigger monk animations
 
   void StoryInit(){
 
     //**Introduction**
+
+    //DEBUG REMOVE ME
+    story.Enqueue(6); //C major TeachScale
+
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
-    story.Enqueue(0);
     story.Enqueue("Monk: We have not, but any music believer is a friend of mine.");
     story.Enqueue("Tell me, where did you find that flute of yours, and where are you going?");
     story.Enqueue("It can be very dangerous travelling these parts openly carrying an instrument - they hate it, you know.");
@@ -55,33 +58,31 @@ public class Monk : MonoBehaviour
     story.Enqueue("about how a scale makes you feel. Have a go at playing it and see what you think.");
     story.Enqueue("C Major is a very simple scale: on a piano keyboard you just go along the white keys from C.");
     story.Enqueue("Here, take a look at this picture of a keyboard I have in my book.");
-
-    //TODO SHOW PIANO KEYBOARD
-
+    story.Enqueue(0); //show piano keyboard
     story.Enqueue("Game: To take out your flute, press Enter.");
     story.Enqueue("Game: Playing notes on your flute works like playing a piano keyboard.");
     story.Enqueue("Game: The bottom line of letters on your keyboard (y/z, x, c, v, ...) is the lower octave of notes, starting at C.");
     story.Enqueue("Game: These are the white keys on a piano keyboard, and the line of keys above that is the black keys.");
     story.Enqueue("Game: The two rows of keys above that are the notes an octave higher.");
-
-    //TODO:     TeachScale(1, 48); //C major learn scale
+    story.Enqueue(1); //show controls
+    story.Enqueue(6); //C major TeachScale
 
     //**G Major and 1st monster battle**
     story.Enqueue("Now let's try G major. ...");
-    //TODO: TeachScale(1, 55);
+    story.Enqueue(7); //G major TeachScale
     story.Enqueue("Monk: Feel free to take a look around the monastery and practice playing your flute!");
     story.Enqueue("We are always happy to hear music here. And goodness knows the other monks could do with some cheering up.");
     story.Enqueue("But keep an eye out for the creatures. Sometimes they seem to just appear out of nowhere!");
-    //TODO: Battle 1 - C major or G major monster
+    story.Enqueue(12); //Battle 1
     story.Enqueue("Hmm, perhaps I should become a fortune teller...I think the coast is clear now!");
     story.Enqueue("Come back when you're ready to learn some more.");
-    //PAUSE DIALOGUE wait for player to come back - some kind of trigger? "press x to talk to monk again"
     story.Enqueue("Game: When you want to continue learning, return to the monk and press x");
+    story.Enqueue(15); //Pause story until player presses x
 
     //**D MAJOR**
     story.Enqueue("Ah, so you're back for more? How about we try D major this time?");
     story.Enqueue("");
-    //TODO TeachScale(1, 50);
+    story.Enqueue(8); //D major TeachScale
 
     //**HALF AND WHOLE TONES, MAJOR VS MINOR**
     story.Enqueue("Monk: Has this all seemed very complicated to you so far? I remember when I was first learning");
@@ -92,7 +93,7 @@ public class Monk : MonoBehaviour
     story.Enqueue("white key, that's a half tone up if there is no black key in between, but it's a whole tone up");
     story.Enqueue("if there is a black key between! Make sure that doesn't catch you out.");
     story.Enqueue("See, I'll show you the keyboard from my book again.");
-    //TODO SHOW PIANO KEYBOARD
+    story.Enqueue(0); //show piano keyboard
     story.Enqueue("Hamlin: Alright, I'll believe you, but I'm still not even sure what a piano is.");
     story.Enqueue("Monk: I fear we may not be able to change that. The last piano I know of in Espero was");
     story.Enqueue("destroyed around 300 moons ago. Sadly now all we have are pictures of what was once");
@@ -106,35 +107,30 @@ public class Monk : MonoBehaviour
     story.Enqueue("pattern. This pattern is W,H,W,W,H,W,W and again you can start from any initial note (the key of the scale).");
     story.Enqueue("Minor scales typically sound darker and sadder than major scales. But certainly no less important!");
 
-    //**A MINOR**
+    //**A MINOR, MONSTER 2**
     //TODO introduce A minor
-    //TODO TeachScale(2, 57);
+    story.Enqueue(9); //A minor TeachScale
+    story.Enqueue(13); //Battle 2
 
-    //**MONSTER 2**
-    //todo Battle 2 - D major or A minor monster
-
-    //**E MINOR**
-    //TODO TeachScale(2, 52);
-
-    //**B MINOR**
+    //**E MINOR, B MINOR**
+    story.Enqueue(10); //E minor TeachScale
     story.Enqueue("By the way, I heard that this isn't called B minor in every part of Espero. In some towns they call it H minor too.");
     story.Enqueue("Imagine that! The variety of the other tongues we have here in Espero has always fascinated me.");
     story.Enqueue("But anyway, I am digressing into my books again...");
-    //TODO TeachScale(2, 59);
+    story.Enqueue(11); //B minor TeachScale
 
-    //**Circle of fifths**
+    //**Circle of fifths, MONSTER 3**
     story.Enqueue("Let me tell you another secret. The circle of fifths is your handy cheat-sheet to the world of major and minor scales;");
     story.Enqueue("it shows you how they're all connected.");
-    //SHOW CIRCLE OF FIFTHS IMAGE until click through
-
-    //**MONSTER 3**
-    //todo Battle 3 - E minor or B (H) minor monster
+    story.Enqueue(3); //show circle of fifths
+    story.Enqueue(14); //Battle 3
 
     //**END LEVEL**
     story.Enqueue("Monk: There are many other types of scales too, not just major and minor scales. They all have their own pattern");
     story.Enqueue("of half and whole tones. And they have the most fantastical names. Here, let me show you my book again!");
-    //SHOW 1ST CHURCH SCALES IMAGE. NEED TO SHOW THIS FOR A LONG TIME. ideally until click through.
-    story.Enqueue("These are known as the church scales and so of course we're very familar with them here at the monastery.");
+    story.Enqueue(4); //show church scales
+    story.Enqueue(5); //show church scales tonics
+    story.Enqueue("These are known as the church scales and so of course we're very familar with them here at the monastery,");
     story.Enqueue("but of course there's a whole world of other music out there. There are others like us who still know about");
     story.Enqueue("music; perhaps you will meet some of them on your travels, and they can teach you more. Anyway, I wish you");
     story.Enqueue("safe travels on your journey. So long, Hamlin, and remember - keep playing your music, don’t let the silence win.");
@@ -171,18 +167,65 @@ public class Monk : MonoBehaviour
 
   */
 
+  //used to pause the story until player comes back to monk and presses X
+  IEnumerator WaitForMonkInteraction(){
+    monkInteracted = false;
+    storyStopped = true;
+    yield return new WaitUntil(() => (monkInteracted == true));
+    storyStopped = false;
+  }
 
-  void TeachScale(int scaleName, int baseKey)
-  {
-    //TODO position - should be v. close to player so it auto activates "combat"
-    Vector2 position = new Vector2(player.position.x - 0.5f, player.position.y);
-    LearnScale scale = Instantiate<LearnScale>(baseScale, position, Quaternion.identity);
-    scale.scale_name = (ScaleNames)scaleName;
-    scale.base_key = (NoteBaseKey)baseKey;
-    scale.gameObject.SetActive(true);
-    playerController.play_mode = true;
+  IEnumerator MonsterBattle(int codeTrigger){
+
     //TODO
-    //dialogue needs to pause here until they actually play the scale...ugh
+
+    if(codeTrigger == 12){  //Battle 1, C major or G major monster
+
+    }
+    else if(codeTrigger == 13){ //Battle 2, D major or A minor monster
+
+    }
+    else {  //codeTrigger == 14. Battle 3, E minor or B minor monster
+
+    }
+
+    yield return new WaitUntil(() => (monkInteracted == true));
+
+  }
+
+
+ void TeachScale(int codeTrigger)
+  {
+    Vector3 position = new Vector3(player.position.x, player.position.y, player.position.z - 0.2f);
+    LearnScale scale = Instantiate<LearnScale>(baseScale, position, Quaternion.identity);
+    scale.unlimitedWrongNotes = true;
+    if (codeTrigger == 6){  //C Major
+      scale.scale_name = (ScaleNames)1;
+      scale.base_key = (NoteBaseKey)48;
+    }
+    else if(codeTrigger == 7){  //G Major
+      scale.scale_name = (ScaleNames)1;
+      scale.base_key = (NoteBaseKey)55;
+    }
+    else if(codeTrigger == 8){  //D Major
+      scale.scale_name = (ScaleNames)1;
+      scale.base_key = (NoteBaseKey)50;
+    }
+    else if(codeTrigger == 9){  //A Minor
+      scale.scale_name = (ScaleNames)2;
+      scale.base_key = (NoteBaseKey)57;
+    }
+    else if(codeTrigger == 10){ //E Minor
+      scale.scale_name = (ScaleNames)2;
+      scale.base_key = (NoteBaseKey)52;
+    }
+    else {  //codeTrigger == 11. B Minor
+      scale.scale_name = (ScaleNames)2;
+      scale.base_key = (NoteBaseKey)59;
+    }
+    scale.gameObject.SetActive(true);
+    playerController.forceActivateCombat = true;
+    StartCoroutine(WaitForMonkInteraction());  //todo this needs to wait for a different condition, x is pressed when playing
   }
 
   //manages dialogue
@@ -223,44 +266,47 @@ public class Monk : MonoBehaviour
     info_image.GetComponent<Image>().color = oldColor;
     canvasTransform.position = oldPosition;
     dialogueClicked = false;
+    print("sanity check that code does get here");
   }
 
   void StoryEvent(int codeTrigger){
 
-    switch(codeTrigger){
+    if(codeTrigger < 0){
+      print("codeTrigger error in story, value < 0");
+    }
 
-        //**Displaying images**
+    //Show image 
+    //uses mapping from images[] public var in editor. should be mapped 0 = keyboard, 1 = controls, 2 = major minor, 3 = circle of fifths, 4 = church scales, 5 = church scales tonics
+    else if(codeTrigger <= 5){
+      StartCoroutine(ShowImage(codeTrigger));
+    }
 
-        //show piano keyboard
+    //Teach a scale
+    else if(codeTrigger <= 11){
+      TeachScale(codeTrigger);
+    }
 
-        //show churchScales
-        case 0:
-          StartCoroutine(ShowImage(0));
-          break;
+    //Monster battles
+    else if(codeTrigger <= 14){
+      StartCoroutine(MonsterBattle(codeTrigger));
+    }
 
-        //show churchScales tonics
+    //Pause story waiting for monk interaction
+    else if(codeTrigger == 15){
+      StartCoroutine(WaitForMonkInteraction());
+    }
 
-        //show circle of fifths
-
-        //show major and minor scales?
-
-
-
-        //TODO: a billion more cases
-        //add TeachScale cases
-
-        default:
-          break;
-
+    else {
+      print("codeTrigger undefined, value was " + codeTrigger);
     }
 
   }
 
   void Start()
   {
-    playerNear = false;
     storyStopped = false;
     dialogueClicked = false;
+    monkInteracted = true;
     story = new Queue();
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
     playerController = player.GetComponent<PlayerController>();
@@ -295,8 +341,14 @@ public class Monk : MonoBehaviour
       storyStopped = true;
     }
 
-    if(Input.GetMouseButtonDown(0)){
+    if(Input.GetMouseButtonDown(0)){                                         //player left clicks to go to next line of dialogue/image
       dialogueClicked = true;
+    }
+
+    //player presses X to interact with the monk and resume story
+    if (!monkInteracted && Input.GetKeyDown(KeyCode.X) && Vector3.Distance(transform.position, player.transform.position) <= 0.5f)
+    {                                         
+      monkInteracted = true;
     }
 
   }
