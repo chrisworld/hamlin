@@ -65,7 +65,6 @@ public class LearnScale : NoteStateControl {
 	  	// start the scale
 			if(!activated && player_controller.play_mode){
 	  		initLearnScale();
-        print("learn scale activated");
 	  	}
 	  	// stop the scale
 	  	else if(activated && player_controller.checkValidJumpKey() && !player_controller.play_mode)
@@ -79,7 +78,6 @@ public class LearnScale : NoteStateControl {
 	  		bool[] key_mask = getKeyMask();
 	  		// win condition
 	  		if (c_pos >= box_scale.Length){
-          print("about to run winLearnScale");
 					winLearnScale();
 	  			return;
 	  		}
@@ -150,9 +148,7 @@ public class LearnScale : NoteStateControl {
 	// destroy
 	private void DestroyClef (){		
 		anim.Play("disappear");
-    this.gameObject.SetActive(false);
-    print("I RAN");
-		Destroy(gameObject, 1); //this doesn't work
+		Destroy(gameObject, 1);
 	}
 
 	// init Learn Scale
@@ -184,7 +180,6 @@ public class LearnScale : NoteStateControl {
 		resetNoteState();
 		resetSignState();
 		container.resetScaleInd();
-    print("learn scale exited");
   }
 
 	// win the Learn Scale
@@ -192,7 +187,6 @@ public class LearnScale : NoteStateControl {
 		exitLearnScale();
 		sound_player.activate_sound.Play();
 		score.updateScaleScore(scale_name);
-    print("learn scale won");
 		DestroyClef();
 	}
 
