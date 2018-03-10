@@ -18,6 +18,7 @@ public class Score : MonoBehaviour {
 
   private int score_cur;
   private int score_total;
+  private bool hideScoreTotal;
 
 	// Use this for initialization
 	void Start () {
@@ -45,7 +46,7 @@ public class Score : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
   //Used by Monk.cs, do not remove
@@ -53,18 +54,28 @@ public class Score : MonoBehaviour {
     num_scales[scale_name]++;
   }
 
+  //Used by Monk and EndlessTerrain
+  public void SetScoreTotal(int score_total, bool hideScoreTotal){
+    this.score_total = score_total;
+    this.hideScoreTotal = hideScoreTotal;
+    if (hideScoreTotal) ScoreText.text = "Score: " + score_cur;
+    else ScoreText.text = "Score: " + score_cur + " / " + score_total;
+  }
+
   // update scale scores, use in Learnin Scales
   public void updateScaleScore(ScaleNames s_name){
     cur_scales[(int)s_name]++;
     countCurScore();
-    ScoreText.text = "Score: " + score_cur + " / " + score_total;
+    if (hideScoreTotal) ScoreText.text = "Score: " + score_cur;
+    else ScoreText.text = "Score: " + score_cur + " / " + score_total;
   }
 
   // defeated a monster add to score
   public void updateDefMonster(){
     defeated_monsters++;
     countCurScore();
-    ScoreText.text = "Score: " + score_cur + " / " + score_total;
+    if (hideScoreTotal) ScoreText.text = "Score: " + score_cur;
+    else ScoreText.text = "Score: " + score_cur + " / " + score_total;
   }
 
   // count the current score
