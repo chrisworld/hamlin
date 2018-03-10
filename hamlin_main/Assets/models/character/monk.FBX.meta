@@ -27,6 +27,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: monk face
+    second: {fileID: 2100000, guid: c144f5d0219aa69489ef225ae61eff41, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: monk rope
     second: {fileID: 2100000, guid: a21af914b57c03f42aba23e83ba09c09, type: 2}
   materials:
