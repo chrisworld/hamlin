@@ -369,6 +369,7 @@ public class Monk : MonoBehaviour
     playerController = player.GetComponent<PlayerController>();
     baseScale.gameObject.SetActive(false); //this must be done here, not before, otherwise it cannot find the object
     StoryInit(); //queue up all the dialogue
+    score.SetScoreTotal(9, false);
   }
 
   void Update()
