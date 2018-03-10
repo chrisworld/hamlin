@@ -207,27 +207,39 @@ public class MonsterManager : NoteStateControl
 
     Vector3 direction = player.position - monsters[id].transform.position;
     // start the scale
-    if (!activated && Input.anyKey)
+    if (!activated)
     {
       initMonsterScale(id);
     }
     //too far away to attack, chase player
-    else if (activated && (direction.magnitude > attackDistance) && !chasing) 
+    else if (activated && !chasing && !fight_mode) 
     {
-      //monsters[id].anim.SetBool("isRunning", false);
-      //monsters[id].anim.SetBool("isWalking", true);
-      //monsters[id].anim.SetBool("isAttacking", false);
-      //monsters[id].anim.SetBool("isIdle", false);
+      Debug.Log("chase");
+      if (direction.magnitude > attackDistance){
+        chasing = true; 
+      }
+    }
+    // chasing update
+    else if (activated && chasing && !fight_mode)
+    {
+      if(!proceduralMode)  monsters[id].nav.destination = player.position;
+      // stop chasing
+      if (direction.magnitude > viewDistance){
+        Debug.Log("Out of Sight");
+        monsters[id].nav.destination = monsters[id].transform.position;
+        chasing = false;
+        activated = false;
+        monsters[id].anim.SetTrigger("calm");
+      }
+      // start fight
+      else if (direction.magnitude < attackDistance){
+        //monsters[id].nav.destination = monsters[id].transform.position;
+        startFight(id);
+        monsters[id].nav.ResetPath();
+        monsters[id].nav.isStopped = true;
+      }
+    }
 
-      //chasing currently NOT implemented for proceduralMode as no nav mesh
-      if(!proceduralMode)  monsters[id].nav.destination = player.position;  
-      chasing = true; 
-    }
-    // play the scales, fight mode
-    else if (activated && (direction.magnitude < attackDistance) && !fight_mode)
-    {
-      startFight(id);
-    }
     // stop the fight
     /*
     else if (fight_mode && run)
@@ -236,6 +248,7 @@ public class MonsterManager : NoteStateControl
       return 0;
     }
     */
+    // play the scale
     else if (fight_mode && player_controller.hamlinReadyToPlay())
     {
       //monsters[id].anim.SetBool("isRunning", false);
@@ -341,6 +354,7 @@ public class MonsterManager : NoteStateControl
   private void startFight(int id){
     Debug.Log("Start Fight");
     fight_mode = true;
+    chasing = false;
     sound_player.inCombat = true;
     player_controller.forceActivateCombat = true;
     monsters[id].anim.SetTrigger("fight");
@@ -359,6 +373,7 @@ public class MonsterManager : NoteStateControl
   private void exitMonsterScale(int id){
     c_pos = 0;
     activated = false;
+    chasing = false;
     //player_controller.setMoveActivate(true);
     exitFight(id);
     player_controller.exitPlayMode();

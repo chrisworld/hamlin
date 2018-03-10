@@ -20,6 +20,7 @@ public class EndlessTerrain : MonoBehaviour {
 	static MapGenerator mapGenerator;
 	int chunkSize;
 	int chunksVisibleInViewDst;
+  Score score;
 
   //set by MonsterManager itself
   [HideInInspector]
@@ -43,7 +44,9 @@ public class EndlessTerrain : MonoBehaviour {
 		chunkSize = mapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
 		UpdateVisibleChunks ();
-	}
+    score = GameObject.Find("GameState").GetComponent<Score>();
+    score.SetScoreTotal(0, true);
+  }
 
 	void Update() {
 		viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale;

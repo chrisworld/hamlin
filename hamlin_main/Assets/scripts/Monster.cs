@@ -28,6 +28,9 @@ public class Monster : MonoBehaviour {
   private void Awake()
   {
     anim = GetComponent<Animator>();
+    if (anim == null){
+      anim = this.gameObject.transform.GetChild(0).GetComponent<Animator>();
+    }
   }
 
   void Start () {
