@@ -99,7 +99,7 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: destroyed around 300 moons ago. Sadly now all we have are pictures of what was once");
     story.Enqueue("Monk: one of the world's greatest instruments. But if you ever see one for goodness' sake");
     story.Enqueue("Monk: play it! Ah, what I would give to play a piano again...");
-    story.Enqueue("Game: the monk seems to have entered some kind of piano-induced trance.");
+    story.Enqueue("Game: The monk seems to have entered some kind of piano-induced trance.");
     story.Enqueue("Monk: Hmm, where was I? Yes, whole and half tones. So, each type of scale is just a pattern");
     story.Enqueue("Monk: of half (H) and whole (W) tones. For example, the three scales I've taught you so far have all been major scales.");
     story.Enqueue("Monk: These scales follow the pattern W, W, H, W, W, W, H. So you can choose any note on the keyboard and follow this");
