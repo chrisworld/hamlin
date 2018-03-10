@@ -6,8 +6,9 @@ abstract public class NoteStateControl : MonoBehaviour {
 	// GameObjects
 	public ContainerManager container;
 	public SoundPlayer sound_player;
+  public bool hideNotes; //hard mode - player must learn scale properly as they don't see the notes to help them, just the scale name
 
-	public NoteBaseKey base_key;
+  public NoteBaseKey base_key;
 
 
 	public NoteState[][] note_state = new NoteState[12][];
@@ -144,7 +145,7 @@ abstract public class NoteStateControl : MonoBehaviour {
 		int ni = 0;
 		foreach (int note in update_scale){
 			ni = scaleToContainerMapping(note);
-			note_state[ci][ni] = NoteState.NORMAL;
+			if(!hideNotes) note_state[ci][ni] = NoteState.NORMAL;
 			ci++;
 		}
 		container.updateNoteContainer(note_state);

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: b6d6a9d8fcebb9d4281ede5719345d13
-timeCreated: 1520514265
+guid: 01ed7235ded7c6f408bddecd7e549377
+timeCreated: 1520699336
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -11,11 +11,14 @@ ModelImporter:
     2100002: monk face
     2100004: monk rope
     4300000: monk01
-    7400000: idle
-    7400002: walking
-    7400004: listening start
-    7400006: listening/happy monk
-    7400008: listening fail
+    7400000: walking
+    7400002: look_left
+    7400004: look_right
+    7400006: idle
+    7400008: looking_up
+    7400010: looking_up_right
+    7400012: looking_up_left
+    7400014: looking_down
     9500000: //RootNode
     13700000: //RootNode
   externalObjects:
@@ -52,7 +55,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
-    animationCompression: 0
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -60,6 +63,90 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations:
+    - serializedVersion: 16
+      name: walking
+      takeName: Take 001
+      firstFrame: 260
+      lastFrame: 300
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: look_left
+      takeName: Take 001
+      firstFrame: 80
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: look_right
+      takeName: Take 001
+      firstFrame: 160
+      lastFrame: 240
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: idle
       takeName: Take 001
@@ -89,10 +176,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: walking
+      name: looking_up
       takeName: Take 001
-      firstFrame: 100
-      lastFrame: 140
+      firstFrame: 320
+      lastFrame: 360
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -117,10 +204,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: listening start
+      name: looking_up_right
       takeName: Take 001
-      firstFrame: 160
-      lastFrame: 170
+      firstFrame: 400
+      lastFrame: 480
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -145,10 +232,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: listening/happy monk
+      name: looking_up_left
       takeName: Take 001
-      firstFrame: 170
-      lastFrame: 230
+      firstFrame: 480
+      lastFrame: 560
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -173,10 +260,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: listening fail
+      name: looking_down
       takeName: Take 001
-      firstFrame: 230
-      lastFrame: 240
+      firstFrame: 560
+      lastFrame: 590
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

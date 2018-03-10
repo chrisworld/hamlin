@@ -126,25 +126,18 @@ public class EndlessTerrain : MonoBehaviour {
       //create random position within chunk, making sure it is not same position as player or existing monsters
       //NOTE: we assume no monsters are in the chunk when this method runs!!! when to call it to be sure??
 
-      //float offset = chunkSize / 2;
-      float offset = 0; //DEBUG
+      //float offset = chunkSize / 2;   //this is waaay too big
+      float offset = 0;
       Vector3 position = viewerPos;
-      position.y += 0.1f;
       while (position.x == viewerPos.x && position.z == viewerPos.z) //in case by chance it is the same position
       {
         //TODO: replace skeleton with Jan's monsters, update animation logic in MonsterManager, make monsters more spaced out and some closer to player, leave out nav?
-        position.x = position.x - offset + Random.Range(0f, 1f);
-        position.z = position.z + offset - Random.Range(0f, 1f);
-        //DEBUG
-        print(position.x);
-        print(position.z);
+        position.x = position.x - offset + Random.Range(0f, chunkSize * 2f);
+        position.z = position.z + offset - Random.Range(0f, chunkSize * 2f);
       }
 
-      //TODO: maybe change this to be random rotation
-      Quaternion rotation = Quaternion.identity;
-
       //create monster and add to MonsterManager's monsters list
-      Monster monster = Instantiate<Monster>(baseMonster, position, rotation);
+      Monster monster = Instantiate<Monster>(baseMonster, position, baseMonster.transform.rotation);
       monster.scale_name = scaleNames[ Random.Range(0, scaleNames.Count - 1) ];
       monster.base_key_monster = baseKeys[ Random.Range(0, baseKeys.Count - 1) ];
       monster.gameObject.SetActive(true);
