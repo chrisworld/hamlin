@@ -118,7 +118,7 @@ public class Monk : MonoBehaviour
     story.Enqueue(10); //E minor TeachScale
     story.Enqueue("Monk: By the way, I heard that this isn't called B minor in every part of Espero. In some towns they call it H minor too.");
     story.Enqueue("Monk: Imagine that! The variety of the other tongues we have here in Espero has always fascinated me.");
-    story.Enqueue("Monk:But anyway, I am digressing into my books again. The last scale I'll teach you is B minor - the key of patience.");
+    story.Enqueue("Monk: But anyway, I am digressing into my books again. The last scale I'll teach you is B minor - the key of patience.");
     story.Enqueue("Monk: If you have trouble learning your scales, just remember patience is all you need! Everything comes with practice.");
     story.Enqueue(11); //B minor TeachScale
 
@@ -374,6 +374,16 @@ public class Monk : MonoBehaviour
 
   void Update()
   {
+
+    //player has walked off a cliff, as players do
+    if(player.position.y < -50){
+      infobox.text = "You fell to your doom.";
+      info_image.SetActive(true);
+      
+      if(player.position.y < -150){
+        SceneManager.LoadScene("MainMenu_pablo");
+      }
+    }
 
     //Only play next story event when player is close to monk. We use info_image's active status as a lock for showing messages so we don't unqueue them too fast
     if (!storyStopped && info_image.activeSelf == false && Vector3.Distance(transform.position, player.transform.position) <= 0.5f)

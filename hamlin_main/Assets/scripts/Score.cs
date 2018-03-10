@@ -58,7 +58,12 @@ public class Score : MonoBehaviour {
   public void SetScoreTotal(int score_total, bool hideScoreTotal){
     this.score_total = score_total;
     this.hideScoreTotal = hideScoreTotal;
-    if (hideScoreTotal) ScoreText.text = "Score: " + score_cur;
+    if (hideScoreTotal) {
+      ScoreText.text = "Score: " + score_cur;
+      Vector3 currentPos = ScoreText.gameObject.transform.parent.gameObject.transform.position;
+      ScoreText.gameObject.transform.parent.gameObject.transform.position = new Vector3(currentPos.x + 20, currentPos.y, currentPos.z);    //make sure shorter scoreText is still centred
+      print("I ran");
+    }
     else ScoreText.text = "Score: " + score_cur + " / " + score_total;
   }
 
