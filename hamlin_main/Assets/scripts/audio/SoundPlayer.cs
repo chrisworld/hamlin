@@ -23,6 +23,7 @@ public class SoundPlayer : MonoBehaviour {
 	public AudioSource hamlin_run;
 	public AudioSource hamlin_flute_out;
 	public AudioSource hamlin_flute_in;
+	public AudioSource hamlin_idle;
 
 	//monster
 
@@ -86,7 +87,6 @@ public class SoundPlayer : MonoBehaviour {
 	void NoteOn(MidiChannel channel, int note, float velocity)
 	{
 		MidiKeyPressed = true;
-		Debug.Log("NoteOn: " + note);
 		MidiKeyPressedNr = note;
 
 	}
@@ -95,12 +95,10 @@ public class SoundPlayer : MonoBehaviour {
 	void NoteOff(MidiChannel channel, int note)
 	{
 		MidiKeyPressed = false;
-		Debug.Log("NoteOff: " + channel + "," + note);
 	}
 
 	void Knob(MidiChannel channel, int knobNumber, float knobValue)
 	{
-		Debug.Log("Knob: " + knobNumber + "," + knobValue);
 	}
 
 	void OnEnable()
