@@ -57,7 +57,7 @@ public class EndlessTerrain : MonoBehaviour {
   }
 
 	void Update() {
-		
+
     for(int i = 0; i < allViewers.Count; i++){
       viewerPosition = new Vector2(allViewers[i].position.x, allViewers[i].position.z) / mapGenerator.terrainData.uniformScale;
 
@@ -133,6 +133,8 @@ public class EndlessTerrain : MonoBehaviour {
 
   //right now this only creates monsters within the viewer's current chunk
   public void GenerateMonsters(){
+
+    //Physics.gravity = new Vector3(0f, -60f, 0f);       //increase gravity force so monsters fall at a sensible speed
 
     //TODO: may need to get rid of this scaling as using for instantiating? idk. or swap y to z
     Vector3 viewerPos = new Vector3(viewer.position.x, viewer.position.y, viewer.position.z);
