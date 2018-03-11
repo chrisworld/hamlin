@@ -28,8 +28,8 @@ public class PlayerController : MonoBehaviour
   [HideInInspector]
   public bool forceActivateCombat = false;    //used by Monk.cs,  **do not remove**
 
+  public bool move_activated = true;
   // private
-  private bool move_activated = true;
   private bool switch_model = false;
   private bool walk = false;
   private bool run = false;
@@ -87,17 +87,11 @@ public class PlayerController : MonoBehaviour
     else if (checkValidTakeFluteKey() || forceActivateCombat)
     {
       sound_player.hamlin_idle.Stop();
-      if (hold_flute && !play_mode)
-      {
-        enterPlayMode();
-      }
-      else
-      {
-        forceActivateCombat = false;
-        anim.SetTrigger("takeFlute");
-        if(hold_flute) sound_player.hamlin_flute_in.Play();
-        switch_model = true;
-      }
+      if(hold_flute) sound_player.hamlin_flute_in.Play();
+      move_activated = false;
+      forceActivateCombat = false;
+      anim.SetTrigger("takeFlute");
+      switch_model = true;
     }
     // enter play mode
     //else if (checkValidPlayFluteKey() && !play_mode && hold_flute){
