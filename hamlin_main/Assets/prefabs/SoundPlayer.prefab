@@ -696,7 +696,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1620621576139528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 162.07315, y: 28.19953, z: 210.79256}
+  m_LocalPosition: {x: 162.07315, y: 28.199524, z: 210.79256}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4185057186016594}
@@ -3180,7 +3180,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 86835a6a60fd8364395fb189419bb82d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 681e0506f47dce74fab0583a087f95fa, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3913,6 +3913,7 @@ MonoBehaviour:
   monster_hurt: {fileID: 82854980838320206}
   ambient_forrest: {fileID: 82610371749330156}
   ambient_monklevel: {fileID: 82296195659641594}
+  gameover: {fileID: 82810603512826584}
   c: {fileID: 82351971948481444}
   c_sh: {fileID: 82008607337998130}
   d: {fileID: 82279809998366114}
