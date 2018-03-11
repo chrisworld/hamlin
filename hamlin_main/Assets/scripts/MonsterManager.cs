@@ -327,7 +327,8 @@ public class MonsterManager : NoteStateControl
               monsters[id].anim.SetTrigger("attack");
               //monsters[id].anim.SetBool("isAttacking", true);
               //monsters[id].anim.SetBool("isIdle", false);
-              monsters[id].playerDamageQueue++;
+              //monsters[id].playerDamageQueue++;
+              monsters[id].DamagePlayer();
             }
           }
           key++;
@@ -412,7 +413,7 @@ public class MonsterManager : NoteStateControl
   IEnumerator LoseGame()
   {
     gameOverScreen.SetActive(true);
-    yield return new WaitForSecondsRealtime(10);
+    yield return new WaitForSecondsRealtime(7);
     SceneManager.LoadScene("MainMenu_pablo");
   }
 
