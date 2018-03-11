@@ -31,6 +31,8 @@ public class Monk : MonoBehaviour
 
   void StoryInit(){
 
+    StartCoroutine(StoryEnd());
+
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
