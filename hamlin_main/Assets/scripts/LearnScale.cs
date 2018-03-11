@@ -164,6 +164,8 @@ public class LearnScale : NoteStateControl {
   	setNoteStateToScale(box_scale);
   	setSignStateToScale(box_scale);
   	container.updateScaleInd(scale_name, base_key);
+    print(scale_name);
+    print(base_key);
 		player_controller.changeScaleText (castScale((int)scale_name));
 		player_controller.changeBaseKeyText (castBaseKey((int)(base_key-48)));
 	}	

@@ -223,7 +223,6 @@ public class Monk : MonoBehaviour
 
   IEnumerator TeachScale(int codeTrigger)
   {
-    print("running teachscale");
     Vector3 position = new Vector3(monk.position.x - 2f, monk.position.y + 0.5f, monk.position.z);
     if (position.x == player.position.x) position.x -= 2f;    //avoid learnScale ending up at same position as monk or player
     LearnScale scale = Instantiate<LearnScale>(baseScale, position, Quaternion.identity);
