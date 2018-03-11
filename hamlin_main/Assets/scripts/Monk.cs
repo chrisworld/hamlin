@@ -41,8 +41,7 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: Tell me, where did you find that flute of yours, and where are you going?");
     story.Enqueue("Monk: It can be very dangerous travelling these parts openly carrying an instrument - they hate it, you know.");
     story.Enqueue("Monk: The creatures can’t stand the sound.");
-    story.Enqueue("Hamlin: A flute? What’s a flute? I found this thing by the side of the river in Hortondale.");
-    story.Enqueue("Hamlin: I guess it must have washed up there from somewhere upstream. What it’s for?");
+    story.Enqueue("Hamlin: I got this from the Pied Piper - he asked me to keep it safe for him. But I don't know what it's for!");
     story.Enqueue("Monk: Ah, so you have yet to discover the wonders of music. You have an epic journey ahead of you, my friend, and it will not be");
     story.Enqueue("Monk: without peril. The oracle foretold of this, that a hero with the power to liberate us from the silence would come -");
     story.Enqueue("Monk: 'but he knows not what power he wields'...");
