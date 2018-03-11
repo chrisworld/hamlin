@@ -170,6 +170,7 @@ public class MonsterManager : NoteStateControl
           base_key = monsters[i].base_key_monster;
           result = UpdateMonster(i);
           monsters[i].anim.SetTrigger("spotPlayer");
+          sound_player.monster_spot.Play();
           Debug.Log("Player spotted");
         }
         //don't do this for disabled baseMonster
@@ -316,6 +317,7 @@ public class MonsterManager : NoteStateControl
               note_state[c_pos][note_pos] = NoteState.RIGHT;
               sign_state[c_pos][note_pos] = midiToSignState(note_midi);
               monsters[id].anim.SetTrigger("hurt");
+              sound_player.monster_hurt.Play();
               c_pos++;
             }
             // wrong note
@@ -325,6 +327,7 @@ public class MonsterManager : NoteStateControl
               sign_state[c_pos][note_pos] = midiToSignState(note_midi);
               player_controller.getAttacked();
               monsters[id].anim.SetTrigger("attack");
+              sound_player.monster_attack.Play();
               //monsters[id].anim.SetBool("isAttacking", true);
               //monsters[id].anim.SetBool("isIdle", false);
               monsters[id].playerDamageQueue++;
@@ -370,6 +373,8 @@ public class MonsterManager : NoteStateControl
     StartCoroutine(ShowMessage("You win!", 3f, false));
     monsters[id].defeated = true;
     exitMonsterScale(id);
+    sound_player.monster_die.Play();
+    sound_player.monster_win.Play();
   }
 
   // start the fight
