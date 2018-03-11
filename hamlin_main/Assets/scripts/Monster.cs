@@ -47,6 +47,7 @@ public class Monster : MonoBehaviour {
 	}
 
   //Used by animation event to time health damage
+  //or with new monster just manually called? no attack anim
   public void DamagePlayer()
   {
     health.takeDamage(1);

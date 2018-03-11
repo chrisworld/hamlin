@@ -39,6 +39,7 @@ public class MonsterManager : NoteStateControl
   private int currentMonsterId;
   private bool initialisedMonsters;
   private bool proceduralMode;
+  private GameObject gameOverScreen;
 
   private int c_pos;
 
@@ -70,6 +71,8 @@ public class MonsterManager : NoteStateControl
     // init vars
     info_image.SetActive(false);
     proceduralMode = (numMonstersPerChunk > 0) ? true : false;
+    gameOverScreen = GameObject.Find("GameOverScreen");
+    gameOverScreen.SetActive(false);
 
     Monster[] tempMonsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));  //there must be at least one monster already in the game!!! this is the baseMonster for PCG
     foreach (Monster monster in tempMonsters){
@@ -87,14 +90,13 @@ public class MonsterManager : NoteStateControl
       pcgScaleNames.Add( (ScaleNames) Random.Range(0, 17) );  //note added 1 to max because max val is exclusive
       pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 60) );  //as above
     }
-    //don't comment this out, this is important
-    if (terrainGenerator){
-      terrainGenerator.scaleNames = pcgScaleNames;
-      terrainGenerator.baseKeys = pcgBaseKeys;
-      terrainGenerator.monsterManager = this;
-      terrainGenerator.numMonstersPerChunk = numMonstersPerChunk;
-      terrainGenerator.baseMonster = monsters[0];
-    }
+    //if (terrainGenerator){
+      //terrainGenerator.scaleNames = pcgScaleNames;
+      //terrainGenerator.baseKeys = pcgBaseKeys;
+      //terrainGenerator.monsterManager = this;
+      //terrainGenerator.numMonstersPerChunk = numMonstersPerChunk;
+      //terrainGenerator.baseMonster = monsters[0];
+    //}
 
     if (hideBaseMonster)
     {
@@ -178,9 +180,9 @@ public class MonsterManager : NoteStateControl
       }
     }
 
-    // loose
+    // lose
     if (result == 1 || health.GetHealthAmount() == 0){
-      looseGame();
+      StartCoroutine(LoseGame());
     }
 
     //load next level if player has defeated all the monsters
@@ -383,12 +385,11 @@ public class MonsterManager : NoteStateControl
     if(!proceduralMode) monsters[id].nav.isStopped = false;
   }
 
-  // loose condition
-  private void looseGame(){
-    resetNoteState();
-    resetSignState();
-    player_controller.setMoveActivate(true);
-    StartCoroutine(ShowMessage("You died :'(", 3f, true));
+  // show "lost game" end game screen
+  IEnumerator LoseGame(){
+    gameOverScreen.SetActive(true);
+    yield return new WaitForSecondsRealtime(10);
+    SceneManager.LoadScene("MainMenu_pablo");
   }
 
   //do not call directly, call with StartCoroutine(ShowMessage(...))

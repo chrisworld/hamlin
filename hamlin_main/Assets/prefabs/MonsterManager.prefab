@@ -51,21 +51,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d8d09db40095ef498c8c70fceddb09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  player_controller: {fileID: 0}
-  health: {fileID: 0}
   container: {fileID: 0}
   sound_player: {fileID: 0}
-  infowindow: {fileID: 0}
+  hideNotes: 1
+  base_key: 48
+  player: {fileID: 0}
+  hud: {fileID: 0}
+  player_controller: {fileID: 0}
+  health: {fileID: 0}
+  info_image: {fileID: 0}
   infobox: {fileID: 0}
   nextScene: {fileID: 102900000, guid: e1ff2fa1172510c4c80ba08933ac1bd4, type: 3}
+  score: {fileID: 0}
+  endGameSprite: {fileID: 21300000, guid: a41a8a125fd0191429d9125539fac3b8, type: 3}
   autoLoadNextScene: 0
   numMonstersPerChunk: 0
-  hideBaseMonster: 0
+  hideBaseMonster: 1
   terrainGenerator: {fileID: 0}
   monsters: []
-  viewDistance: 2
+  viewDistance: 10
   attackDistance: 0.3
   viewAngle: 60
   scale_name: 1
-  base_key: 48

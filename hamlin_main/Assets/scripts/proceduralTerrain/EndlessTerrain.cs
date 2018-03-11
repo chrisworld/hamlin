@@ -12,19 +12,23 @@ public class EndlessTerrain : MonoBehaviour {
 	public LODInfo[] detailLevels;
 	public static float maxViewDst;
 
-	public Transform viewer;
+	public Transform viewer;    // player
 	public Material mapMaterial;
 
-	public static Vector2 viewerPosition;
-	Vector2 viewerPositionOld;
+  [HideInInspector]
+  public List<Vector2> viewerPositionsOld;
+  [HideInInspector]
+  public List<Transform> allViewers; // includes player and all monsters - important for collision mesh so monsters don't fall through
+
+  public static Vector2 viewerPosition;
 	static MapGenerator mapGenerator;
 	int chunkSize;
 	int chunksVisibleInViewDst;
   Score score;
 
-  //set by MonsterManager itself
+  //set by ProceduralMonsterManager
   [HideInInspector]
-  public MonsterManager monsterManager;
+  public ProceduralMonsterManager monsterManager;
   [HideInInspector]
   public Monster baseMonster;
   [HideInInspector]
@@ -39,6 +43,12 @@ public class EndlessTerrain : MonoBehaviour {
 
 	void Start() {
 		mapGenerator = FindObjectOfType<MapGenerator> ();
+
+    //init viewer lists and add player to them
+    allViewers = new List<Transform>();
+    allViewers.Add(viewer);
+    viewerPositionsOld = new List<Vector2>();
+    viewerPositionsOld.Add(new Vector2(viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale);   
     visibleTerrainChunks = new List<TerrainChunk>();
 		maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 		chunkSize = mapGenerator.mapChunkSize - 1;
@@ -48,19 +58,33 @@ public class EndlessTerrain : MonoBehaviour {
     score.SetScoreTotal(0, true);
   }
 
-	void Update() {
-		viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale;
 
-		if (viewerPosition != viewerPositionOld) {
-			foreach (TerrainChunk chunk in visibleTerrainChunks) {
-				chunk.UpdateCollisionMesh ();
-			}
-		}
+	void Update() {
+
+    for(int i = 0; i < allViewers.Count; i++){
+      viewerPosition = new Vector2(allViewers[i].position.x, allViewers[i].position.z) / mapGenerator.terrainData.uniformScale;
+
+      //monster has stopped falling, so make it visible
+      if(i != 0 && allViewers[i].gameObject.GetComponent<Rigidbody>().IsSleeping()){
+        allViewers[i].gameObject.SetActive(true);
+        print("monster is activeee");
+      }
+
+      if (viewerPosition != viewerPositionsOld[i])
+      {
+        foreach (TerrainChunk chunk in visibleTerrainChunks)
+        {
+          chunk.UpdateCollisionMesh();
+        }
+        if(i != 0) viewerPositionsOld[i] = viewerPosition;        //skip 0 - do not update player as it breaks monster generation
+      }
+
+    }
+    viewerPosition = new Vector2(viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale;   //reset back to player's position after looping through all monsters
 
     //only add monsters to current chunk, and only add if we have just changed chunk
-    //TODO: for performance should probably remove old monsters stored in MonsterManager?
-		if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
-			viewerPositionOld = viewerPosition;
+    if ((viewerPositionsOld[0] - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
+			viewerPositionsOld[0] = viewerPosition;
 			UpdateVisibleChunks ();
       if(scaleNames.Count > 0 && baseKeys.Count > 0){
         GenerateMonsters();
@@ -120,6 +144,8 @@ public class EndlessTerrain : MonoBehaviour {
   //right now this only creates monsters within the viewer's current chunk
   public void GenerateMonsters(){
 
+    Physics.gravity = new Vector3(0f, -20f, 0f);       //increase gravity force so monsters fall at a sensible speed
+
     //TODO: may need to get rid of this scaling as using for instantiating? idk. or swap y to z
     Vector3 viewerPos = new Vector3(viewer.position.x, viewer.position.y, viewer.position.z);
 
@@ -132,6 +158,7 @@ public class EndlessTerrain : MonoBehaviour {
       //float offset = chunkSize / 2;   //this is waaay too big
       float offset = 0;
       Vector3 position = viewerPos;
+      position.y = 20;
       while (position.x == viewerPos.x && position.z == viewerPos.z) //in case by chance it is the same position
       {
         //TODO: replace skeleton with Jan's monsters, update animation logic in MonsterManager, make monsters more spaced out and some closer to player, leave out nav?
@@ -143,8 +170,12 @@ public class EndlessTerrain : MonoBehaviour {
       Monster monster = Instantiate<Monster>(baseMonster, position, baseMonster.transform.rotation);
       monster.scale_name = scaleNames[ Random.Range(0, scaleNames.Count - 1) ];
       monster.base_key_monster = baseKeys[ Random.Range(0, baseKeys.Count - 1) ];
-      monster.gameObject.SetActive(true);
+      monster.gameObject.SetActive(false);
+      monster.defeated = false;
       monsterManager.monsters.Add(monster);
+      allViewers.Add(monster.transform);
+      Vector2 oldPos = new Vector2(monster.transform.position.x, monster.transform.position.z) / mapGenerator.terrainData.uniformScale;
+      viewerPositionsOld.Add(oldPos);
     }
 
   }
