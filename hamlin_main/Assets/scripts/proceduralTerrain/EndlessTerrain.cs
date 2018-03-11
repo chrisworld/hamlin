@@ -12,15 +12,16 @@ public class EndlessTerrain : MonoBehaviour {
 	public LODInfo[] detailLevels;
 	public static float maxViewDst;
 
-	public Transform viewer;
+	public Transform viewer;    // player
 	public Material mapMaterial;
 
 	public static Vector2 viewerPosition;
-	Vector2 viewerPositionOld;
+	List<Vector2> viewerPositionsOld;
 	static MapGenerator mapGenerator;
 	int chunkSize;
 	int chunksVisibleInViewDst;
   Score score;
+  List<Transform> allViewers; // includes player and all monsters - important for collision mesh so monsters don't fall through
 
   //set by MonsterManager itself
   [HideInInspector]
@@ -39,6 +40,13 @@ public class EndlessTerrain : MonoBehaviour {
 
 	void Start() {
 		mapGenerator = FindObjectOfType<MapGenerator> ();
+
+    //init viewer lists and add player to them
+    allViewers = new List<Transform>();
+    allViewers.Add(viewer);
+    viewerPositionsOld = new List<Vector2>();
+    viewerPositionsOld.Add(new Vector2(viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale);
+    
     visibleTerrainChunks = new List<TerrainChunk>();
 		maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 		chunkSize = mapGenerator.mapChunkSize - 1;
@@ -49,18 +57,24 @@ public class EndlessTerrain : MonoBehaviour {
   }
 
 	void Update() {
-		viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale;
+		
+    for(int i = 0; i < allViewers.Count; i++){
+      viewerPosition = new Vector2(allViewers[i].position.x, allViewers[i].position.z) / mapGenerator.terrainData.uniformScale;
 
-		if (viewerPosition != viewerPositionOld) {
-			foreach (TerrainChunk chunk in visibleTerrainChunks) {
-				chunk.UpdateCollisionMesh ();
-			}
-		}
+      if (viewerPosition != viewerPositionsOld[i])
+      {
+        foreach (TerrainChunk chunk in visibleTerrainChunks)
+        {
+          chunk.UpdateCollisionMesh();
+        }
+        if(i != 0) viewerPositionsOld[i] = viewerPosition;        //skip 0 - do not update player as it breaks monster generation
+      }
+    }
+    viewerPosition = new Vector2(viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale;   //reset back to player's position after looping through all monsters
 
     //only add monsters to current chunk, and only add if we have just changed chunk
-    //TODO: for performance should probably remove old monsters stored in MonsterManager?
-		if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
-			viewerPositionOld = viewerPosition;
+    if ((viewerPositionsOld[0] - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
+			viewerPositionsOld[0] = viewerPosition;
 			UpdateVisibleChunks ();
       if(scaleNames.Count > 0 && baseKeys.Count > 0){
         GenerateMonsters();
@@ -132,6 +146,7 @@ public class EndlessTerrain : MonoBehaviour {
       //float offset = chunkSize / 2;   //this is waaay too big
       float offset = 0;
       Vector3 position = viewerPos;
+      position.y = 20;
       while (position.x == viewerPos.x && position.z == viewerPos.z) //in case by chance it is the same position
       {
         //TODO: replace skeleton with Jan's monsters, update animation logic in MonsterManager, make monsters more spaced out and some closer to player, leave out nav?
@@ -145,6 +160,9 @@ public class EndlessTerrain : MonoBehaviour {
       monster.base_key_monster = baseKeys[ Random.Range(0, baseKeys.Count - 1) ];
       monster.gameObject.SetActive(true);
       monsterManager.monsters.Add(monster);
+      allViewers.Add(monster.transform);
+      Vector2 oldPos = new Vector2(monster.transform.position.x, monster.transform.position.z) / mapGenerator.terrainData.uniformScale;
+      viewerPositionsOld.Add(oldPos);
     }
 
   }
@@ -184,6 +202,7 @@ public class EndlessTerrain : MonoBehaviour {
 			meshRenderer = meshObject.AddComponent<MeshRenderer>();
 			meshFilter = meshObject.AddComponent<MeshFilter>();
 			meshCollider = meshObject.AddComponent<MeshCollider>();
+      //meshCollider.convex = true;               //this stops monsters falling through the mesh (lets collider collide with other colliders) but the collider is waaaay too high above the mesh
 			meshRenderer.material = material;
 
 			meshObject.transform.position = positionV3 * mapGenerator.terrainData.uniformScale;

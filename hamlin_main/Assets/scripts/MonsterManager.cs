@@ -16,7 +16,6 @@ public class MonsterManager : NoteStateControl
   public Text infobox;
   public Object nextScene;
   public Score score;
-  public Sprite endGameSprite;
 
   public bool autoLoadNextScene = false;
   public int numMonstersPerChunk = 0;
