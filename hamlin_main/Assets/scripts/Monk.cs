@@ -18,6 +18,7 @@ public class Monk : MonoBehaviour
   PlayerController playerController;
   Queue story;
   Transform monk;
+  GameObject screen;
   bool storyStopped;
   bool dialogueClicked;
   bool monkInteracted;
@@ -30,6 +31,22 @@ public class Monk : MonoBehaviour
   //TODO: trigger monk animations
 
   void StoryInit(){
+
+
+    story.Enqueue(0); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(1); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(2); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(3); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(4); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(5); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+
+    /*
 
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
@@ -147,10 +164,8 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: but of course there's a whole world of other music out there. There are others like us who still know about");
     story.Enqueue("Monk: music; perhaps you will meet some of them on your travels, and they can teach you more. Anyway, I wish you");
     story.Enqueue("Monk: safe travels on your journey. So long, Hamlin, and remember - keep playing your music, don’t let the silence win.");
-    //TODO: show game over screen - full screen image by Andrea and text below
-    //"Congratulations, you completed Musical Theory Foundations and helped make Espero a happier place!
-    // Stay tuned for new musical adventures soon in the next update. In the meantime, you can carry on 
-    // making music in adventure mode."
+
+    */
 
   }
 
@@ -353,8 +368,20 @@ public class Monk : MonoBehaviour
 
   }
 
-   IEnumerator StoryEnd(){
-    
+   IEnumerator StoryEndPart1(){
+
+    dialogueClicked = false;
+    screen.GetComponent<Image>().sprite = images[6]; //congrats
+    screen.SetActive(true);
+    yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+    dialogueClicked = false;
+    screen.transform.GetChild(0).gameObject.SetActive(false);      //hide textbox
+    screen.GetComponent<Image>().sprite = images[7]; //credits
+    yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+    SceneManager.LoadScene("MainMenu_pablo");
+
+
+    /*
     RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
     infobox.gameObject.SetActive(false);   //what is this for??
     dialogueClicked = false;
@@ -369,7 +396,7 @@ public class Monk : MonoBehaviour
     info_image.SetActive(true);
     yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
 
-    SceneManager.LoadScene("MainMenu_pablo"); 
+    SceneManager.LoadScene("MainMenu_cat");  */
   }
 
   void Start()
@@ -384,6 +411,8 @@ public class Monk : MonoBehaviour
     score = GameObject.Find("GameState").GetComponent<Score>();
     monk = (Transform) GameObject.Find("Monk").transform;
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
+    screen = GameObject.Find("MonkScreen");
+    screen.SetActive(false);
     playerController = player.GetComponent<PlayerController>();
     baseScale.gameObject.SetActive(false); //this must be done here, not before, otherwise it cannot find the object
     StoryInit(); //queue up all the dialogue
@@ -417,7 +446,7 @@ public class Monk : MonoBehaviour
 
     }
 
-    if (story.Count < 1)                                                     //story finished
+    if (!storyStopped && story.Count < 1)                                                     //story finished
     {
       storyStopped = true;
       StartCoroutine(StoryEnd());                                                            //show end game screen and go back to main menu
