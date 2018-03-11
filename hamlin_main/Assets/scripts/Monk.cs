@@ -50,10 +50,11 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: of prophecy and heroics. Come now, let me teach you what that flute of yours can do.");
 
     //**C Major and Controls**
+    //TODO: rewrite this section, dialogue is rubbish here
     story.Enqueue("Monk: I'll teach you some scales, because scales are crucial building blocks in music. Scales are sequences of notes which fit");
     story.Enqueue("Monk: well together, and by learning scales you can start to understand how all the notes in music are connected. Traditionally");
-    story.Enqueue("Monk: scales were associated with emotions and moods. For example, some people say C major reminds them of innocence, naivety");
-    story.Enqueue("Monk: and children's talk. A happy scale, in short! A scale we could all do with a bit more of in our lives here in Espero.");
+    story.Enqueue("Monk: scales were associated with emotions and moods. For example, some people say C major reminds them of innocence");
+    story.Enqueue("Monk: and children playing. A happy scale, in short! A scale we could all do with a bit more of in our lives here in Espero.");
     story.Enqueue("Monk: But you should make up your own mind about how a scale makes you feel. C Major is a very simple scale: on a piano");
     story.Enqueue("Monk: keyboard you just go along the white keys from C. Have a go at playing it and see how you think it makes you feel.");
     story.Enqueue("Monk: Here, take a look at this picture of a keyboard I have in my book.");
@@ -74,7 +75,7 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: But keep an eye out for the creatures. Sometimes they seem to just appear out of nowhere!");
     story.Enqueue(12); //Battle 1 - monster takes a while to chase so time for 2 lines of dialogue
     story.Enqueue("Monk: Oh no! Here comes one now! You can fight it by playing the right scale with your flute - music is their weakness.");
-    story.Enqueue("Game: Can you remember the scale you just learnt? When fighting monsters here you'll have to remember which notes to play.");
+    story.Enqueue("Game: Can you remember the notes for the scales you just learnt? Each monster has one scale it can be defeated with.");
     story.Enqueue(16); //signal pre-combat dialogue done
     story.Enqueue("Monk: Hmm, perhaps I should become a fortune teller...I think the coast is clear now!");
     story.Enqueue("Monk: Come back when you're ready to learn some more.");
@@ -106,20 +107,25 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: These scales follow the pattern W, W, H, W, W, W, H. So you can choose any note on the keyboard and follow this");
     story.Enqueue("Monk: pattern, and you will have the major scale in the key of that note. Another important pattern is the minor scale");
     story.Enqueue("Monk: pattern. This pattern is W,H,W,W,H,W,W and again you can start from any initial note (the key of the scale).");
-    story.Enqueue("Monk: Minor scales typically sound darker and sadder than major scales. But certainly no less important!");
+    story.Enqueue("Monk: Minor scales typically sound darker and sadder than major scales.");
 
     //**A MINOR, MONSTER 2**
     story.Enqueue("Monk: How about we start with A minor? It's the easiest minor scale to play as it has no sharps or flats - just like C major.");
     story.Enqueue("Monk: My book describes this scale as having a tender mood, but I must admit I'm not so sure!");
     story.Enqueue(9); //A minor TeachScale
     story.Enqueue(13); //Battle 2
+    story.Enqueue("Look out - here comes another creature! It must have heard you playing your flute!");
+    story.Enqueue(16); //signal pre-combat dialogue done
 
     //**E MINOR, B MINOR**
-    story.Enqueue("Monk: Next up - E minor! Someone once described the mood of this as 'sighs accompanied by a few tears' - would you agree?");
+    story.Enqueue("You're getting good at this! The creatures are really quite harmless once you know how to defeat them.");
+    story.Enqueue("Monk: Time for the next scale - E minor!");
+    story.Enqueue("Someone once described the mood of this scale to me as 'sighs accompanied by a few tears'");
+    story.Enqueue("but I think they were just having a very bad day - I quite like this one!");
     story.Enqueue(10); //E minor TeachScale
     story.Enqueue("Monk: By the way, I heard that this isn't called B minor in every part of Espero. In some towns they call it H minor too.");
-    story.Enqueue("Monk: Imagine that! The variety of the other tongues we have here in Espero has always fascinated me.");
-    story.Enqueue("Monk: But anyway, I am digressing into my books again. The last scale I'll teach you is B minor - the key of patience.");
+    story.Enqueue("Monk: Imagine that! The variety of the other tongues we have here in Espero has always fascinated me. The last scale I'll");
+    story.Enqueue("Monk: teach you is B minor - the key of patience. Something you need in bucketfuls with these creatures around...");
     story.Enqueue("Monk: If you have trouble learning your scales, just remember patience is all you need! Everything comes with practice.");
     story.Enqueue(11); //B minor TeachScale
 
@@ -128,8 +134,11 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: it shows you how they're all connected.");
     story.Enqueue(3); //show circle of fifths
     story.Enqueue(14); //Battle 3
+    story.Enqueue("Get ready, there's another creature coming!");
+    story.Enqueue(16); //signal pre-combat dialogue done
 
     //**END LEVEL**
+    story.Enqueue("Well done! You're learning fast.");
     story.Enqueue("Monk: There are many other types of scales too, not just major and minor scales. They all have their own pattern");
     story.Enqueue("Monk: of half and whole tones. And they have the most fantastical names. Here, let me show you my book again!");
     story.Enqueue(4); //show church scales
