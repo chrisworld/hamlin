@@ -14,11 +14,11 @@ public class SettingsManager : MonoBehaviour {
 	
 	public AudioSource musicSource;
 	public Resolution[] resolutions;
-	public GameSettings gameSettings;
+	//public GameSettings gameSettings;      //this is causing crashes, I am removing it
 	
 	void OnEnable(){
 		
-		gameSettings = new GameSettings();
+		//gameSettings = new GameSettings();
 		
 		fullscreenToggle.onValueChanged.AddListener(delegate{ OnFullScreenToggle(); });
 		resolutionDropdown.onValueChanged.AddListener(delegate{ OnResolutionChange(); });
@@ -35,7 +35,7 @@ public class SettingsManager : MonoBehaviour {
 	
 	public void OnFullScreenToggle(){
 		
-		gameSettings.fullscreen = Screen.fullScreen = fullscreenToggle.isOn;
+		Screen.fullScreen = fullscreenToggle.isOn;
 	}
 	
 	public void OnResolutionChange(){
@@ -45,18 +45,17 @@ public class SettingsManager : MonoBehaviour {
 	
 	public void OnAntialiasingChange(){
 		
-		QualitySettings.antiAliasing = gameSettings.antialiasing = (int)Mathf.Pow(2f, antialiasingDropdown.value);
+		QualitySettings.antiAliasing = (int)Mathf.Pow(2f, antialiasingDropdown.value);
 	}
 	
 	public void OnVSyncChange(){
 		
-		QualitySettings.vSyncCount = gameSettings.vSync = vSyncDropdown.value;
+		QualitySettings.vSyncCount = vSyncDropdown.value;
 	}
 	
 	public void OnMusicVolumeChange(){
 
         AudioListener.volume = musicVolumeSlider.value;
-        gameSettings.musicVolume = musicVolumeSlider.value;
 
     }
 
