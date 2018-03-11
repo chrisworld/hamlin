@@ -15,17 +15,20 @@ public class EndlessTerrain : MonoBehaviour {
 	public Transform viewer;    // player
 	public Material mapMaterial;
 
-	public static Vector2 viewerPosition;
-	List<Vector2> viewerPositionsOld;
+  [HideInInspector]
+  public List<Vector2> viewerPositionsOld;
+  [HideInInspector]
+  public List<Transform> allViewers; // includes player and all monsters - important for collision mesh so monsters don't fall through
+
+  public static Vector2 viewerPosition;
 	static MapGenerator mapGenerator;
 	int chunkSize;
 	int chunksVisibleInViewDst;
   Score score;
-  List<Transform> allViewers; // includes player and all monsters - important for collision mesh so monsters don't fall through
 
-  //set by MonsterManager itself
+  //set by ProceduralMonsterManager
   [HideInInspector]
-  public MonsterManager monsterManager;
+  public ProceduralMonsterManager monsterManager;
   [HideInInspector]
   public Monster baseMonster;
   [HideInInspector]
