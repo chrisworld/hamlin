@@ -28,8 +28,6 @@ public class pauseMenu : MonoBehaviour {
 		
 		PauseMenu.gameObject.SetActive(!PauseMenu.gameObject.activeInHierarchy);
 
-        //TODO: stop hearts going down while paused
-
 		if(Time.timeScale == 1){
 			//Canvas.gameObject.SetActive(true);
 			Time.timeScale = 0;
@@ -47,6 +45,6 @@ public class pauseMenu : MonoBehaviour {
 	}
 	
 	public void Menu(string i){
-		SceneManager.LoadScene("MainMenu");
+		SceneManager.LoadScene("MainMenu_pablo");
 	}
 }

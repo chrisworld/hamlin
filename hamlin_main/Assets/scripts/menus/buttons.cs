@@ -10,8 +10,7 @@ public class buttons : MonoBehaviour {
   }
 
 	public void StoryModeButton(){
-		SceneManager.LoadScene("rat_test_lab");
-    //TODO: this should load monk level instead (when complete)
+		SceneManager.LoadScene("monk_cat");
 	}
 
   public void AdventureModeButton(){
