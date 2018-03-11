@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
     // take the flute and put it back
     else if (checkValidTakeFluteKey() || forceActivateCombat)
     {
+      sound_player.hamlin_idle.Stop();
       if (hold_flute && !play_mode)
       {
         enterPlayMode();
@@ -102,6 +103,14 @@ public class PlayerController : MonoBehaviour
     //else if (checkValidPlayFluteKey() && !play_mode && hold_flute){
     //	enterPlayMode();
     //}
+
+    // sound should stop in play mode
+    if (play_mode && (run || walk)){
+        sound_player.hamlin_walk.Stop();
+        sound_player.hamlin_run.Stop();
+        run = false;
+        walk = false;
+    }
 
     // control stuff
     Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -138,21 +147,21 @@ public class PlayerController : MonoBehaviour
       if (animationSpeedPercent > 0.1 && animationSpeedPercent < 0.6 && !walk){
         walk = true;
         run = false;
-        Debug.Log("Walk");
         sound_player.hamlin_walk.Play();
+        sound_player.hamlin_idle.Stop();
       }
       else if (animationSpeedPercent > 0.6 && !run){
         run = true;
         walk = false;
-        Debug.Log("run");
         sound_player.hamlin_run.Play();
+        sound_player.hamlin_idle.Stop();
       }
       else if (animationSpeedPercent < 0.1 && (walk || run)){
-        Debug.Log("stop");
         walk = false;
         run = false;
         sound_player.hamlin_walk.Stop();
         sound_player.hamlin_run.Stop();
+        sound_player.hamlin_idle.Play();
       }
     }
   }

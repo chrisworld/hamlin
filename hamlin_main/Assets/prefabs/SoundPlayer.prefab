@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 4771659720639654}
   - component: {fileID: 82681381935408934}
   m_Layer: 0
-  m_Name: monster_win
+  m_Name: hamlin_idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,6 +374,22 @@ GameObject:
   - component: {fileID: 82817973423376790}
   m_Layer: 0
   m_Name: f'#
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1545888660088284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4674453275831738}
+  - component: {fileID: 82546829590222732}
+  m_Layer: 0
+  m_Name: monster_win
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -847,6 +863,7 @@ Transform:
   - {fileID: 4358084860397836}
   - {fileID: 4145700899967954}
   - {fileID: 4687218020287454}
+  - {fileID: 4674453275831738}
   - {fileID: 4771659720639654}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1098,6 +1115,19 @@ Transform:
   m_Father: {fileID: 4193814214699714}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4674453275831738
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1545888660088284}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -162.07315, y: -28.199524, z: -210.79256}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4193814214699714}
+  m_RootOrder: 39
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4687218020287454
 Transform:
   m_ObjectHideFlags: 1
@@ -1135,7 +1165,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4193814214699714}
-  m_RootOrder: 39
+  m_RootOrder: 40
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4773903206612938
 Transform:
@@ -2370,7 +2400,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d4f089fcbc1491b41838be404aa90004, type: 3}
+  m_audioClip: {fileID: 8300000, guid: cbb282a6464ed5d48a042fd5b15b0132, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3351,6 +3381,86 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!82 &82546829590222732
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1545888660088284}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f4a1dac1476d3664897c987d5d4362f8, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!82 &82578755734448446
 AudioSource:
   m_ObjectHideFlags: 1
@@ -3360,7 +3470,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 0440cbae1a5e64f42b9030510ab9abbf, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 60a38b4cb06cf1c46a8f3ce6d02e2a86, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3760,11 +3870,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f4a1dac1476d3664897c987d5d4362f8, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b17a94fb7bd0c5546b47f9bd0bb32f41, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -4568,10 +4678,11 @@ MonoBehaviour:
   hamlin_run: {fileID: 82578755734448446}
   hamlin_flute_out: {fileID: 82814267693978078}
   hamlin_flute_in: {fileID: 82290954137939308}
+  hamlin_idle: {fileID: 82681381935408934}
   monster_spot: {fileID: 82168301388761788}
   monster_attack: {fileID: 82051934955550996}
   monster_hurt: {fileID: 82854980838320206}
-  monster_win: {fileID: 82681381935408934}
+  monster_win: {fileID: 82546829590222732}
   monster_die: {fileID: 82021006317335566}
   ambient_forrest: {fileID: 82610371749330156}
   ambient_monklevel: {fileID: 82296195659641594}
