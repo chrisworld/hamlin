@@ -19,6 +19,8 @@ public class Monk : MonoBehaviour
   Queue story;
   Transform monk;
   GameObject screen;
+  GameObject endScreen;
+  Vector3 oldPosition;
   bool storyStopped;
   bool dialogueClicked;
   bool monkInteracted;
@@ -296,7 +298,7 @@ public class Monk : MonoBehaviour
     dialogueClicked = false;
   }
 
-  /* IEnumerator ShowImage(int imageIndex){
+  IEnumerator ShowImage(int imageIndex){
     storyStopped = true;
     screen.GetComponent<Image>().sprite = images[8];                  //blank background
     GameObject screen_image = screen.transform.GetChild(0).gameObject;
@@ -307,15 +309,14 @@ public class Monk : MonoBehaviour
     Color oldColor = screen_image.GetComponent<Image>().color;
     RectTransform canvasTransform = screen_image.GetComponent<RectTransform>();
     Vector2 oldSize = canvasTransform.sizeDelta;
-    //Vector3 oldPosition = new Vector3(canvasTransform.position.x, canvasTransform.position.y, canvasTransform.position.z);
 
     //set new values to display image
     Sprite newSprite = images[imageIndex];
     screen_image.GetComponent<Image>().sprite = newSprite;
     screen_image.GetComponent<Image>().color = Color.white;
-    //Vector3 newPosition = new Vector3(oldPosition.x, oldPosition.y + 150, oldPosition.z);
+    Vector3 newPosition = new Vector3(oldPosition.x, oldPosition.y + 150, oldPosition.z);
     canvasTransform.sizeDelta = new Vector2(newSprite.texture.width * 0.6f, newSprite.texture.height * 0.6f);  //if this still isn't flexible enough just pass in width and height as params
-    //canvasTransform.position = newPosition;
+    canvasTransform.position = newPosition;
 
     screen_image.transform.GetChild(0).gameObject.SetActive(false);   //hide text
     screen.SetActive(true);
@@ -327,17 +328,18 @@ public class Monk : MonoBehaviour
     screen_image.GetComponent<Image>().sprite = oldSprite;
     screen_image.GetComponent<RectTransform>().sizeDelta = oldSize;
     screen_image.GetComponent<Image>().color = oldColor;
-    //screen_image.GetComponent<RectTransform>().position = oldPosition; 
+    canvasTransform.position = oldPosition;
+    newPosition.y -= 150;
 
     screen_image.transform.GetChild(0).gameObject.SetActive(true); //show text again
     //screen_image.SetActive(false);
     screen.SetActive(false);
     dialogueClicked = false;
     storyStopped = false;
-  } */
+  } 
 
   //manages image display (for keyboard, circle of fifths images etc)
-  IEnumerator ShowImage(int imageIndex)
+  /* IEnumerator ShowImage(int imageIndex)
   {
     //store old dialogue box values to restore later
     Sprite oldSprite = info_image.GetComponent<Image>().sprite;
@@ -365,7 +367,7 @@ public class Monk : MonoBehaviour
     info_image.GetComponent<Image>().color = oldColor;
     canvasTransform.position = oldPosition;
     dialogueClicked = false;
-  }
+  } */
 
   void StoryEvent(int codeTrigger){
 
@@ -410,16 +412,16 @@ public class Monk : MonoBehaviour
 
    IEnumerator StoryEnd(){
     dialogueClicked = false;
-    screen.GetComponent<Image>().sprite = images[6]; //congrats
-    screen.SetActive(true);
+    Image screen_image = endScreen.GetComponent<Image>();
+    screen_image.sprite = images[6]; //congrats
+    endScreen.SetActive(true);
     yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
     
-    //screen.transform.GetChild(0).gameObject.SetActive(false);      //hide textbox
-    //dialogueClicked = false;
-    //screen.GetComponent<Image>().sprite = images[7]; //credits
-    //yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
-    //yield return new WaitForSeconds(2f);
-    SceneManager.LoadScene("MainMenu_cat");
+    endScreen.transform.GetChild(0).gameObject.SetActive(false);      //hide textbox
+    dialogueClicked = false;
+    endScreen.GetComponent<Image>().sprite = images[7]; //credits
+    yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+    SceneManager.LoadScene("MainMenu_pablo");
   
    }
 
@@ -438,9 +440,13 @@ public class Monk : MonoBehaviour
     playerController = player.GetComponent<PlayerController>();
     screen = GameObject.Find("MonkScreen");
     screen.SetActive(false);
+    endScreen = GameObject.Find("MonkScreenEnd");
+    endScreen.SetActive(false);
     baseScale.gameObject.SetActive(false); //this must be done here, not before, otherwise it cannot find the object
     StoryInit(); //queue up all the dialogue
     score.SetScoreTotal(9, false);
+    Vector3 pos = screen.transform.GetChild(0).gameObject.GetComponent<RectTransform>().position;
+    oldPosition = new Vector3(pos.x, pos.y, pos.z);
 
   }
 
@@ -471,7 +477,7 @@ public class Monk : MonoBehaviour
 
     }
 
-    if (story.Count < 1)                                                     //story finished
+    if (!storyStopped && story.Count < 1)                                                     //story finished
     {
       storyStopped = true;
       StartCoroutine(StoryEnd());                                                            //show end game screen and go back to main menu
