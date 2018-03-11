@@ -223,8 +223,9 @@ public class Monk : MonoBehaviour
 
   IEnumerator TeachScale(int codeTrigger)
   {
-    Vector3 position = new Vector3(monk.position.x - 0.2f, monk.position.y + 0.1f, monk.position.z);
-    if (position.x == player.position.x) position.x -= 0.2f;    //avoid learnScale ending up at same position as monk or player
+    print("running teachscale");
+    Vector3 position = new Vector3(monk.position.x - 2f, monk.position.y + 0.5f, monk.position.z);
+    if (position.x == player.position.x) position.x -= 2f;    //avoid learnScale ending up at same position as monk or player
     LearnScale scale = Instantiate<LearnScale>(baseScale, position, Quaternion.identity);
     scale.unlimitedWrongNotes = true;
     if (codeTrigger == 6){  //C Major
@@ -416,8 +417,9 @@ public class Monk : MonoBehaviour
     }
 
     //Only play next story event when player is close to monk. We use info_image's active status as a lock for showing messages so we don't unqueue them too fast
-    if (!storyStopped && info_image.activeSelf == false && Vector3.Distance(transform.position, player.transform.position) <= 0.5f)
+    if (!storyStopped && info_image.activeSelf == false && Vector3.Distance(transform.position, player.transform.position) <= 4f)
     {
+
         if (story.Peek().GetType() == typeof(string))                         //event is dialogue, display in infobox
         {
           StartCoroutine(Talk((string)story.Dequeue()));
@@ -440,7 +442,7 @@ public class Monk : MonoBehaviour
     }
 
     //player presses X to interact with the monk and resume story
-    if (!monkInteracted && Input.GetKeyDown(KeyCode.X) && Vector3.Distance(transform.position, player.transform.position) <= 0.5f)
+    if (!monkInteracted && Input.GetKeyDown(KeyCode.X) && Vector3.Distance(transform.position, player.transform.position) <= 4f)
     {                                         
       monkInteracted = true;
     }
