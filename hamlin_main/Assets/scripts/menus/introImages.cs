@@ -21,27 +21,27 @@ using UnityEngine.SceneManagement;
 		bgMusic.Stop();
 
 		Transform test1 = GameObject.Find("MainMenu").GetComponent<Transform>();
-		Transform img1 = test1.transform.GetChild (9);
+		Transform img1 = test1.transform.GetChild (8);
 		Transform primera = img1.transform.GetChild (0);
 		primera.gameObject.SetActive(true);
 
 		Transform test2 = GameObject.Find("MainMenu").GetComponent<Transform>();
-		Transform img2 = test2.transform.GetChild (9);
+		Transform img2 = test2.transform.GetChild (8);
 		Transform segunda = img2.transform.GetChild (1);
 		segunda.gameObject.SetActive(false);
 
 		Transform test3 = GameObject.Find("MainMenu").GetComponent<Transform>();
-		Transform img3 = test3.transform.GetChild (9);
+		Transform img3 = test3.transform.GetChild (8);
 		Transform tercera = img3.transform.GetChild (2);
 		tercera.gameObject.SetActive(false);
 
 		Transform test4 = GameObject.Find("MainMenu").GetComponent<Transform>();
-		Transform img4 = test4.transform.GetChild (9);
+		Transform img4 = test4.transform.GetChild (8);
 		Transform cuarta = img4.transform.GetChild (3);
 		cuarta.gameObject.SetActive(false);
 
 		Transform test5 = GameObject.Find("MainMenu").GetComponent<Transform>();
-		Transform img5 = test5.transform.GetChild (9);
+		Transform img5 = test5.transform.GetChild (8);
 		Transform quinta = img5.transform.GetChild (4);
 		quinta.gameObject.SetActive(false);
 
@@ -87,12 +87,12 @@ using UnityEngine.SceneManagement;
 	private void buttonSetActive(){
 
 		Transform skipButton = GameObject.Find("MainMenu").GetComponent<Transform>();
-		Transform sb = skipButton.transform.GetChild (9);
+		Transform sb = skipButton.transform.GetChild (8);
 		Transform button1 = sb.transform.GetChild (6);
 		button1.gameObject.SetActive(false);
 
 		Transform playButton = GameObject.Find("MainMenu").GetComponent<Transform>();
-		Transform pb = playButton.transform.GetChild (9);
+		Transform pb = playButton.transform.GetChild (8);
 		Transform button2 = pb.transform.GetChild (7);
 		button2.gameObject.SetActive(true);
 		

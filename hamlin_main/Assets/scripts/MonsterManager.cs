@@ -46,25 +46,31 @@ public class MonsterManager : NoteStateControl
   void Start()
   {
     // objects inits
-    if(player == null){
+    if (player == null)
+    {
       player = GameObject.Find("Player").GetComponent<Transform>();
       player_controller = player.GetComponent<PlayerController>();
       health = player.GetComponent<Health>();
     }
-    if(sound_player == null){
+    if (sound_player == null)
+    {
       sound_player = GameObject.Find("SoundPlayer").GetComponent<SoundPlayer>();
     }
-    if(container == null){
+    if (container == null)
+    {
       container = GameObject.Find("ContainerManager").GetComponent<ContainerManager>();
     }
-    if(score == null){
+    if (score == null)
+    {
       score = GameObject.Find("GameState").GetComponent<Score>();
     }
-    if(hud == null){
+    if (hud == null)
+    {
       hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
       info_image = hud.transform.GetChild(3).gameObject;
     }
-    if(infobox == null){
+    if (infobox == null)
+    {
       infobox = GameObject.Find("HUDCanvas/Info/Text").GetComponent<Text>();
     }
     infobox.text = "message";
@@ -75,9 +81,10 @@ public class MonsterManager : NoteStateControl
     gameOverScreen.SetActive(false);
 
     Monster[] tempMonsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));  //there must be at least one monster already in the game!!! this is the baseMonster for PCG
-    foreach (Monster monster in tempMonsters){
+    foreach (Monster monster in tempMonsters)
+    {
       monsters.Add(monster);
-    }   
+    }
     chasing = false;
     fight_mode = false;
     activated = false;
@@ -86,16 +93,17 @@ public class MonsterManager : NoteStateControl
     //right now we use any scale and any base key
     List<ScaleNames> pcgScaleNames = new List<ScaleNames>();
     List<NoteBaseKey> pcgBaseKeys = new List<NoteBaseKey>();
-    for(int i=0; i < numMonstersPerChunk; i++){
-      pcgScaleNames.Add( (ScaleNames) Random.Range(0, 17) );  //note added 1 to max because max val is exclusive
-      pcgBaseKeys.Add( (NoteBaseKey) Random.Range(48, 60) );  //as above
+    for (int i = 0; i < numMonstersPerChunk; i++)
+    {
+      pcgScaleNames.Add((ScaleNames)Random.Range(0, 17));  //note added 1 to max because max val is exclusive
+      pcgBaseKeys.Add((NoteBaseKey)Random.Range(48, 60));  //as above
     }
     //if (terrainGenerator){
-      //terrainGenerator.scaleNames = pcgScaleNames;
-      //terrainGenerator.baseKeys = pcgBaseKeys;
-      //terrainGenerator.monsterManager = this;
-      //terrainGenerator.numMonstersPerChunk = numMonstersPerChunk;
-      //terrainGenerator.baseMonster = monsters[0];
+    //terrainGenerator.scaleNames = pcgScaleNames;
+    //terrainGenerator.baseKeys = pcgBaseKeys;
+    //terrainGenerator.monsterManager = this;
+    //terrainGenerator.numMonstersPerChunk = numMonstersPerChunk;
+    //terrainGenerator.baseMonster = monsters[0];
     //}
 
     if (hideBaseMonster)
@@ -112,28 +120,31 @@ public class MonsterManager : NoteStateControl
     int result = 0;
 
     // init
-    if (!initialisedMonsters && monsters != null){
+    if (!initialisedMonsters && monsters != null)
+    {
       initMonsters();
       return;
     }
     // current monster activated
     else if (activated)
-    {           
+    {
       //update just the active monster, activated = false when combat has finished
       result = UpdateMonster(currentMonsterId);
       monsterActivatedThisTurn = true;
     }
     // search for monster to activate
     else
-    {                  
+    {
       //cycle through all monsters and activate first one which is within combat distance, if any
       for (int i = 0; i < monsters.Count; i++)
-      { 
+      {
         // trash dying monsters
-        if (monsters[i].dying){
+        if (monsters[i].dying)
+        {
           int death_hash = Animator.StringToHash("Base Layer.death");
           AnimatorStateInfo stateInfo = monsters[i].anim.GetCurrentAnimatorStateInfo(0);
-          if (stateInfo.fullPathHash == death_hash){
+          if (stateInfo.fullPathHash == death_hash)
+          {
             score.updateDefMonster();
             Destroy(monsters[i].gameObject);
             monsters.RemoveAt(i);
@@ -143,7 +154,8 @@ public class MonsterManager : NoteStateControl
 
         // defeated monster
         // DO NOT DELETE BASE MONSTER (0);
-        else if (i != 0 && monsters[i].defeated){
+        else if (i != 0 && monsters[i].defeated)
+        {
 
           monsters[i].dying = true;
           Camera.main.fieldOfView = 60f;
@@ -181,7 +193,8 @@ public class MonsterManager : NoteStateControl
     }
 
     // lose
-    if (result == 1 || health.GetHealthAmount() == 0){
+    if (result == 1 || health.GetHealthAmount() == 0)
+    {
       StartCoroutine(LoseGame());
     }
 
@@ -199,13 +212,14 @@ public class MonsterManager : NoteStateControl
     }
     */
 
-  //TODO: add key listener for buttons that activate scales
-  // set soundPlayer.inLearning = true;
-  //should let player play notes without activating combat 
+    //TODO: add key listener for buttons that activate scales
+    // set soundPlayer.inLearning = true;
+    //should let player play notes without activating combat 
   }
 
   //return values: 0 no action, 1 player lost
-  int UpdateMonster(int id) {
+  int UpdateMonster(int id)
+  {
 
     Vector3 direction = player.position - monsters[id].transform.position;
     // start the scale
@@ -214,27 +228,21 @@ public class MonsterManager : NoteStateControl
       initMonsterScale(id);
     }
     //too far away to attack, chase player
-    else if (activated && !chasing && !fight_mode && !player_controller.play_mode) 
+    else if (activated && !chasing && !fight_mode)
     {
-      if (direction.magnitude > attackDistance){
-        Debug.Log("chase");
-        chasing = true; 
-        monsters[id].nav.isStopped = false;
+      Debug.Log("chase");
+      if (direction.magnitude > attackDistance)
+      {
+        chasing = true;
       }
-    }
-    // stop chasing, player already in play mode
-    else if (activated && chasing && player_controller.play_mode)
-    {
-      //monsters[id].nav.ResetPath();
-      chasing = false;
-      monsters[id].nav.isStopped = true;
     }
     // chasing update
     else if (activated && chasing && !fight_mode)
     {
-      if(!proceduralMode)  monsters[id].nav.destination = player.position;
+      if (!proceduralMode) monsters[id].nav.destination = player.position;
       // stop chasing
-      if (direction.magnitude > viewDistance){
+      if (direction.magnitude > viewDistance)
+      {
         Debug.Log("Out of Sight");
         monsters[id].nav.destination = monsters[id].transform.position;
         chasing = false;
@@ -242,7 +250,8 @@ public class MonsterManager : NoteStateControl
         monsters[id].anim.SetTrigger("calm");
       }
       // start fight
-      else if (direction.magnitude < attackDistance){
+      else if (direction.magnitude < attackDistance)
+      {
         //monsters[id].nav.destination = monsters[id].transform.position;
         startFight(id);
         monsters[id].nav.ResetPath();
@@ -251,12 +260,13 @@ public class MonsterManager : NoteStateControl
     }
 
     // stop the fight
-    else if (fight_mode && player_controller.move_activated)
+    /*
+    else if (fight_mode && run)
     {
       exitMonsterScale(id);
       return 0;
     }
-
+    */
     // play the scale
     else if (fight_mode && player_controller.hamlinReadyToPlay())
     {
@@ -289,8 +299,8 @@ public class MonsterManager : NoteStateControl
       else
       {
         //zoom in camera to go into 'combat mode'
-        Camera.main.fieldOfView = 50f;
-        monsters[id].transform.LookAt(player);   
+        Camera.main.fieldOfView = 40f;
+        monsters[id].transform.LookAt(player);
         //TODO: we need this but need to change the player transform somehow as it's the wrong angle
         // check each key
         foreach (bool mask in key_mask)
@@ -330,7 +340,8 @@ public class MonsterManager : NoteStateControl
   }
 
   // init Monster Scale
-  private void initMonsterScale(int id){
+  private void initMonsterScale(int id)
+  {
     c_pos = 0;
     activated = true;
     //sound_player.activate_sound.Play();
@@ -342,7 +353,8 @@ public class MonsterManager : NoteStateControl
     string baseKeyText = castBaseKey((int)(monsters[id].base_key_monster - 48));
     player_controller.changeScaleText(scaleText);
     player_controller.changeBaseKeyText(baseKeyText);
-    if(proceduralMode){
+    if (proceduralMode)
+    {
       //E.g. "A wild C Dorian monster appears!". A bit of fun :)
       infobox.text = "A wild " + baseKeyText + " " + scaleText + " monster appears!";
       info_image.SetActive(true);
@@ -350,18 +362,19 @@ public class MonsterManager : NoteStateControl
   }
 
   // start the fight
-  private void winFight(int id){
+  private void winFight(int id)
+  {
     //ToDo win sound
     //sound_player.activate_sound.Play();
     //player_controller.setMoveActivate(true);
     StartCoroutine(ShowMessage("You win!", 3f, false));
     monsters[id].defeated = true;
     exitMonsterScale(id);
-    player_controller.forceActivateCombat = true;
   }
 
   // start the fight
-  private void startFight(int id){
+  private void startFight(int id)
+  {
     Debug.Log("Start Fight");
     fight_mode = true;
     chasing = false;
@@ -372,7 +385,8 @@ public class MonsterManager : NoteStateControl
   }
 
   // start the fight
-  private void exitFight(int id){
+  private void exitFight(int id)
+  {
     fight_mode = false;
     sound_player.inCombat = false;
     //player_controller.setMoveActivate(false);
@@ -380,22 +394,23 @@ public class MonsterManager : NoteStateControl
   }
 
   // exit Monster Scale
-  private void exitMonsterScale(int id){
+  private void exitMonsterScale(int id)
+  {
     c_pos = 0;
     activated = false;
     chasing = false;
     //player_controller.setMoveActivate(true);
-    //player_controller.forceActivateCombat = true;
-    //player_controller.exitPlayMode();
     exitFight(id);
+    player_controller.exitPlayMode();
     resetNoteState();
     resetSignState();
     container.resetScaleInd();
-    if(!proceduralMode) monsters[id].nav.isStopped = false;
+    if (!proceduralMode) monsters[id].nav.isStopped = false;
   }
 
   // show "lost game" end game screen
-  IEnumerator LoseGame(){
+  IEnumerator LoseGame()
+  {
     gameOverScreen.SetActive(true);
     yield return new WaitForSecondsRealtime(10);
     SceneManager.LoadScene("MainMenu_pablo");
@@ -408,13 +423,15 @@ public class MonsterManager : NoteStateControl
     info_image.SetActive(true);
     yield return new WaitForSeconds(delay);
     info_image.SetActive(false);
-    if(endGame){
+    if (endGame)
+    {
       SceneManager.LoadScene("MainMenu_pablo");
     }
   }
 
   // init monster
-  public void initMonsters(){
+  public void initMonsters()
+  {
     for (int i = 0; i < monsters.Count; i++)
     {
       base_key = monsters[i].base_key_monster;
