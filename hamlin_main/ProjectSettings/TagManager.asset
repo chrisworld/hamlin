@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Monster
+  - IntroMenu
+  - History2
+  - History3
+  - History4
+  - History5
+  - Skip
   layers:
   - Default
   - TransparentFX

@@ -26,13 +26,10 @@ public class PlayerController : MonoBehaviour {
   public bool play_mode = false;
   [HideInInspector]
   public bool forceActivateCombat = false;    //used by Monk.cs,  **do not remove**
-
+  [HideInInspector]
+  public bool move_activated = true;
   // private
-  private bool move_activated = true;
   private bool switch_model = false;
-  // anim hashes
-  //private int idle_hash = Animator.StringToHash("Base Layer.idle");
-  //private int cont_play_hash = Animator.StringToHash("Base Layer.hamlin_cont_play");
 
   float turnSmoothVelocity;
   float speedSmoothVelocity;
@@ -75,14 +72,10 @@ public class PlayerController : MonoBehaviour {
     else if (switch_model) switchModel();
     // take the flute and put it back
     else if (checkValidTakeFluteKey() || forceActivateCombat){
-      if (hold_flute && !play_mode){
-        enterPlayMode();
-      }
-      else{
-        forceActivateCombat = false;
-        anim.SetTrigger("takeFlute");
-        switch_model = true;
-      }
+      move_activated = false;
+      forceActivateCombat = false;
+      anim.SetTrigger("takeFlute");
+      switch_model = true;
     }
     // enter play mode
     //else if (checkValidPlayFluteKey() && !play_mode && hold_flute){
@@ -173,6 +166,7 @@ public class PlayerController : MonoBehaviour {
     int woFlute_hash = Animator.StringToHash("Base Layer.hamlin_woFlute");
     // switch the model
     AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+    // get the flute from the back
     if (stateInfo.fullPathHash == wFlute_hash){
       player.transform.GetChild(1).gameObject.SetActive(false);
       player.transform.GetChild(2).gameObject.SetActive(true);
@@ -180,8 +174,10 @@ public class PlayerController : MonoBehaviour {
       anim = GetComponentInChildren<Animator>();
       switch_model = false;
       hold_flute = true;
+      move_activated = false;
       enterPlayMode();
     }
+    // put the flute away
     else if (stateInfo.fullPathHash == woFlute_hash){
       player.transform.GetChild(1).gameObject.SetActive(true);
       player.transform.GetChild(2).gameObject.SetActive(false);
@@ -189,6 +185,7 @@ public class PlayerController : MonoBehaviour {
       anim = GetComponentInChildren<Animator>();
       switch_model = false;
       hold_flute = false;
+      move_activated = true;
       exitPlayMode();
     }
   }

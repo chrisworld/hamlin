@@ -3687,7 +3687,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233438315684558}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.06, z: 0}
+  m_LocalPosition: {x: 0, y: -0.09, z: 0.1}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 4319580757693994}
@@ -4690,8 +4690,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1999467906349848}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.03, y: 0.049, z: 1.5}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -2, y: 0.1281, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4851854310910762}
@@ -4699,7 +4699,7 @@ Transform:
   - {fileID: 4391035601986590}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4768858788178914
 Transform:
   m_ObjectHideFlags: 1
@@ -4846,7 +4846,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1359599858942838}
   m_LocalRotation: {x: 0.6963642, y: -0.12278787, z: -0.12278787, w: -0.6963642}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.015, y: 0, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4366154197884386}
@@ -5182,7 +5182,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1304500068701040}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.06, z: 0}
+  m_LocalPosition: {x: 0, y: -0.09, z: 0.1}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 4556340468922938}
@@ -6903,6 +6903,8 @@ MonoBehaviour:
   hold_flute: 0
   inDistance: 0
   play_mode: 0
+  forceActivateCombat: 0
+  move_activated: 1
 --- !u!114 &114449487582487692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7112,4 +7114,4 @@ CharacterController:
   m_StepOffset: 0.1
   m_SkinWidth: 0.05
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.05, z: -0.1}
+  m_Center: {x: 0, y: 0.05, z: -0}
