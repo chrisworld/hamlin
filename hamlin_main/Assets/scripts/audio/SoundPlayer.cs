@@ -11,6 +11,31 @@ using MidiJack;
 
 public class SoundPlayer : MonoBehaviour {
 
+	//Gamesounds
+
+	//character
+
+	public AudioSource hamlin_jump;
+	public AudioSource hamlin_hurt;
+	public AudioSource hamlin_walk;
+	public AudioSource hamlin_run;
+	public AudioSource hamlin_flute_out;
+	public AudioSource hamlin_flute_in;
+
+	//monster
+
+	public AudioSource monster_spot;
+	public AudioSource monster_attack;
+	public AudioSource monster_hurt;
+
+	//environment
+
+	public AudioSource ambient_forrest;
+	public AudioSource ambient_monklevel;
+
+
+	//flute
+
 	public AudioSource c;
 	public AudioSource c_sh;
 	public AudioSource d;
@@ -86,9 +111,14 @@ public class SoundPlayer : MonoBehaviour {
 	}
 
 
+
 	// Use this for initialization
 	void Start () {
-    if(player_controller == null){
+    
+		ambient_forrest.Play ();
+		ambient_monklevel.Play ();
+
+		if(player_controller == null){
       player_controller = GameObject.Find("Player").GetComponent<Transform>().GetComponent<PlayerController>();
     }
     inCombat = false;
