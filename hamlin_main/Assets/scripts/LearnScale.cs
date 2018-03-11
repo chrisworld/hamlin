@@ -174,8 +174,7 @@ public class LearnScale : NoteStateControl {
 		c_pos = 0;
 		error_counter = 0;
 		sound_player.inLearning = false;
-		player_controller.forceActivateCombat = true;
-		//player_controller.exitPlayMode();
+		player_controller.exitPlayMode();
 		resetNoteState();
 		resetSignState();
 		container.resetScaleInd();
