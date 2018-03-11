@@ -229,13 +229,20 @@ public class MonsterManager : NoteStateControl
       initMonsterScale(id);
     }
     //too far away to attack, chase player
-    else if (activated && !chasing && !fight_mode)
+    else if (activated && !chasing && !fight_mode && !player_controller.play_mode)
     {
-      Debug.Log("chase");
       if (direction.magnitude > attackDistance)
       {
-        chasing = true;
+        Debug.Log("chase");
+        chasing = true; 
+        monsters[id].nav.isStopped = false;
       }
+    }
+    // stop chasing, player already in play mode
+    else if (activated && chasing && player_controller.play_mode)
+    {
+      chasing = false;
+      monsters[id].nav.isStopped = true;
     }
     // chasing update
     else if (activated && chasing && !fight_mode)
@@ -261,13 +268,12 @@ public class MonsterManager : NoteStateControl
     }
 
     // stop the fight
-    /*
-    else if (fight_mode && run)
+    else if (fight_mode && player_controller.move_activated)
     {
       exitMonsterScale(id);
       return 0;
     }
-    */
+
     // play the scale
     else if (fight_mode && player_controller.hamlinReadyToPlay())
     {
@@ -300,7 +306,7 @@ public class MonsterManager : NoteStateControl
       else
       {
         //zoom in camera to go into 'combat mode'
-        Camera.main.fieldOfView = 40f;
+        Camera.main.fieldOfView = 50f;
         monsters[id].transform.LookAt(player);
         //TODO: we need this but need to change the player transform somehow as it's the wrong angle
         // check each key
@@ -418,6 +424,7 @@ public class MonsterManager : NoteStateControl
   IEnumerator LoseGame()
   {
     gameOverScreen.SetActive(true);
+    sound_player.gameover.Play();
     yield return new WaitForSecondsRealtime(7);
     SceneManager.LoadScene("MainMenu_pablo");
   }
