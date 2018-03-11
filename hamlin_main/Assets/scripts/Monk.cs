@@ -18,6 +18,7 @@ public class Monk : MonoBehaviour
   PlayerController playerController;
   Queue story;
   Transform monk;
+  GameObject screen;
   bool storyStopped;
   bool dialogueClicked;
   bool monkInteracted;
@@ -31,7 +32,20 @@ public class Monk : MonoBehaviour
 
   void StoryInit(){
 
-    StartCoroutine(StoryEnd());
+    story.Enqueue(0); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(1); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(2); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(3); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(4); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+    story.Enqueue(5); //show piano keyboard
+    story.Enqueue("Hamlin: Have we met?");
+
+    /*
 
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
@@ -149,10 +163,9 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: but of course there's a whole world of other music out there. There are others like us who still know about");
     story.Enqueue("Monk: music; perhaps you will meet some of them on your travels, and they can teach you more. Anyway, I wish you");
     story.Enqueue("Monk: safe travels on your journey. So long, Hamlin, and remember - keep playing your music, don’t let the silence win.");
-    //TODO: show game over screen - full screen image by Andrea and text below
-    //"Congratulations, you completed Musical Theory Foundations and helped make Espero a happier place!
-    // Stay tuned for new musical adventures soon in the next update. In the meantime, you can carry on 
-    // making music in adventure mode."
+    //update handles end game screens
+
+    */
 
   }
 
@@ -283,6 +296,46 @@ public class Monk : MonoBehaviour
     dialogueClicked = false;
   }
 
+  /* IEnumerator ShowImage(int imageIndex){
+    storyStopped = true;
+    screen.GetComponent<Image>().sprite = images[8];                  //blank background
+    GameObject screen_image = screen.transform.GetChild(0).gameObject;
+    //screen_image.SetActive(true);
+
+    //store old dialogue box values to restore later
+    Sprite oldSprite = screen_image.GetComponent<Image>().sprite;
+    Color oldColor = screen_image.GetComponent<Image>().color;
+    RectTransform canvasTransform = screen_image.GetComponent<RectTransform>();
+    Vector2 oldSize = canvasTransform.sizeDelta;
+    //Vector3 oldPosition = new Vector3(canvasTransform.position.x, canvasTransform.position.y, canvasTransform.position.z);
+
+    //set new values to display image
+    Sprite newSprite = images[imageIndex];
+    screen_image.GetComponent<Image>().sprite = newSprite;
+    screen_image.GetComponent<Image>().color = Color.white;
+    //Vector3 newPosition = new Vector3(oldPosition.x, oldPosition.y + 150, oldPosition.z);
+    canvasTransform.sizeDelta = new Vector2(newSprite.texture.width * 0.6f, newSprite.texture.height * 0.6f);  //if this still isn't flexible enough just pass in width and height as params
+    //canvasTransform.position = newPosition;
+
+    screen_image.transform.GetChild(0).gameObject.SetActive(false);   //hide text
+    screen.SetActive(true);
+
+    yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+
+    //hide box and restore to old values
+    screen_image.transform.GetChild(0).gameObject.SetActive(true); //show text again
+    screen_image.GetComponent<Image>().sprite = oldSprite;
+    screen_image.GetComponent<RectTransform>().sizeDelta = oldSize;
+    screen_image.GetComponent<Image>().color = oldColor;
+    //screen_image.GetComponent<RectTransform>().position = oldPosition; 
+
+    screen_image.transform.GetChild(0).gameObject.SetActive(true); //show text again
+    //screen_image.SetActive(false);
+    screen.SetActive(false);
+    dialogueClicked = false;
+    storyStopped = false;
+  } */
+
   //manages image display (for keyboard, circle of fifths images etc)
   IEnumerator ShowImage(int imageIndex)
   {
@@ -356,23 +409,19 @@ public class Monk : MonoBehaviour
   }
 
    IEnumerator StoryEnd(){
-    
-    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
-    infobox.gameObject.SetActive(false);   //what is this for??
     dialogueClicked = false;
-    Sprite newSprite = images[6];  //TODO CHANGE, it's currently just the menu image
-    info_image.GetComponent<Image>().sprite = newSprite;
-    info_image.GetComponent<Image>().color = Color.white;
-    
-    //need to adjust these so it fills screen, will depend on final image size
-    canvasTransform.sizeDelta = new Vector2(newSprite.texture.width * 0.6f, newSprite.texture.height * 0.6f);
-    canvasTransform.position = new Vector3(canvasTransform.position.x, canvasTransform.position.y + 150, canvasTransform.position.z);
-    
-    info_image.SetActive(true);
+    screen.GetComponent<Image>().sprite = images[6]; //congrats
+    screen.SetActive(true);
     yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
-
-    SceneManager.LoadScene("MainMenu_pablo"); 
-  }
+    
+    //screen.transform.GetChild(0).gameObject.SetActive(false);      //hide textbox
+    //dialogueClicked = false;
+    //screen.GetComponent<Image>().sprite = images[7]; //credits
+    //yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+    //yield return new WaitForSeconds(2f);
+    SceneManager.LoadScene("MainMenu_cat");
+  
+   }
 
   void Start()
   {
@@ -387,9 +436,12 @@ public class Monk : MonoBehaviour
     monk = (Transform) GameObject.Find("Monk").transform;
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
     playerController = player.GetComponent<PlayerController>();
+    screen = GameObject.Find("MonkScreen");
+    screen.SetActive(false);
     baseScale.gameObject.SetActive(false); //this must be done here, not before, otherwise it cannot find the object
     StoryInit(); //queue up all the dialogue
     score.SetScoreTotal(9, false);
+
   }
 
   void Update()
