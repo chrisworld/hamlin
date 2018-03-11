@@ -23,16 +23,13 @@ public class Monk : MonoBehaviour
   bool monkInteracted;
   bool userInputYesNo;
   bool userInputLock;
+  bool combatDialogueDone;
   int lastEvent;
   Score score;
 
   //TODO: trigger monk animations
 
   void StoryInit(){
-
-    //DEBUG REMOVE
-    //story.Enqueue("Hamlin: Have we met?");
-    //story.Enqueue(12); //Battle 1
 
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
@@ -62,7 +59,6 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: Here, take a look at this picture of a keyboard I have in my book.");
     story.Enqueue(0); //show piano keyboard
     story.Enqueue("Game: To take out your flute, press Enter.");
-    //TODO FIX BUG WHEN PLAYER PRESSES ENTER HERE
     story.Enqueue("Game: Playing notes on your flute works like playing a piano keyboard.");
     story.Enqueue("Game: The bottom line of letters on your keyboard (y/z, x, c, v, ...) is the lower octave of notes, starting at C.");
     story.Enqueue("Game: These are the white keys on a piano keyboard, and the line of keys above that is the black keys.");
@@ -76,9 +72,10 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: Feel free to take a look around the monastery and practice playing your flute!");
     story.Enqueue("Monk: We are always happy to hear music here. And goodness knows the other monks could do with some cheering up.");
     story.Enqueue("Monk: But keep an eye out for the creatures. Sometimes they seem to just appear out of nowhere!");
+    story.Enqueue(12); //Battle 1 - monster takes a while to chase so time for 2 lines of dialogue
     story.Enqueue("Monk: Oh no! Here comes one now! You can fight it by playing the right scale with your flute - music is their weakness.");
     story.Enqueue("Game: Can you remember the scale you just learnt? When fighting monsters here you'll have to remember which notes to play.");
-    story.Enqueue(12); //Battle 1
+    story.Enqueue(16); //signal pre-combat dialogue done
     story.Enqueue("Monk: Hmm, perhaps I should become a fortune teller...I think the coast is clear now!");
     story.Enqueue("Monk: Come back when you're ready to learn some more.");
     story.Enqueue("Game: When you want to continue learning, return to the monk and press x.");
@@ -182,10 +179,11 @@ public class Monk : MonoBehaviour
   }
 
   IEnumerator MonsterBattle(int codeTrigger, int rand){
-    
-    //TODO - should monster run from afar? unrealistic to just spawn next to you
-    Vector3 position = new Vector3(player.position.x, player.position.y, player.position.z - 0.2f);
-    Monster monster = Instantiate<Monster>(monsterManager.monsters[0], position, Quaternion.identity);
+
+    //monster spawns away from player and then chases
+    Transform baseMonster = monsterManager.monsters[0].transform;
+    Vector3 position = new Vector3(baseMonster.position.x + 0.2f, baseMonster.position.y, baseMonster.position.z);
+    Monster monster = Instantiate<Monster>(monsterManager.monsters[0], position, baseMonster.rotation);
 
     if (codeTrigger == 12){  //Battle 1, C major or G major monster
       monster.scale_name = (ScaleNames)1;
@@ -201,9 +199,10 @@ public class Monk : MonoBehaviour
     }
     monster.gameObject.SetActive(true);
     monsterManager.monsters.Add(monster);
-    monsterManager.initMonsters();
+    monsterManager.initMonsters();  
+    yield return new WaitUntil(() => combatDialogueDone);     //wait for monk to say "oh no, a monster" or whatever
     storyStopped = true;
-    yield return new WaitUntil(() => monster == null);
+    yield return new WaitUntil(() => monster == null);        //wait until player has defeated monster
 
     //this is to get the stave to disappear - works but slow, would like a better method
     playerController.hold_flute = false;
@@ -332,6 +331,11 @@ public class Monk : MonoBehaviour
       StartCoroutine(WaitForMonkInteraction());
     }
 
+    //Used to signal end of pre-monster dialogue
+    else if (codeTrigger == 16){
+      combatDialogueDone = true;
+    }
+
     else {
       print("codeTrigger undefined, value was " + codeTrigger);
     }
@@ -365,6 +369,7 @@ public class Monk : MonoBehaviour
     dialogueClicked = false;
     monkInteracted = true;
     userInputYesNo = false;
+    combatDialogueDone = false;
     lastEvent = 0;
     story = new Queue();
     score = GameObject.Find("GameState").GetComponent<Score>();

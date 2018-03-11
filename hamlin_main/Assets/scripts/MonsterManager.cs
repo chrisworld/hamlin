@@ -387,9 +387,8 @@ public class MonsterManager : NoteStateControl
     if(!proceduralMode) monsters[id].nav.isStopped = false;
   }
 
-  // lose condition
+  // show "lost game" end game screen
   IEnumerator LoseGame(){
-    //GameObject.Find("HUDCanvas").SetActive(false);
     gameOverScreen.SetActive(true);
     yield return new WaitForSecondsRealtime(10);
     SceneManager.LoadScene("MainMenu_pablo");
