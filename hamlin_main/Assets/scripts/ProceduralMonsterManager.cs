@@ -32,7 +32,6 @@ public class ProceduralMonsterManager : NoteStateControl
   private bool activated;
   private bool fight_mode;
   private int currentMonsterId;
-  private bool initialisedMonsters;
   private GameObject gameOverScreen;
 
   private int c_pos;
@@ -111,15 +110,8 @@ public class ProceduralMonsterManager : NoteStateControl
     bool monsterActivatedThisTurn = false;
     int result = 0;
 
-    // init
-    if (!initialisedMonsters && monsters != null)
-    {
-      initMonsters();
-      print("monster init");
-      return;
-    }
     // current monster activated
-    else if (activated)
+    if (activated)
     {
       //update just the active monster, activated = false when combat has finished
       result = UpdateMonster(currentMonsterId);
@@ -153,10 +145,12 @@ public class ProceduralMonsterManager : NoteStateControl
         {
           print("monster defeated");
           monsters[i].dying = true;
-          Camera.main.fieldOfView = 60f;
           player_controller.exitPlayMode();
           score.updateDefMonster();   //TODO: maybe move this back to destroying dying monster section
           monsters[i].anim.SetTrigger("die");
+          //this is to get the stave to disappear - works but slow, would like a better method
+          player_controller.hold_flute = false;
+          player_controller.forceActivateCombat = true;
         }
         // player in view
         else if (!monsterActivatedThisTurn && !monsters[i].defeated && Vector3.Distance(player.position, monsters[i].transform.position) < viewDistance && Vector3.Angle(player.position - monsters[i].transform.position, monsters[i].transform.forward) < viewAngle)
@@ -187,13 +181,14 @@ public class ProceduralMonsterManager : NoteStateControl
     // start the scale
     if (!activated)
     {
+      initMonster(id);
       initMonsterScale(id);
       print("activating");
     }
     else if (!fight_mode && direction.magnitude < attackDistance)
     {
-        startFight(id);
-        print("starting fight");
+      startFight(id);
+      print("starting fight");
     }
     else if (fight_mode && player_controller.hamlinReadyToPlay())
     {
@@ -217,8 +212,6 @@ public class ProceduralMonsterManager : NoteStateControl
       // run the scale
       else
       {
-        //zoom in camera to go into 'combat mode'
-        Camera.main.fieldOfView = 40f;
         monsters[id].transform.LookAt(player);
         // check each key
         foreach (bool mask in key_mask)
@@ -340,20 +333,17 @@ public class ProceduralMonsterManager : NoteStateControl
   }
 
   // init monster
-  public void initMonsters()
+  public void initMonster(int i)
   {
-    for (int i = 0; i < monsters.Count; i++)
-    {
-      base_key = monsters[i].base_key_monster;
-      resetNoteState();
-      resetSignState();
-      // container position
-      monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
-      monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
-      container.updateNoteContainer(note_state);
-      container.updateSignContainer(sign_state);
-    }
-    initialisedMonsters = true;
+    base_key = monsters[i].base_key_monster;
+    resetNoteState();
+    resetSignState();
+    // container position
+    monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
+    monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
+    container.updateNoteContainer(note_state);
+    container.updateSignContainer(sign_state);
+    monsters[i].gameObject.SetActive(true);
   }
 
 }

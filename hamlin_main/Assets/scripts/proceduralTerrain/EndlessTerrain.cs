@@ -48,8 +48,7 @@ public class EndlessTerrain : MonoBehaviour {
     allViewers = new List<Transform>();
     allViewers.Add(viewer);
     viewerPositionsOld = new List<Vector2>();
-    viewerPositionsOld.Add(new Vector2(viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale);
-    
+    viewerPositionsOld.Add(new Vector2(viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale);   
     visibleTerrainChunks = new List<TerrainChunk>();
 		maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 		chunkSize = mapGenerator.mapChunkSize - 1;
@@ -59,10 +58,17 @@ public class EndlessTerrain : MonoBehaviour {
     score.SetScoreTotal(0, true);
   }
 
+
 	void Update() {
 
     for(int i = 0; i < allViewers.Count; i++){
       viewerPosition = new Vector2(allViewers[i].position.x, allViewers[i].position.z) / mapGenerator.terrainData.uniformScale;
+
+      //monster has stopped falling, so make it visible
+      if(i != 0 && allViewers[i].gameObject.GetComponent<Rigidbody>().IsSleeping()){
+        allViewers[i].gameObject.SetActive(true);
+        print("monster is activeee");
+      }
 
       if (viewerPosition != viewerPositionsOld[i])
       {
@@ -72,6 +78,7 @@ public class EndlessTerrain : MonoBehaviour {
         }
         if(i != 0) viewerPositionsOld[i] = viewerPosition;        //skip 0 - do not update player as it breaks monster generation
       }
+
     }
     viewerPosition = new Vector2(viewer.position.x, viewer.position.z) / mapGenerator.terrainData.uniformScale;   //reset back to player's position after looping through all monsters
 
@@ -137,7 +144,7 @@ public class EndlessTerrain : MonoBehaviour {
   //right now this only creates monsters within the viewer's current chunk
   public void GenerateMonsters(){
 
-    //Physics.gravity = new Vector3(0f, -60f, 0f);       //increase gravity force so monsters fall at a sensible speed
+    Physics.gravity = new Vector3(0f, -20f, 0f);       //increase gravity force so monsters fall at a sensible speed
 
     //TODO: may need to get rid of this scaling as using for instantiating? idk. or swap y to z
     Vector3 viewerPos = new Vector3(viewer.position.x, viewer.position.y, viewer.position.z);
@@ -163,7 +170,8 @@ public class EndlessTerrain : MonoBehaviour {
       Monster monster = Instantiate<Monster>(baseMonster, position, baseMonster.transform.rotation);
       monster.scale_name = scaleNames[ Random.Range(0, scaleNames.Count - 1) ];
       monster.base_key_monster = baseKeys[ Random.Range(0, baseKeys.Count - 1) ];
-      monster.gameObject.SetActive(true);
+      monster.gameObject.SetActive(false);
+      monster.defeated = false;
       monsterManager.monsters.Add(monster);
       allViewers.Add(monster.transform);
       Vector2 oldPos = new Vector2(monster.transform.position.x, monster.transform.position.z) / mapGenerator.terrainData.uniformScale;
@@ -207,7 +215,6 @@ public class EndlessTerrain : MonoBehaviour {
 			meshRenderer = meshObject.AddComponent<MeshRenderer>();
 			meshFilter = meshObject.AddComponent<MeshFilter>();
 			meshCollider = meshObject.AddComponent<MeshCollider>();
-      //meshCollider.convex = true;               //this stops monsters falling through the mesh (lets collider collide with other colliders) but the collider is waaaay too high above the mesh
 			meshRenderer.material = material;
 
 			meshObject.transform.position = positionV3 * mapGenerator.terrainData.uniformScale;
