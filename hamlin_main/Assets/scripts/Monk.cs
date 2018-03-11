@@ -30,6 +30,10 @@ public class Monk : MonoBehaviour
 
   void StoryInit(){
 
+    //DEBUG REMOVE
+    //story.Enqueue("Hamlin: Have we met?");
+    //story.Enqueue(12); //Battle 1
+
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");

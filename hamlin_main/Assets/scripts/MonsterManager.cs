@@ -40,6 +40,7 @@ public class MonsterManager : NoteStateControl
   private int currentMonsterId;
   private bool initialisedMonsters;
   private bool proceduralMode;
+  private GameObject gameOverScreen;
 
   private int c_pos;
 
@@ -71,6 +72,8 @@ public class MonsterManager : NoteStateControl
     // init vars
     info_image.SetActive(false);
     proceduralMode = (numMonstersPerChunk > 0) ? true : false;
+    gameOverScreen = GameObject.Find("GameOverScreen");
+    gameOverScreen.SetActive(false);
 
     Monster[] tempMonsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));  //there must be at least one monster already in the game!!! this is the baseMonster for PCG
     foreach (Monster monster in tempMonsters){
@@ -386,20 +389,9 @@ public class MonsterManager : NoteStateControl
 
   // lose condition
   IEnumerator LoseGame(){
-    resetNoteState();
-    resetSignState();
-    player_controller.setMoveActivate(true);
-    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
-    infobox.gameObject.SetActive(false);
-    info_image.GetComponent<Image>().sprite = endGameSprite;
-    info_image.GetComponent<Image>().color = Color.white;
-
-    //need to adjust these so it fills screen, will depend on final image size
-    canvasTransform.sizeDelta = new Vector2(endGameSprite.texture.width * 0.6f, endGameSprite.texture.height * 0.6f);
-    canvasTransform.position = new Vector3(canvasTransform.position.x, canvasTransform.position.y + 150, canvasTransform.position.z);
-
-    info_image.SetActive(true);
-    yield return new WaitForSecondsRealtime(3);
+    //GameObject.Find("HUDCanvas").SetActive(false);
+    gameOverScreen.SetActive(true);
+    yield return new WaitForSecondsRealtime(10);
     SceneManager.LoadScene("MainMenu_pablo");
   }
 
