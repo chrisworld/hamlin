@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
   // private
   private bool move_activated = true;
   private bool switch_model = false;
+  private bool walk = false;
+  private bool run = false;
   // anim hashes
   //private int idle_hash = Animator.StringToHash("Base Layer.idle");
   //private int cont_play_hash = Animator.StringToHash("Base Layer.hamlin_cont_play");
@@ -92,6 +94,7 @@ public class PlayerController : MonoBehaviour
       {
         forceActivateCombat = false;
         anim.SetTrigger("takeFlute");
+        if(hold_flute) sound_player.hamlin_flute_in.Play();
         switch_model = true;
       }
     }
@@ -130,6 +133,27 @@ public class PlayerController : MonoBehaviour
       //this is how we tell the animation controller which state we're in
       float animationSpeedPercent = (running ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f);
       anim.SetFloat("speedPercent", animationSpeedPercent, GetModifiedSmoothTime(speedSmoothTime), Time.deltaTime);
+
+      // walk and run sound
+      if (animationSpeedPercent > 0.1 && animationSpeedPercent < 0.6 && !walk){
+        walk = true;
+        run = false;
+        Debug.Log("Walk");
+        sound_player.hamlin_walk.Play();
+      }
+      else if (animationSpeedPercent > 0.6 && !run){
+        run = true;
+        walk = false;
+        Debug.Log("run");
+        sound_player.hamlin_run.Play();
+      }
+      else if (animationSpeedPercent < 0.1 && (walk || run)){
+        Debug.Log("stop");
+        walk = false;
+        run = false;
+        sound_player.hamlin_walk.Stop();
+        sound_player.hamlin_run.Stop();
+      }
     }
   }
 
@@ -153,6 +177,7 @@ public class PlayerController : MonoBehaviour
   public void getAttacked()
   {
     anim.SetTrigger("getAttacked");
+    sound_player.hamlin_hurt.Play();
   }
 
   // enter play mode
@@ -197,6 +222,7 @@ public class PlayerController : MonoBehaviour
       switch_model = false;
       hold_flute = true;
       enterPlayMode();
+      sound_player.hamlin_flute_out.Play();
     }
     else if (stateInfo.fullPathHash == woFlute_hash)
     {
@@ -236,6 +262,7 @@ public class PlayerController : MonoBehaviour
       velocityY = jumpVelocity;
       anim.SetTrigger("jump");
       if (hold_flute && play_mode) exitPlayMode();
+      sound_player.hamlin_jump.Play();
     }
   }
 
