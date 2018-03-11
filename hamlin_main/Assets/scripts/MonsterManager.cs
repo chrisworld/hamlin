@@ -16,6 +16,7 @@ public class MonsterManager : NoteStateControl
   public Text infobox;
   public Object nextScene;
   public Score score;
+  public Sprite endGameSprite;
 
   public bool autoLoadNextScene = false;
   public int numMonstersPerChunk = 0;
@@ -178,9 +179,9 @@ public class MonsterManager : NoteStateControl
       }
     }
 
-    // loose
+    // lose
     if (result == 1 || health.GetHealthAmount() == 0){
-      looseGame();
+      StartCoroutine(LoseGame());
     }
 
     //load next level if player has defeated all the monsters
@@ -383,12 +384,23 @@ public class MonsterManager : NoteStateControl
     if(!proceduralMode) monsters[id].nav.isStopped = false;
   }
 
-  // loose condition
-  private void looseGame(){
+  // lose condition
+  IEnumerator LoseGame(){
     resetNoteState();
     resetSignState();
     player_controller.setMoveActivate(true);
-    StartCoroutine(ShowMessage("You died :'(", 3f, true));
+    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
+    infobox.gameObject.SetActive(false);
+    info_image.GetComponent<Image>().sprite = endGameSprite;
+    info_image.GetComponent<Image>().color = Color.white;
+
+    //need to adjust these so it fills screen, will depend on final image size
+    canvasTransform.sizeDelta = new Vector2(endGameSprite.texture.width * 0.6f, endGameSprite.texture.height * 0.6f);
+    canvasTransform.position = new Vector3(canvasTransform.position.x, canvasTransform.position.y + 150, canvasTransform.position.z);
+
+    info_image.SetActive(true);
+    yield return new WaitForSecondsRealtime(3);
+    SceneManager.LoadScene("MainMenu_pablo");
   }
 
   //do not call directly, call with StartCoroutine(ShowMessage(...))
