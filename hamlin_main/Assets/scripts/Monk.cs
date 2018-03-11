@@ -28,11 +28,16 @@ public class Monk : MonoBehaviour
   bool userInputLock;
   bool combatDialogueDone;
   int lastEvent;
+  bool scalePracticeNoScore;
   Score score;
 
   //TODO: trigger monk animations
 
   void StoryInit(){
+
+    story.Enqueue("Hamlin: Oh, why did I ever take the Piper's flute? (Game: Left click anywhere to continue)");
+    story.Enqueue("Hamlin: I've been on the run for days and now I'm lost. I don't even know what a flute does!");
+    story.Enqueue("Hamlin: Why is it so important anyway?");
 
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
@@ -251,7 +256,7 @@ public class Monk : MonoBehaviour
       scale.scale_name = (ScaleNames)2;
       scale.base_key = (NoteBaseKey)59;
     }
-    score.UpdateNumScales((int)scale.scale_name);
+    if(!scalePracticeNoScore) score.UpdateNumScales((int)scale.scale_name);
     scale.gameObject.SetActive(true);
     if(!playerController.play_mode) playerController.forceActivateCombat = true;
     storyStopped = true;
@@ -353,7 +358,7 @@ public class Monk : MonoBehaviour
     else if (codeTrigger == 16){
       combatDialogueDone = true;
     }
-
+    
     else {
       print("codeTrigger undefined, value was " + codeTrigger);
     }
@@ -384,6 +389,7 @@ public class Monk : MonoBehaviour
     monkInteracted = true;
     userInputYesNo = false;
     combatDialogueDone = false;
+    scalePracticeNoScore = false;
     lastEvent = 0;
     story = new Queue();
     score = GameObject.Find("GameState").GetComponent<Score>();
@@ -453,10 +459,12 @@ public class Monk : MonoBehaviour
         userInputLock = true;
         info_image.SetActive(false);
         StoryEvent(lastEvent);
+        scalePracticeNoScore = true;
       }
       else if(Input.GetKeyDown(KeyCode.N)){     //continue story
         info_image.SetActive(false);
         userInputYesNo = false;
+        scalePracticeNoScore = false;
       }
 
     }
