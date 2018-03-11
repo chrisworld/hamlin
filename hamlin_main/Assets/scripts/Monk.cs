@@ -358,7 +358,7 @@ public class Monk : MonoBehaviour
     else if (codeTrigger == 16){
       combatDialogueDone = true;
     }
-
+    
     else {
       print("codeTrigger undefined, value was " + codeTrigger);
     }
