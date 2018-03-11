@@ -19,6 +19,8 @@ public class Monk : MonoBehaviour
   Queue story;
   Transform monk;
   GameObject screen;
+  GameObject endScreen;
+  Vector3 oldPosition;
   bool storyStopped;
   bool dialogueClicked;
   bool monkInteracted;
@@ -31,22 +33,6 @@ public class Monk : MonoBehaviour
   //TODO: trigger monk animations
 
   void StoryInit(){
-
-
-    story.Enqueue(0); //show piano keyboard
-    story.Enqueue("Hamlin: Have we met?");
-    story.Enqueue(1); //show piano keyboard
-    story.Enqueue("Hamlin: Have we met?");
-    story.Enqueue(2); //show piano keyboard
-    story.Enqueue("Hamlin: Have we met?");
-    story.Enqueue(3); //show piano keyboard
-    story.Enqueue("Hamlin: Have we met?");
-    story.Enqueue(4); //show piano keyboard
-    story.Enqueue("Hamlin: Have we met?");
-    story.Enqueue(5); //show piano keyboard
-    story.Enqueue("Hamlin: Have we met?");
-
-    /*
 
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
@@ -164,8 +150,7 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: but of course there's a whole world of other music out there. There are others like us who still know about");
     story.Enqueue("Monk: music; perhaps you will meet some of them on your travels, and they can teach you more. Anyway, I wish you");
     story.Enqueue("Monk: safe travels on your journey. So long, Hamlin, and remember - keep playing your music, don’t let the silence win.");
-
-    */
+    //end game screens are in update
 
   }
 
@@ -296,36 +281,46 @@ public class Monk : MonoBehaviour
     dialogueClicked = false;
   }
 
-  //manages image display (for keyboard, circle of fifths images etc)
-  IEnumerator ShowImage(int imageIndex)
-  {
+  IEnumerator ShowImage(int imageIndex){
+    storyStopped = true;
+    screen.GetComponent<Image>().sprite = images[8];                  //blank background
+    GameObject screen_image = screen.transform.GetChild(0).gameObject;
+    //screen_image.SetActive(true);
+
     //store old dialogue box values to restore later
-    Sprite oldSprite = info_image.GetComponent<Image>().sprite;
-    Color oldColor = info_image.GetComponent<Image>().color;
-    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
+    Sprite oldSprite = screen_image.GetComponent<Image>().sprite;
+    Color oldColor = screen_image.GetComponent<Image>().color;
+    RectTransform canvasTransform = screen_image.GetComponent<RectTransform>();
     Vector2 oldSize = canvasTransform.sizeDelta;
-    Vector3 oldPosition = canvasTransform.position;
-    infobox.gameObject.SetActive(false);
 
     //set new values to display image
     Sprite newSprite = images[imageIndex];
-    info_image.GetComponent<Image>().sprite = newSprite;
-    info_image.GetComponent<Image>().color = Color.white;
+    screen_image.GetComponent<Image>().sprite = newSprite;
+    screen_image.GetComponent<Image>().color = Color.white;
     Vector3 newPosition = new Vector3(oldPosition.x, oldPosition.y + 150, oldPosition.z);
     canvasTransform.sizeDelta = new Vector2(newSprite.texture.width * 0.6f, newSprite.texture.height * 0.6f);  //if this still isn't flexible enough just pass in width and height as params
     canvasTransform.position = newPosition;
-    info_image.SetActive(true);
+
+    screen_image.transform.GetChild(0).gameObject.SetActive(false);   //hide text
+    screen.SetActive(true);
+
     yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
 
     //hide box and restore to old values
-    infobox.gameObject.SetActive(true);
-    info_image.SetActive(false);
-    info_image.GetComponent<Image>().sprite = oldSprite;
-    canvasTransform.sizeDelta = oldSize;
-    info_image.GetComponent<Image>().color = oldColor;
+    screen_image.transform.GetChild(0).gameObject.SetActive(true); //show text again
+    screen_image.GetComponent<Image>().sprite = oldSprite;
+    screen_image.GetComponent<RectTransform>().sizeDelta = oldSize;
+    screen_image.GetComponent<Image>().color = oldColor;
     canvasTransform.position = oldPosition;
+    newPosition.y -= 150;
+
+    screen_image.transform.GetChild(0).gameObject.SetActive(true); //show text again
+    //screen_image.SetActive(false);
+    screen.SetActive(false);
     dialogueClicked = false;
-  }
+    storyStopped = false;
+  } 
+
 
   void StoryEvent(int codeTrigger){
 
@@ -368,36 +363,20 @@ public class Monk : MonoBehaviour
 
   }
 
-   IEnumerator StoryEndPart1(){
-
+  IEnumerator StoryEnd(){
     dialogueClicked = false;
-    screen.GetComponent<Image>().sprite = images[6]; //congrats
-    screen.SetActive(true);
+    Image screen_image = endScreen.GetComponent<Image>();
+    screen_image.sprite = images[6]; //congrats
+    endScreen.SetActive(true);
     yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
+    
+    endScreen.transform.GetChild(0).gameObject.SetActive(false);      //hide textbox
     dialogueClicked = false;
-    screen.transform.GetChild(0).gameObject.SetActive(false);      //hide textbox
-    screen.GetComponent<Image>().sprite = images[7]; //credits
+    endScreen.GetComponent<Image>().sprite = images[7]; //credits
     yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
     SceneManager.LoadScene("MainMenu_pablo");
-
-
-    /*
-    RectTransform canvasTransform = info_image.GetComponent<RectTransform>();
-    infobox.gameObject.SetActive(false);   //what is this for??
-    dialogueClicked = false;
-    Sprite newSprite = images[6];  //TODO CHANGE, it's currently just the menu image
-    info_image.GetComponent<Image>().sprite = newSprite;
-    info_image.GetComponent<Image>().color = Color.white;
-    
-    //need to adjust these so it fills screen, will depend on final image size
-    canvasTransform.sizeDelta = new Vector2(newSprite.texture.width * 0.6f, newSprite.texture.height * 0.6f);
-    canvasTransform.position = new Vector3(canvasTransform.position.x, canvasTransform.position.y + 150, canvasTransform.position.z);
-    
-    info_image.SetActive(true);
-    yield return new WaitUntil(() => (dialogueClicked == true));   //wait for click event (hideDialogueOnClick)
-
-    SceneManager.LoadScene("MainMenu_cat");  */
-  }
+  
+   }
 
   void Start()
   {
@@ -411,12 +390,17 @@ public class Monk : MonoBehaviour
     score = GameObject.Find("GameState").GetComponent<Score>();
     monk = (Transform) GameObject.Find("Monk").transform;
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
+    playerController = player.GetComponent<PlayerController>();
     screen = GameObject.Find("MonkScreen");
     screen.SetActive(false);
-    playerController = player.GetComponent<PlayerController>();
+    endScreen = GameObject.Find("MonkScreenEnd");
+    endScreen.SetActive(false);
     baseScale.gameObject.SetActive(false); //this must be done here, not before, otherwise it cannot find the object
     StoryInit(); //queue up all the dialogue
     score.SetScoreTotal(9, false);
+    Vector3 pos = screen.transform.GetChild(0).gameObject.GetComponent<RectTransform>().position;
+    oldPosition = new Vector3(pos.x, pos.y, pos.z);
+
   }
 
   void Update()
