@@ -10,7 +10,7 @@ public class buttons : MonoBehaviour {
   }
 
 	public void StoryModeButton(){
-		SceneManager.LoadScene("monk_cat");
+		SceneManager.LoadScene("monesteryV1");
 	}
 
   public void AdventureModeButton(){
