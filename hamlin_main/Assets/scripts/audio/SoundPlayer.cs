@@ -29,6 +29,8 @@ public class SoundPlayer : MonoBehaviour {
 	public AudioSource monster_spot;
 	public AudioSource monster_attack;
 	public AudioSource monster_hurt;
+	public AudioSource monster_win;
+	public AudioSource monster_die;
 
 	//environment
 
