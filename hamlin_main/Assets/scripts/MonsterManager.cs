@@ -71,7 +71,7 @@ public class MonsterManager : NoteStateControl
     // init vars
     info_image.SetActive(false);
     proceduralMode = (numMonstersPerChunk > 0) ? true : false;
-    gameOverScreen = GameObject.Find("GameOverScreen");
+    gameOverScreen = GameObject.Find("MonsterScreen");
     gameOverScreen.SetActive(false);
 
     Monster[] tempMonsters = (Monster[])GameObject.FindObjectsOfType(typeof(Monster));  //there must be at least one monster already in the game!!! this is the baseMonster for PCG
