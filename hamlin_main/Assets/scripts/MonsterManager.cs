@@ -171,10 +171,10 @@ public class MonsterManager : NoteStateControl
           monsterActivatedThisTurn = true;
           currentMonsterId = i;
           base_key = monsters[i].base_key_monster;
-          result = UpdateMonster(i);
           monsters[i].anim.SetTrigger("spotPlayer");
           sound_player.monster_spot.Play();
           Debug.Log("Player spotted");
+          result = UpdateMonster(i);
         }
         //don't do this for disabled baseMonster
         /*
@@ -229,45 +229,40 @@ public class MonsterManager : NoteStateControl
     // start the scale
     if (!activated)
     {
+      print("activating");
       initMonsterScale(id);
     }
     //too far away to attack, chase player
-    else if (activated && !chasing && !fight_mode && !player_controller.play_mode)
-    {
-      if (direction.magnitude > attackDistance)
-      {
-        Debug.Log("chase");
-        chasing = true; 
-        monsters[id].nav.isStopped = false;
-      }
-    }
+    //else if (activated && !chasing && !fight_mode && !player_controller.play_mode)
+    //{
+    //if (direction.magnitude > attackDistance)
+    //{
+    //Debug.Log("chase");
+    //chasing = true; 
+    //monsters[id].nav.isStopped = false;
+    //}
+    //}
     // stop chasing, player already in play mode
-    else if (activated && chasing && player_controller.play_mode)
+    //else if (activated && chasing && player_controller.play_mode)
+    //{
+    //chasing = false;
+    //monsters[id].nav.isStopped = true;
+    //}
+    // chasing update
+    // start fight
+    else if (activated && direction.magnitude < attackDistance && !fight_mode)
     {
-      chasing = false;
+      //monsters[id].nav.destination = monsters[id].transform.position;
+      startFight(id);
+      monsters[id].nav.ResetPath();
       monsters[id].nav.isStopped = true;
     }
-    // chasing update
-    else if (activated && chasing && !fight_mode)
-    {
-      if (!proceduralMode) monsters[id].nav.destination = player.position;
-      // stop chasing
-      if (direction.magnitude > viewDistance)
-      {
+    else if (activated && !fight_mode && direction.magnitude > viewDistance) { 
         Debug.Log("Out of Sight");
         monsters[id].nav.destination = monsters[id].transform.position;
         chasing = false;
         activated = false;
-        monsters[id].anim.SetTrigger("calm");
-      }
-      // start fight
-      else if (direction.magnitude < attackDistance)
-      {
-        //monsters[id].nav.destination = monsters[id].transform.position;
-        startFight(id);
-        monsters[id].nav.ResetPath();
-        monsters[id].nav.isStopped = true;
-      }
+        monsters[id].anim.SetTrigger("calm");      
     }
 
     // stop the fight

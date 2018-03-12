@@ -32,8 +32,6 @@ public class Monk : MonoBehaviour
   bool scalePracticeNoScore;
   Score score;
 
-  //TODO: trigger monk animations
-
   void StoryInit(){
 
     //**Introduction**
@@ -184,6 +182,7 @@ public class Monk : MonoBehaviour
 
   IEnumerator MonsterBattle(int codeTrigger, int rand){
 
+    playerController.forceActivateCombat = false;
     Vector3 position;
     if(PositionsApproxEqual(baseMonster.position, player.position)){
       position = new Vector3(baseMonster.position.x - 1f, baseMonster.position.y + 1f, baseMonster.position.z);
@@ -213,8 +212,8 @@ public class Monk : MonoBehaviour
     yield return new WaitUntil(() => monster == null);        //wait until player has defeated monster
 
     //this is to get the stave to disappear - works but slow, would like a better method
-    playerController.hold_flute = false;
-    playerController.forceActivateCombat = true;
+    //playerController.hold_flute = false;
+    //playerController.forceActivateCombat = true;
 
     storyStopped = false;
 
