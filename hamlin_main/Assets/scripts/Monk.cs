@@ -84,7 +84,8 @@ public class Monk : MonoBehaviour
     story.Enqueue(15); //Pause story until player presses x
 
     //**D MAJOR**
-    story.Enqueue("Ah, so you're back for more? How about we try D major this time? D major is exciting - it's the key of triumph and hallelujahs!");
+    story.Enqueue("Monk: Ah, so you're back for more? How about we try D major this time?");
+    story.Enqueue("D major is exciting - it's the key of triumph and hallelujahs!");
     story.Enqueue(8); //D major TeachScale
 
     //**HALF AND WHOLE TONES, MAJOR VS MINOR**
@@ -115,19 +116,20 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: My book describes this scale as having a tender mood, but I must admit I'm not so sure!");
     story.Enqueue(9); //A minor TeachScale
     story.Enqueue(13); //Battle 2
-    story.Enqueue("Look out - here comes another creature! It must have heard you playing your flute!");
+    story.Enqueue("Monk: Look out - here comes another creature! It must have heard you playing your flute!");
     story.Enqueue(16); //signal pre-combat dialogue done
 
     //**E MINOR, B MINOR**
-    story.Enqueue("You're getting good at this! The creatures are really quite harmless once you know how to defeat them.");
+    story.Enqueue("Monk: You're getting good at this! The creatures are really quite harmless once you know how to defeat them.");
     story.Enqueue("Monk: Time for the next scale - E minor!");
-    story.Enqueue("Someone once described the mood of this scale to me as 'sighs accompanied by a few tears'");
-    story.Enqueue("but I think they were just having a very bad day - I quite like this one!");
+    story.Enqueue("Monk: Someone once described the mood of this scale to me as 'sighs accompanied by a few tears'");
+    story.Enqueue("Monk: but I think they were just having a very bad day - I quite like this one!");
     story.Enqueue(10); //E minor TeachScale
-    story.Enqueue("Monk: By the way, I heard that this isn't called B minor in every part of Espero. In some towns they call it H minor too.");
-    story.Enqueue("Monk: Imagine that! The variety of the other tongues we have here in Espero has always fascinated me. The last scale I'll");
-    story.Enqueue("Monk: teach you is B minor - the key of patience. Something you need in bucketfuls with these creatures around...");
+    story.Enqueue("Monk: The last scale I'll teach you is B minor - the key of patience. ");
+    story.Enqueue("Monk: Something you need in bucketfuls with these creatures around...");
     story.Enqueue("Monk: If you have trouble learning your scales, just remember patience is all you need! Everything comes with practice.");
+    story.Enqueue("Monk: By the way, I heard that this isn't called B minor in every part of Espero. In some towns they call it H minor too.");
+    story.Enqueue("Monk: Imagine that! The variety of the other tongues we have here in Espero has always fascinated me.");
     story.Enqueue(11); //B minor TeachScale
 
     //**Circle of fifths, MONSTER 3**
@@ -135,7 +137,7 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: it shows you how they're all connected.");
     story.Enqueue(3); //show circle of fifths
     story.Enqueue(14); //Battle 3
-    story.Enqueue("Get ready, there's another creature coming!");
+    story.Enqueue("Monk: Get ready, there's another creature coming!");
     story.Enqueue(16); //signal pre-combat dialogue done
 
     //**END LEVEL**
