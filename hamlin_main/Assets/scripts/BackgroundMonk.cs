@@ -10,6 +10,8 @@ public class BackgroundMonk : MonoBehaviour
   public float wanderRadius;
   public float wanderTimer;
 
+  Animator anim;
+
   private Transform target;
   private NavMeshAgent agent;
   private float timer;
@@ -19,6 +21,7 @@ public class BackgroundMonk : MonoBehaviour
   {
     agent = GetComponent<NavMeshAgent>();
     timer = wanderTimer;
+    anim = GetComponentInChildren<Animator>();
   }
 
   // Update is called once per frame
@@ -30,8 +33,14 @@ public class BackgroundMonk : MonoBehaviour
     {
       Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
       agent.SetDestination(newPos);
+      anim.SetBool("isWalking", true);
       timer = 0;
     }
+
+    //if(agent.velocity.magnitude == 0){
+      //anim.SetBool("isWalking", false);
+    //}
+
   }
 
   public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)

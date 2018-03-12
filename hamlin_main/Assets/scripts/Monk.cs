@@ -54,7 +54,6 @@ public class Monk : MonoBehaviour
     story.Enqueue("Monk: of prophecy and heroics. Come now, let me teach you what that flute of yours can do.");
 
     //**C Major and Controls**
-    //TODO: rewrite this section, dialogue is rubbish here
     story.Enqueue("Monk: I'll teach you some scales, because scales are crucial building blocks in music. Scales are sequences of notes which fit");
     story.Enqueue("Monk: well together, and by learning scales you can start to understand how all the notes in music are connected. Traditionally");
     story.Enqueue("Monk: scales were associated with emotions and moods. For example, some people say C major reminds them of innocence");
@@ -154,31 +153,6 @@ public class Monk : MonoBehaviour
     //end game screens are in update
 
   }
-
-  /* *****THEORY TO TURN INTO DIALOGUE******
-  To play scales you only need to know the intervals between the notes and where to start with.
-  We have full tones(1 or F) and half tones(1 / 2 or H).
-  So for a major scale the sequence of intervals is F, F, H, F, F, F, H, so as if you start with a C and go along all white keys
-  you will notice that between E and F there is no black key! This is a half tone! For minor scale it is similar: The sequence is 
-  F,H,F,F,H,F,F so as if you start with A and follow all white keys upwards.This rules last for every base key, but there will 
-  not only white keys.The circle of fifths shows you for which base - key there are which # or b which mean a half note higher or lower that ne written note.
-
-
-  WHOLE TONE not full tone hence WT
-  the scales in the picture are the CHURCH SCALES which is why we are teaching them at the monastery, mention this
-
- full tone jumps over a key. eg two white keys next to each other is half tone unless black key inbetween then you skipped a key so it's full tone = two half tones.
- major scale is full tone full tone half tone ...
- so you can work out any scale from the start key just by remembering the sequence of full and half tones you need
- black keys = sharps and flats, check?
- explain controls - row above is black keys on keyboard:
- bottom row y/z x c etc is white keys starting at lower c
- then row above that is black keys for that octave
- then row above that is white keys for upper ocatve
- row above that (numbers) is black keys for upper octave
- other types of scales are different patterns of full and half tones, you can work out in any base key if you know this pattern e.g. c dorian just dorian pattern starting at c key.
-
-  */
 
   //used to pause the story until player comes back to monk and presses X
   IEnumerator WaitForMonkInteraction(){
