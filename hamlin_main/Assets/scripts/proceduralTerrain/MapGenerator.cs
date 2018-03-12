@@ -46,6 +46,8 @@ public class MapGenerator : MonoBehaviour {
   int getSeed() { return UnityEngine.Random.Range(seedMin, seedMax); }
   float getPersistance() { return UnityEngine.Random.Range(persistanceMin, persistanceMax); }
 
+  int countToTenAndMakeTheTexturesWork;
+
   //int[] octaves;
   //int[] seeds;
   //float[] persistances;
@@ -69,7 +71,9 @@ public class MapGenerator : MonoBehaviour {
     print("Persistance: " + noiseData.persistance);
     textureData.ApplyToMaterial (terrainMaterial);
 		textureData.UpdateMeshHeights (terrainMaterial, terrainData.minHeight, terrainData.maxHeight);
-	}
+    countToTenAndMakeTheTexturesWork = 0;
+
+  }
 
 	void OnValuesUpdated() {
 		if (!Application.isPlaying) {
@@ -142,7 +146,13 @@ public class MapGenerator : MonoBehaviour {
     //noiseData.persistance = getPersistance();
     //noiseData.octaves = getOctaves();
 
-		if (mapDataThreadInfoQueue.Count > 0) {
+    if (countToTenAndMakeTheTexturesWork < 10){
+      textureData.ApplyToMaterial(terrainMaterial);
+      textureData.UpdateMeshHeights(terrainMaterial, terrainData.minHeight, terrainData.maxHeight);
+      countToTenAndMakeTheTexturesWork++;
+    }
+    
+    if (mapDataThreadInfoQueue.Count > 0) {
 			for (int i = 0; i < mapDataThreadInfoQueue.Count; i++) {
 				MapThreadInfo<MapData> threadInfo = mapDataThreadInfoQueue.Dequeue ();
 				threadInfo.callback (threadInfo.parameter);
