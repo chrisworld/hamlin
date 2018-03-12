@@ -100,6 +100,7 @@ public class ProceduralMonsterManager : NoteStateControl
     monsters[0].defeated = true;
     monsters[0].gameObject.SetActive(false);
 
+    DynamicGI.UpdateEnvironment();
     print("proc monster manager init");
 
   }
