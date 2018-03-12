@@ -43,7 +43,6 @@ public class EndlessTerrain : MonoBehaviour {
 
 	void Start() {
 		mapGenerator = FindObjectOfType<MapGenerator> ();
-
     //init viewer lists and add player to them
     allViewers = new List<Transform>();
     allViewers.Add(viewer);
@@ -56,6 +55,11 @@ public class EndlessTerrain : MonoBehaviour {
 		UpdateVisibleChunks ();
     score = GameObject.Find("GameState").GetComponent<Score>();
     score.SetScoreTotal(0, true);
+    if (scaleNames.Count > 0 && baseKeys.Count > 0)
+    {
+      GenerateMonsters();
+      print("I ran generate monsters 1st time");
+    }
   }
 
 
@@ -65,9 +69,9 @@ public class EndlessTerrain : MonoBehaviour {
       viewerPosition = new Vector2(allViewers[i].position.x, allViewers[i].position.z) / mapGenerator.terrainData.uniformScale;
 
       //monster has stopped falling, so make it visible
+      //TODO: fix, not working
       if(i != 0 && allViewers[i].gameObject.GetComponent<Rigidbody>().IsSleeping()){
         allViewers[i].gameObject.SetActive(true);
-        print("monster is activeee");
       }
 
       if (viewerPosition != viewerPositionsOld[i])
@@ -146,7 +150,6 @@ public class EndlessTerrain : MonoBehaviour {
 
     Physics.gravity = new Vector3(0f, -20f, 0f);       //increase gravity force so monsters fall at a sensible speed
 
-    //TODO: may need to get rid of this scaling as using for instantiating? idk. or swap y to z
     Vector3 viewerPos = new Vector3(viewer.position.x, viewer.position.y, viewer.position.z);
 
     //make the specified num of monsters
@@ -155,15 +158,12 @@ public class EndlessTerrain : MonoBehaviour {
       //create random position within chunk, making sure it is not same position as player or existing monsters
       //NOTE: we assume no monsters are in the chunk when this method runs!!! when to call it to be sure??
 
-      //float offset = chunkSize / 2;   //this is waaay too big
-      float offset = 0;
       Vector3 position = viewerPos;
       position.y = 20;
       while (position.x == viewerPos.x && position.z == viewerPos.z) //in case by chance it is the same position
       {
-        //TODO: replace skeleton with Jan's monsters, update animation logic in MonsterManager, make monsters more spaced out and some closer to player, leave out nav?
-        position.x = position.x - offset + Random.Range(0f, chunkSize * 2f);
-        position.z = position.z + offset - Random.Range(0f, chunkSize * 2f);
+        position.x = position.x + Random.Range(0f, chunkSize * 2f);
+        position.z = position.z - Random.Range(0f, chunkSize * 2f);
       }
 
       //create monster and add to MonsterManager's monsters list

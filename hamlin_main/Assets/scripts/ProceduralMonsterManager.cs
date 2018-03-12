@@ -236,7 +236,7 @@ public class ProceduralMonsterManager : NoteStateControl
               sign_state[c_pos][note_pos] = midiToSignState(note_midi);
               player_controller.getAttacked();
               monsters[id].anim.SetTrigger("attack");
-              monsters[id].playerDamageQueue++;
+              monsters[id].DamagePlayer();
             }
           }
           key++;
