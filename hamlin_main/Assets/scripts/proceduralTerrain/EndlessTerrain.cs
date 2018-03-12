@@ -168,6 +168,7 @@ public class EndlessTerrain : MonoBehaviour {
 
       //create monster and add to MonsterManager's monsters list
       Monster monster = Instantiate<Monster>(baseMonster, position, baseMonster.transform.rotation);
+      //monster.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);   //doesn't work sadly, still the same size
       monster.scale_name = scaleNames[ Random.Range(0, scaleNames.Count - 1) ];
       monster.base_key_monster = baseKeys[ Random.Range(0, baseKeys.Count - 1) ];
       monster.gameObject.SetActive(false);
