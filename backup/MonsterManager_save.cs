@@ -404,7 +404,7 @@ public class MonsterManager : NoteStateControl
   IEnumerator LoseGame(){
     gameOverScreen.SetActive(true);
     sound_player.gameover.Play();
-    yield return new WaitForSecondsRealtime(10);
+    yield return new WaitForSecondsRealtime(7);
     SceneManager.LoadScene("MainMenu_pablo");
   }
 

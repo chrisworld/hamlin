@@ -18,6 +18,7 @@ public class Monk : MonoBehaviour
   PlayerController playerController;
   Queue story;
   Transform monk;
+  Transform baseMonster;
   GameObject screen;
   GameObject endScreen;
   Vector3 oldPosition;
@@ -35,9 +36,8 @@ public class Monk : MonoBehaviour
 
   void StoryInit(){
 
-    story.Enqueue("Hamlin: Oh, why did I ever take the Piper's flute? (Game: Left click anywhere to continue)");
-    story.Enqueue("Hamlin: I've been on the run for days and now I'm lost. I don't even know what a flute does!");
-    story.Enqueue("Hamlin: Why is it so important anyway?");
+    //DEBUG REMOVE
+    story.Enqueue(12); //Battle 1 - monster takes a while to chase so time for 2 lines of dialogue
 
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
@@ -191,11 +191,36 @@ public class Monk : MonoBehaviour
     storyStopped = false;
   }
 
+  bool PositionsApproxEqual(Vector3 pos1, Vector3 pos2){
+
+    bool equal = true;
+
+    if(Mathf.Abs(pos1.x - pos2.x) < 0.5f){
+      equal = false;
+    }
+
+    else if(Mathf.Abs(pos1.y - pos2.y) < 0.5f){
+      equal = false;
+    }
+
+    else if(Mathf.Abs(pos1.z - pos2.z) < 0.5f){
+      equal = false;
+    }
+
+    return equal;
+
+  }
+
   IEnumerator MonsterBattle(int codeTrigger, int rand){
 
     //monster spawns away from player and then chases
-    Transform baseMonster = monsterManager.monsters[0].transform;
-    Vector3 position = new Vector3(baseMonster.position.x + 0.2f, baseMonster.position.y, baseMonster.position.z);
+    Vector3 position;
+    if(PositionsApproxEqual(baseMonster.position, player.position)){
+      position = new Vector3(baseMonster.position.x - 1f, baseMonster.position.y + 1f, baseMonster.position.z);
+    }
+    else {
+      position = baseMonster.position;
+    }
     Monster monster = Instantiate<Monster>(monsterManager.monsters[0], position, baseMonster.rotation);
 
     if (codeTrigger == 12){  //Battle 1, C major or G major monster
@@ -396,6 +421,8 @@ public class Monk : MonoBehaviour
     monk = (Transform) GameObject.Find("Monk").transform;
     baseScale = (LearnScale)GameObject.FindObjectOfType(typeof(LearnScale));
     playerController = player.GetComponent<PlayerController>();
+    baseMonster = GameObject.Find("BaseMonster").transform;
+    baseMonster.gameObject.SetActive(false);
     screen = GameObject.Find("MonkScreen");
     screen.SetActive(false);
     endScreen = GameObject.Find("MonkScreenEnd");

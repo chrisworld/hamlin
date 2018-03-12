@@ -119,6 +119,9 @@ public class MonsterManager : NoteStateControl
     bool monsterActivatedThisTurn = false;
     int result = 0;
 
+    // end if dead
+    if (health.GetHealthAmount() == 0) return;
+
     // init
     if (!initialisedMonsters && monsters != null)
     {
@@ -339,14 +342,45 @@ public class MonsterManager : NoteStateControl
               //monsters[id].playerDamageQueue++;
               monsters[id].DamagePlayer();
             }
+            container.updateNoteContainer(note_state);
+            container.updateSignContainer(sign_state);
           }
           key++;
         }
+
+        // midi input
+        if (sound_player.MidiKeyPressed == true) {
+          midiPlayNote(id);
+        }
       }
-      container.updateNoteContainer(note_state);
-      container.updateSignContainer(sign_state);
     }
     return 0;
+  }
+
+  // play with midi keyboard
+  private void midiPlayNote(int id){
+    int note_midi = sound_player.MidiKeyPressedNr;
+    int note_pos = midiToContainerMapping(note_midi);
+    // right note
+    if(note_midi == monsters[id].box_midi[c_pos]){
+      note_state[c_pos][note_pos] = NoteState.RIGHT;
+      sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+      monsters[id].anim.SetTrigger("hurt");
+      sound_player.monster_hurt.Play();
+      c_pos++;
+    }
+    // wrong note
+    else{
+      note_state[c_pos][note_pos] = NoteState.WRONG;
+      sign_state[c_pos][note_pos] = midiToSignState(note_midi);
+      player_controller.getAttacked();
+      monsters[id].anim.SetTrigger("attack");
+      sound_player.monster_attack.Play();
+      monsters[id].DamagePlayer();
+    }
+    container.updateNoteContainer(note_state);
+    container.updateSignContainer(sign_state);
+    //sound_player.MidiKeyPressed = false;
   }
 
   // init Monster Scale
