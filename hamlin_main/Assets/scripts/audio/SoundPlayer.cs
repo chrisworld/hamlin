@@ -37,6 +37,8 @@ public class SoundPlayer : MonoBehaviour {
 
 	public AudioSource ambient_forrest;
 	public AudioSource ambient_monklevel;
+	public AudioSource ambient_waterfall;
+	public AudioSource ambient_waterfloat;
 
 	// gamestate
 	public AudioSource gameover;
@@ -122,6 +124,8 @@ public class SoundPlayer : MonoBehaviour {
     
 		ambient_forrest.Play ();
 		ambient_monklevel.Play ();
+		ambient_waterfall.Play ();
+		ambient_waterfloat.Play ();
 
 		if(player_controller == null){
       player_controller = GameObject.Find("Player").GetComponent<Transform>().GetComponent<PlayerController>();

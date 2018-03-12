@@ -2539,8 +2539,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3d9e2abd97f4547128ce25676497d168, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 0effa04343c099844bd02912cab73f88, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -3289,8 +3289,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 02b1607a7cf0f44fba3f96cfd99b6ee0, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 6521afe7bcbc35c4f951165d8c327c50, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -4825,6 +4825,8 @@ MonoBehaviour:
   monster_die: {fileID: 82021006317335566}
   ambient_forrest: {fileID: 82610371749330156}
   ambient_monklevel: {fileID: 82296195659641594}
+  ambient_waterfall: {fileID: 82258431831112690}
+  ambient_waterfloat: {fileID: 82474422564929654}
   gameover: {fileID: 82810603512826584}
   c: {fileID: 82351971948481444}
   c_sh: {fileID: 82008607337998130}
