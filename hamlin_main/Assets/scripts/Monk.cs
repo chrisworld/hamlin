@@ -34,9 +34,6 @@ public class Monk : MonoBehaviour
 
   void StoryInit(){
 
-    //DEBUGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
-    story.Enqueue(12); //Battle 1 - monster takes a while to chase so time for 2 lines of dialogue
-
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
