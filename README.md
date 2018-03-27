@@ -49,9 +49,10 @@ Urgent TODO
 * Use library properly, if you finish the level / play the right music bridge magically repaired
 * Break up story! People skip through the story
 * Cross the bridge to enter rock level, add chords (and rhythm?), more story, create rock level
-* FIX COMBAT BUGS
+* Test combat thoroughly to check all bugs have been fixed
+* Fix monster rotation - if you escape combat then go back the monster over-rotates
+* Player cannot walk through middle of road at a certain point - what is causing this collision? Nothing visible in editor
 * Mischa's music teacher is going to send us some more music theory content - short stuff in story and then full content in library book
-* Bug: signs (sharps/flats) not hidden with monsters - only notes
 * Fix keyboard layout for localisation (spanish, english keyboards etc). Find out which keyboard user has and adapt accordingly, let them change controls if they want.
 * Fix animation scaling
 
