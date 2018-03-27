@@ -157,7 +157,7 @@ abstract public class NoteStateControl : MonoBehaviour {
 		SignState st;
 		foreach (int note in update_scale){
 			st = scaleToSignStateMapping(note);
-			sign_state[ci][st.pos].act = st.act;
+			if(!hideNotes) sign_state[ci][st.pos].act = st.act;
 			ci++;
 		}
 		container.updateSignContainer(sign_state);
