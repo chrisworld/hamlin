@@ -34,6 +34,9 @@ public class Monk : MonoBehaviour
 
   void StoryInit(){
 
+    //DEBUGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+    story.Enqueue(12); //Battle 1 - monster takes a while to chase so time for 2 lines of dialogue
+
     //**Introduction**
     story.Enqueue("Monk: Hello there my friend! (Game: Left click anywhere to continue)");
     story.Enqueue("Hamlin: Have we met?");
@@ -184,7 +187,6 @@ public class Monk : MonoBehaviour
 
   IEnumerator MonsterBattle(int codeTrigger, int rand){
 
-    playerController.forceActivateCombat = false;
     Vector3 position;
     if(PositionsApproxEqual(baseMonster.position, player.position)){
       position = new Vector3(baseMonster.position.x - 1f, baseMonster.position.y + 1f, baseMonster.position.z);

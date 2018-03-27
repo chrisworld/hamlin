@@ -443,7 +443,7 @@ public class MonsterManager : NoteStateControl
     //player_controller.setMoveActivate(true);
     exitFight(id);
     //player_controller.exitPlayMode();
-    player_controller.forceActivateCombat = true;
+    //player_controller.forceActivateCombat = true;
     resetNoteState();
     resetSignState();
     container.resetScaleInd();
