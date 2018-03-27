@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
     Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     Vector2 inputDirection = input.normalized;
     //calculates rotation for player as arctan(x / y)
-    //player facing forwards = 0 deg rotation; facing right = 90 deg rotation, etc 
+    //player facing forwards = 0 deg rotation; facing right = 90 deg rotation, etc
     if (inputDirection != Vector2.zero)
     {
       float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
