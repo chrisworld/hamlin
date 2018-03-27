@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour
   public float speedSmoothTime = 0.1f;
   public float gravity = -12;
   public float jumpHeight = 0.5f;
-  public float inAirControl = 1;          //controls how much the player can turn while in mid air
+  public float inAirControl = 1;            //controls how much the player can turn while in mid air
+  public int playerEscapeTime = 150;        //the time (in FRAMES) the player has to escape the monster before combat can activate again
 
   [HideInInspector]
   public bool hold_flute = false;
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour
   // anim hashes
   //private int idle_hash = Animator.StringToHash("Base Layer.idle");
   //private int cont_play_hash = Animator.StringToHash("Base Layer.hamlin_cont_play");
-
+  private int timeSincePlayerEscaped;   //used in tandem with playerEscapeTime
   float turnSmoothVelocity;
   float speedSmoothVelocity;
   float currentSpeed;
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
     cameraT = Camera.main.transform;
     controller = GetComponent<CharacterController>();
     move_activated = true;
+    timeSincePlayerEscaped = 0;
     if (player == null)
     {
       player = GameObject.Find("Player").GetComponent<Transform>();
@@ -76,15 +78,27 @@ public class PlayerController : MonoBehaviour
   void Update()
   {
 
+    //combat is disabled for playerEscapeTime so player can get away from monster after jumping to escape
+    if(timeSincePlayerEscaped > 0){
+      timeSincePlayerEscaped++;
+      if (timeSincePlayerEscaped > playerEscapeTime)
+      {
+        timeSincePlayerEscaped = 0;     //this activates combat again
+        forceActivateCombat = false;    //to stop instant reactivation bug
+      }
+    }
+
     // jumping
     if (checkValidJumpKey())
     {
       Jump();
     }
+
     // switch the model
-    else if (switch_model) switchModel();
+    else if (switch_model) 
+      switchModel();
     // take the flute and put it back
-    else if (checkValidTakeFluteKey() || forceActivateCombat)
+    else if ( (timeSincePlayerEscaped == 0) && (checkValidTakeFluteKey() || forceActivateCombat))
     {
       sound_player.hamlin_idle.Stop();
       if(hold_flute) sound_player.hamlin_flute_in.Play();
@@ -259,12 +273,25 @@ public class PlayerController : MonoBehaviour
   //should work even when movement disabled
   void Jump()
   {
-    if (controller.isGrounded)
+    //second condition needed here because isGrounded is always false if !move_activated
+    if (controller.isGrounded || !move_activated)
     {
       float jumpVelocity = Mathf.Sqrt(-2 * gravity * jumpHeight);
       velocityY = jumpVelocity;
       anim.SetTrigger("jump");
-      if (hold_flute && play_mode) exitPlayMode();
+      if (hold_flute && play_mode){
+
+        //for the life of me I can't get switchModel() to call properly so here's the relevant code
+        player.transform.GetChild(1).gameObject.SetActive(true);
+        player.transform.GetChild(2).gameObject.SetActive(false);
+        hud.transform.GetChild(1).gameObject.SetActive(false);
+        anim = GetComponentInChildren<Animator>();
+        switch_model = false;
+        hold_flute = false;
+        exitPlayMode();
+        print("escaping with jump");
+        timeSincePlayerEscaped = 1;   //activate escape period so player can get away from monster
+      }
       sound_player.hamlin_jump.Play();
     }
   }
