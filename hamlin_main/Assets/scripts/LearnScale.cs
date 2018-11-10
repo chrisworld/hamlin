@@ -18,7 +18,7 @@ public class LearnScale : NoteStateControl {
 	// settings
 	public float distance_activation;
 	public ScaleNames scale_name;
-	//public NoteBaseKey base_key;
+	public NoteBaseKey base_key;
 
 	// private vars
 	private bool activated = false;
@@ -31,7 +31,7 @@ public class LearnScale : NoteStateControl {
 	void Start () {
 		// get the scale for the scalebox
 		box_scale = allScales[(int)scale_name];
-		box_midi = scaleToMidi(box_scale);
+		box_midi = scaleToMidi(box_scale, (int)base_key);
 		// init note_state to disabled
 		initNoteState();
 		initSignState();
@@ -92,7 +92,7 @@ public class LearnScale : NoteStateControl {
 	  		// check each key
 	  		foreach (bool mask in key_mask){
 	  			if (mask){
-	  				cleanWrongNoteState(box_scale);
+	  				cleanWrongNoteState(box_scale, (int)base_key);
 	  				int note_midi = keyToMidiMapping(key);
 	  				int note_pos = midiToContainerMapping(note_midi);
 	  				// right note
@@ -161,8 +161,8 @@ public class LearnScale : NoteStateControl {
 	 	sound_player.activate_sound.Play();
   	player_controller.enterPlayMode();
   	// put scale
-  	setNoteStateToScale(box_scale);
-  	setSignStateToScale(box_scale);
+  	setNoteStateToScale(box_scale, (int)base_key);
+  	setSignStateToScale(box_scale, (int)base_key);
   	container.updateScaleInd(scale_name, base_key);
     print(scale_name);
     print(base_key);
@@ -176,7 +176,7 @@ public class LearnScale : NoteStateControl {
 		c_pos = 0;
 		error_counter = 0;
 		sound_player.inLearning = false;
-		player_controller.exitPlayMode();
+		player_controller.putAwayFlute();
 		resetNoteState();
 		resetSignState();
 		container.resetScaleInd();

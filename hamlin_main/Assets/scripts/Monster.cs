@@ -5,7 +5,7 @@ using UnityEngine;
 public class Monster : MonoBehaviour {
 
   public ScaleNames scale_name;
-  public NoteBaseKey base_key_monster;
+  public NoteBaseKey base_key;
   public Health health;
 
   //these all need to be public so MonsterManager can access them

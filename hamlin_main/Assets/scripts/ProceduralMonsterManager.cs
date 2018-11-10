@@ -159,7 +159,6 @@ public class ProceduralMonsterManager : NoteStateControl
           print("found monster to activate");
           monsterActivatedThisTurn = true;
           currentMonsterId = i;
-          base_key = monsters[i].base_key_monster;
           result = UpdateMonster(i);
           monsters[i].anim.SetTrigger("spotPlayer");
         }
@@ -219,7 +218,7 @@ public class ProceduralMonsterManager : NoteStateControl
         {
           if (mask)
           {
-            cleanWrongNoteState(monsters[id].box_scale);
+            cleanWrongNoteState(monsters[id].box_scale, (int)monsters[id].base_key);
             int note_midi = keyToMidiMapping(key);
             int note_pos = midiToContainerMapping(note_midi);
             // right note
@@ -256,11 +255,11 @@ public class ProceduralMonsterManager : NoteStateControl
     activated = true;
     //sound_player.activate_sound.Play();
     // put scale
-    setNoteStateToScale(monsters[id].box_scale);
-    setSignStateToScale(monsters[id].box_scale);
-    container.updateScaleInd(monsters[id].scale_name, monsters[id].base_key_monster);
+    setNoteStateToScale(monsters[id].box_scale, (int)monsters[id].base_key);
+    setSignStateToScale(monsters[id].box_scale, (int)monsters[id].base_key);
+    container.updateScaleInd(monsters[id].scale_name, monsters[id].base_key);
     string scaleText = castScale((int)monsters[id].scale_name);
-    string baseKeyText = castBaseKey((int)(monsters[id].base_key_monster - 48));
+    string baseKeyText = castBaseKey((int)(monsters[id].base_key - 48));
     player_controller.changeScaleText(scaleText);
     player_controller.changeBaseKeyText(baseKeyText);
     //E.g. "A wild C Dorian monster appears!". A bit of fun :)
@@ -336,12 +335,11 @@ public class ProceduralMonsterManager : NoteStateControl
   // init monster
   public void initMonster(int i)
   {
-    base_key = monsters[i].base_key_monster;
     resetNoteState();
     resetSignState();
     // container position
     monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
-    monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
+    monsters[i].box_midi = scaleToMidi(monsters[i].box_scale, (int)monsters[i].base_key);
     container.updateNoteContainer(note_state);
     container.updateSignContainer(sign_state);
     monsters[i].gameObject.SetActive(true);

@@ -81,22 +81,19 @@ public class PlayerController : MonoBehaviour
     {
       Jump();
     }
+
     // switch the model
     else if (switch_model) switchModel();
+
     // take the flute and put it back
     else if (checkValidTakeFluteKey() || forceActivateCombat)
     {
       sound_player.hamlin_idle.Stop();
       if(hold_flute) sound_player.hamlin_flute_in.Play();
-      move_activated = false;
       forceActivateCombat = false;
       anim.SetTrigger("takeFlute");
       switch_model = true;
     }
-    // enter play mode
-    //else if (checkValidPlayFluteKey() && !play_mode && hold_flute){
-    //	enterPlayMode();
-    //}
 
     // sound should stop in play mode
     if (play_mode && (run || walk)){
@@ -111,7 +108,7 @@ public class PlayerController : MonoBehaviour
     Vector2 inputDirection = input.normalized;
     //calculates rotation for player as arctan(x / y)
     //player facing forwards = 0 deg rotation; facing right = 90 deg rotation, etc
-    if (inputDirection != Vector2.zero)
+    if (move_activated && inputDirection != Vector2.zero)
     {
       float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
       transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
@@ -208,6 +205,13 @@ public class PlayerController : MonoBehaviour
     }
   }
 
+  // Put back flute
+  public void putAwayFlute()
+  {
+    anim.SetTrigger("takeFlute");
+    switch_model = true;
+  }
+
 
   // switch the model hamlin -> hamlin_flute vice versa
   private void switchModel()
@@ -222,10 +226,10 @@ public class PlayerController : MonoBehaviour
       player.transform.GetChild(2).gameObject.SetActive(true);
       hud.transform.GetChild(1).gameObject.SetActive(true);
       anim = GetComponentInChildren<Animator>();
-      switch_model = false;
       hold_flute = true;
-      enterPlayMode();
+      switch_model = false;
       sound_player.hamlin_flute_out.Play();
+      enterPlayMode();
     }
     else if (stateInfo.fullPathHash == woFlute_hash)
     {
@@ -233,8 +237,8 @@ public class PlayerController : MonoBehaviour
       player.transform.GetChild(2).gameObject.SetActive(false);
       hud.transform.GetChild(1).gameObject.SetActive(false);
       anim = GetComponentInChildren<Animator>();
-      switch_model = false;
       hold_flute = false;
+      switch_model = false;
       exitPlayMode();
     }
   }

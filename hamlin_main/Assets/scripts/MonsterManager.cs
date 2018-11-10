@@ -30,9 +30,6 @@ public class MonsterManager : NoteStateControl
   public float attackDistance = 1f;
   public float viewAngle = 60f;
 
-  [HideInInspector]
-  public ScaleNames scale_name;
-
   private bool activated;
   private bool chasing;
   private bool fight_mode;
@@ -170,7 +167,6 @@ public class MonsterManager : NoteStateControl
         {
           monsterActivatedThisTurn = true;
           currentMonsterId = i;
-          base_key = monsters[i].base_key_monster;
           monsters[i].anim.SetTrigger("spotPlayer");
           sound_player.monster_spot.Play();
           Debug.Log("Player spotted");
@@ -232,23 +228,26 @@ public class MonsterManager : NoteStateControl
       print("activating");
       initMonsterScale(id);
     }
+
+    //----------------Debug
     //too far away to attack, chase player
-    //else if (activated && !chasing && !fight_mode && !player_controller.play_mode)
-    //{
-    //if (direction.magnitude > attackDistance)
-    //{
-    //Debug.Log("chase");
-    //chasing = true; 
-    //monsters[id].nav.isStopped = false;
-    //}
-    //}
+    else if (activated && !chasing && !fight_mode && !player_controller.play_mode)
+    {
+      if (direction.magnitude > attackDistance)
+      {
+        Debug.Log("chase");
+        chasing = true; 
+        monsters[id].nav.isStopped = false;
+      }
+    }
     // stop chasing, player already in play mode
-    //else if (activated && chasing && player_controller.play_mode)
-    //{
-    //chasing = false;
-    //monsters[id].nav.isStopped = true;
-    //}
-    // chasing update
+    else if (activated && chasing && player_controller.play_mode)
+    {
+      chasing = false;
+      monsters[id].nav.isStopped = true;
+    }
+    //-----------------Debug end
+
     // start fight
     else if (activated && direction.magnitude < attackDistance && !fight_mode)
     {
@@ -312,7 +311,7 @@ public class MonsterManager : NoteStateControl
         {
           if (mask)
           {
-            cleanWrongNoteState(monsters[id].box_scale);
+            cleanWrongNoteState(monsters[id].box_scale, (int)monsters[id].base_key);
             int note_midi = keyToMidiMapping(key);
             int note_pos = midiToContainerMapping(note_midi);
             // right note
@@ -385,11 +384,11 @@ public class MonsterManager : NoteStateControl
     activated = true;
     //sound_player.activate_sound.Play();
     // put scale
-    setNoteStateToScale(monsters[id].box_scale);
-    setSignStateToScale(monsters[id].box_scale);
-    container.updateScaleInd(scale_name, base_key);
+    setNoteStateToScale(monsters[id].box_scale, (int)monsters[id].base_key);
+    setSignStateToScale(monsters[id].box_scale, (int)monsters[id].base_key);
+    container.updateScaleInd(monsters[id].scale_name, monsters[id].base_key);
     string scaleText = castScale((int)monsters[id].scale_name);
-    string baseKeyText = castBaseKey((int)(monsters[id].base_key_monster - 48));
+    string baseKeyText = castBaseKey((int)(monsters[id].base_key - 48));
     player_controller.changeScaleText(scaleText);
     player_controller.changeBaseKeyText(baseKeyText);
     if (proceduralMode)
@@ -477,12 +476,11 @@ public class MonsterManager : NoteStateControl
   {
     for (int i = 0; i < monsters.Count; i++)
     {
-      base_key = monsters[i].base_key_monster;
       resetNoteState();
       resetSignState();
       // container position
       monsters[i].box_scale = allScales[(int)monsters[i].scale_name];
-      monsters[i].box_midi = scaleToMidi(monsters[i].box_scale);
+      monsters[i].box_midi = scaleToMidi(monsters[i].box_scale, (int)monsters[i].base_key);
       container.updateNoteContainer(note_state);
       container.updateSignContainer(sign_state);
     }

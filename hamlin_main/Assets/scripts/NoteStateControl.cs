@@ -8,7 +8,7 @@ abstract public class NoteStateControl : MonoBehaviour {
 	public SoundPlayer sound_player;
   public bool hideNotes; //hard mode - player must learn scale properly as they don't see the notes to help them, just the scale name
 
-  public NoteBaseKey base_key;
+  //public NoteBaseKey base_key;
 
 
 	public NoteState[][] note_state = new NoteState[12][];
@@ -79,14 +79,14 @@ abstract public class NoteStateControl : MonoBehaviour {
 	}
 
 	// remove wrong notes played before
-	public void cleanWrongNoteState(int[] right_scale){
+	public void cleanWrongNoteState(int[] right_scale, int base_key){
 		for (int c = 0; c < num_c; c++){
 			for (int n = 0; n < num_n; n++){
 				if (note_state[c][n] == NoteState.WRONG){
-					if (scaleToContainerMapping(right_scale[c]) == n)
+					if (midiToContainerMapping(base_key + right_scale[c]) == n)
 					{
 						note_state[c][n] = NoteState.NORMAL;
-						sign_state[c][n] = scaleToSignStateMapping(right_scale[c]);
+						sign_state[c][n] = midiToSignState(base_key + right_scale[c]);
 					}
 					else{
 						note_state[c][n] = NoteState.DISABLED;
@@ -140,11 +140,11 @@ abstract public class NoteStateControl : MonoBehaviour {
 	}
 
 	// set the note_state to a scale
-	public void setNoteStateToScale(int[] update_scale){
+	public void setNoteStateToScale(int[] update_scale, int base_key){
 		int ci = 0;
 		int ni = 0;
 		foreach (int note in update_scale){
-			ni = scaleToContainerMapping(note);
+			ni = midiToContainerMapping(base_key + note);
 			if(!hideNotes) note_state[ci][ni] = NoteState.NORMAL;
 			ci++;
 		}
@@ -152,11 +152,11 @@ abstract public class NoteStateControl : MonoBehaviour {
 	}
 
 	// set the sign_state to a scale
-	public void setSignStateToScale(int[] update_scale){
+	public void setSignStateToScale(int[] update_scale, int base_key){
 		int ci = 0;
 		SignState st;
 		foreach (int note in update_scale){
-			st = scaleToSignStateMapping(note);
+			st = midiToSignState(base_key + note);
 			sign_state[ci][st.pos].act = st.act;
 			ci++;
 		}
@@ -169,14 +169,8 @@ abstract public class NoteStateControl : MonoBehaviour {
 			if(Input.GetKeyDown(key) ){ 
 				return true;
 			}
-
 		}
-
-
-
-
-			return false;
-
+		return false;
 	}
 
 	// get mask of pressed keys
@@ -206,22 +200,12 @@ abstract public class NoteStateControl : MonoBehaviour {
 	}
 
 	// puts a scale to a midi array
-	public int[] scaleToMidi(int[] scale){
+	public int[] scaleToMidi(int[] scale, int base_key){
 		int[] midi = new int[scale.Length];
 		for(int i = 0; i < scale.Length; i++){
-			midi[i] = scale[i] + (int)base_key;
+			midi[i] = scale[i] + base_key;
 		}
 		return midi;
-	}
-
-	// scale to container
-	public int scaleToContainerMapping(int scale_note){
-		return midiToContainerMapping((int)base_key + scale_note);
-	}
-
-	// scale to sign
-	public SignState scaleToSignStateMapping(int scale_note){
-		return midiToSignState((int)base_key + scale_note);
 	}
 
 	// midi to container

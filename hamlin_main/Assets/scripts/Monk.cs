@@ -196,15 +196,15 @@ public class Monk : MonoBehaviour
 
     if (codeTrigger == 12){  //Battle 1, C major or G major monster
       monster.scale_name = (ScaleNames)1;
-      monster.base_key_monster = (rand == 0) ? (NoteBaseKey)48 : (NoteBaseKey)55;
+      monster.base_key = (rand == 0) ? (NoteBaseKey)48 : (NoteBaseKey)55;
     }
     else if(codeTrigger == 13){ //Battle 2, D major or A minor monster
       monster.scale_name = (rand == 0) ? (ScaleNames)1 : (ScaleNames)2;
-      monster.base_key_monster = (rand == 0) ? (NoteBaseKey)50 : (NoteBaseKey)57;
+      monster.base_key = (rand == 0) ? (NoteBaseKey)50 : (NoteBaseKey)57;
     }
     else {  //codeTrigger == 14. Battle 3, E minor or B minor monster
       monster.scale_name = (ScaleNames)2;
-      monster.base_key_monster = (rand == 0) ? (NoteBaseKey)52 : (NoteBaseKey)59;
+      monster.base_key = (rand == 0) ? (NoteBaseKey)52 : (NoteBaseKey)59;
     }
     monster.gameObject.SetActive(true);
     monsterManager.monsters.Add(monster);

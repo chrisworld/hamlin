@@ -127,8 +127,7 @@ public class ContainerManager : MonoBehaviour {
 	}
 
 	public void updateScaleInd (ScaleNames sn, NoteBaseKey bk){
-		// not implemented
-		return;
+		// not implemented yet
 		NoteBaseKey[] sharp_keys = {
 			NoteBaseKey.BASE_C,
 			NoteBaseKey.BASE_G,
