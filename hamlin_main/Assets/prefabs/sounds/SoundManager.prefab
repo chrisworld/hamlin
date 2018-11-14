@@ -33,8 +33,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1938171862122064}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.26999998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -58,7 +58,7 @@ MonoBehaviour:
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: a#
+  - name: a_sh
     clip: {fileID: 8300000, guid: 01164909fe0f0d442a27c58392b7cf76, type: 3}
     volume: 1
     pitch: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: c#
+  - name: c_sh
     clip: {fileID: 8300000, guid: 58205642400e2f64b93234df3ce3b5c2, type: 3}
     volume: 1
     pitch: 0
@@ -88,7 +88,7 @@ MonoBehaviour:
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: d#
+  - name: d_sh
     clip: {fileID: 8300000, guid: 6e677b064f540684eb5cb2a45e89ab3c, type: 3}
     volume: 1
     pitch: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: f#
+  - name: f_sh
     clip: {fileID: 8300000, guid: c1ad3d8a39aa5e244952535243430f4c, type: 3}
     volume: 1
     pitch: 0
@@ -118,85 +118,79 @@ MonoBehaviour:
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: g#
+  - name: g_sh
     clip: {fileID: 8300000, guid: d4eba15ebf3f3c848b315f97238c3daa, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: a'
+  - name: a1_sh
     clip: {fileID: 8300000, guid: 941532713fef349e88cc8c3770cd4591, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: a'#
+  - name: a1_sh
     clip: {fileID: 8300000, guid: 96f1c2f273e984ee282eedf949c6f393, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: h'
+  - name: h1
     clip: {fileID: 8300000, guid: 5871f9417bc004ec1939b16fe10cf70b, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: c'
+  - name: c1
     clip: {fileID: 8300000, guid: 001b9f931b192e14f90e005aafa857ea, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: c'#
+  - name: c1_sh
     clip: {fileID: 8300000, guid: 7e2988668006d4f7585426d0d8253a02, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: d'
+  - name: d1
     clip: {fileID: 8300000, guid: 4b31646c88fda4f7a8bd8394c22a5c17, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: d'#
+  - name: d1_sh
     clip: {fileID: 8300000, guid: 36072ba3d00224e7bb1b2781f53208cd, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: e'
+  - name: e1
     clip: {fileID: 8300000, guid: afc34901918894b968f66d541b80a3e4, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: e'#
-    clip: {fileID: 0}
-    volume: 1
-    pitch: 0
-    loop: 0
-    source: {fileID: 0}
-  - name: f'
+  - name: f1
     clip: {fileID: 8300000, guid: d3fb437d8b79b4ab19f3983230ced9b9, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: f'#
+  - name: f1_sh
     clip: {fileID: 8300000, guid: 0fd5ce7cf20cc458ea719ddad9cdbfaf, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: g'
+  - name: g1
     clip: {fileID: 8300000, guid: 9e978a457ff474d8b824271b3b7834d5, type: 3}
     volume: 1
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: g'#
+  - name: g1_sh
     clip: {fileID: 8300000, guid: eb4bbd99d895f451fb3a216720e09da8, type: 3}
     volume: 1
     pitch: 0

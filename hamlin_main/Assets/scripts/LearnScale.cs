@@ -79,7 +79,7 @@ public class LearnScale : NoteStateControl {
 	  		bool[] key_mask = getKeyMask();
 	  		// win condition
 	  		if (c_pos >= box_scale.Length){
-					winLearnScale();
+					win();
 	  			return;
 	  		}
 	  		// loose condition
@@ -183,7 +183,7 @@ public class LearnScale : NoteStateControl {
   }
 
 	// win the Learn Scale
-	private void winLearnScale (){
+	private void win (){
 		exitLearnScale();
 		sound_player.activate_sound.Play();
 		score.updateScaleScore(scale_name);

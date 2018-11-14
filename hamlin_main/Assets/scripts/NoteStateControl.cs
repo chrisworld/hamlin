@@ -68,6 +68,18 @@ abstract public class NoteStateControl : MonoBehaviour {
 		KeyCode.I
 	};
 
+		private KeyCode[] valid_chord_keys = {
+		KeyCode.Alpha1,
+		KeyCode.Alpha2,
+		KeyCode.Alpha3,
+		KeyCode.Alpha5,
+		KeyCode.Alpha6,
+		KeyCode.Alpha7,
+		KeyCode.Alpha8,
+		KeyCode.Alpha9,
+		KeyCode.Alpha0
+	};
+
 	// start
 	void Start () {
 		print("Please Overwrite start in NoteStateControl");
@@ -185,6 +197,25 @@ abstract public class NoteStateControl : MonoBehaviour {
 		foreach (KeyCode key in valid_keys){
 			if(Input.GetKeyDown(key)){
 				key_mask[k] = true;
+			}
+			k++;
+		}
+		return key_mask;
+	}
+
+	// get mask of pressed keys
+	public bool[] getChordKeyMask(){
+		int k = 0;
+		bool[] key_mask = new bool[valid_chord_keys.Length];
+		// set to zero
+		for (int c = 0; c < valid_keys.Length; c++){
+			key_mask[c] = false;
+		}
+		// get mask
+		foreach (KeyCode key in valid_chord_keys){
+			if(Input.GetKeyDown(key)){
+				key_mask[k] = true;
+				break;
 			}
 			k++;
 		}

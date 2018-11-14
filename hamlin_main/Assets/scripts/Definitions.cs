@@ -37,6 +37,15 @@ public enum ScaleNames {
 	INDIAN_SCALE = 16 
 };  
 
+public enum ChordNames {	
+	MAJ_1,
+	MAJ_3,
+	MAJ_5,
+	MIN_1,
+	MIN_3,
+	MIN_5
+};  
+
 public enum NoteNames {
 	C ,
 	Csh_Dfl,

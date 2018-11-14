@@ -47,8 +47,7 @@ public class SoundManager : MonoBehaviour {
 
   // play sounds at the start of the game
   void Start (){
-    //Play("jump"); 
-    //setMasterVolume(0.1f);
+    //setMasterVolume(0.5f);
   }
 
   // Update is called once per frame
@@ -63,6 +62,7 @@ public class SoundManager : MonoBehaviour {
       Debug.LogWarning("Sound: " + name + " not found! -> check SoundManager");
       return;
     }
+    Debug.Log("play invoked");
     s.source.Play();
   }
 

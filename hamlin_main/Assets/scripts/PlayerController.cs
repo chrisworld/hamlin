@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
   public Text ScaleText;
   public Text BaseKeyText;
   public SoundPlayer sound_player;
+  public InputHandler input_handler;
+
   public float walkSpeed = 1;
   public float runSpeed = 3;
   public float turnSmoothTime = 0.2f;
@@ -57,6 +59,10 @@ public class PlayerController : MonoBehaviour
     {
       player = GameObject.Find("Player").GetComponent<Transform>();
     }
+    if (input_handler == null)
+    {
+      input_handler = GameObject.Find("Player").GetComponent<InputHandler>();
+    }
     if (hud == null)
     {
       hud = GameObject.Find("HUDCanvas").GetComponent<Transform>();
@@ -75,15 +81,20 @@ public class PlayerController : MonoBehaviour
   // update
   void Update()
   {
+    // command me
+    //input_handler.handleInput();
 
     // jumping
+    /*
     if (checkValidJumpKey())
     {
       Jump();
+      FindObjectOfType<SoundManager>().Play("chord");
     }
+    */
 
     // switch the model
-    else if (switch_model) switchModel();
+    if (switch_model) switchModel();
 
     // take the flute and put it back
     else if (checkValidTakeFluteKey() || forceActivateCombat)
@@ -96,14 +107,20 @@ public class PlayerController : MonoBehaviour
     }
 
     // sound should stop in play mode
-    if (play_mode && (run || walk)){
+    if (play_mode){
+      // stop sound of walking
+      if (run || walk){
         sound_player.hamlin_walk.Stop();
         sound_player.hamlin_run.Stop();
         run = false;
         walk = false;
+      }
+      // play instrumental sounds
+
     }
 
-    // control stuff
+
+    // control movement
     Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     Vector2 inputDirection = input.normalized;
     //calculates rotation for player as arctan(x / y)
@@ -190,6 +207,7 @@ public class PlayerController : MonoBehaviour
       sound_player.inPlay = true;
       move_activated = false;
       inDistance = false;
+      sound_player.hamlin_idle.Stop();
     }
   }
 
@@ -261,7 +279,7 @@ public class PlayerController : MonoBehaviour
   }
 
   //should work even when movement disabled
-  void Jump()
+  public void Jump()
   {
     if (controller.isGrounded)
     {
