@@ -81,17 +81,6 @@ public class PlayerController : MonoBehaviour
   // update
   void Update()
   {
-    // command me
-    //input_handler.handleInput();
-
-    // jumping
-    /*
-    if (checkValidJumpKey())
-    {
-      Jump();
-      FindObjectOfType<SoundManager>().Play("chord");
-    }
-    */
 
     // switch the model
     if (switch_model) switchModel();
@@ -107,69 +96,14 @@ public class PlayerController : MonoBehaviour
     }
 
     // sound should stop in play mode
-    if (play_mode){
+    if (play_mode)
+    {
       // stop sound of walking
       if (run || walk){
         sound_player.hamlin_walk.Stop();
         sound_player.hamlin_run.Stop();
         run = false;
         walk = false;
-      }
-      // play instrumental sounds
-
-    }
-
-
-    // control movement
-    Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-    Vector2 inputDirection = input.normalized;
-    //calculates rotation for player as arctan(x / y)
-    //player facing forwards = 0 deg rotation; facing right = 90 deg rotation, etc
-    if (move_activated && inputDirection != Vector2.zero)
-    {
-      float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
-      transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
-    }
-
-    if (move_activated && controller.enabled)
-    {
-      bool running = false;
-      if (checkValidRunKey() && !hold_flute) running = true;
-      float targetSpeed = (running ? runSpeed : walkSpeed) * inputDirection.magnitude;
-      currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, GetModifiedSmoothTime(speedSmoothTime));
-
-      velocityY += Time.deltaTime * gravity;
-      Vector3 velocity = transform.forward * currentSpeed + Vector3.up * velocityY;
-      controller.Move(velocity * Time.deltaTime);
-      currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
-
-      if (controller.isGrounded)
-      {
-        velocityY = 0;
-      }
-      //this is how we tell the animation controller which state we're in
-      float animationSpeedPercent = (running ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f);
-      anim.SetFloat("speedPercent", animationSpeedPercent, GetModifiedSmoothTime(speedSmoothTime), Time.deltaTime);
-
-      // walk and run sound
-      if (animationSpeedPercent > 0.1 && animationSpeedPercent < 0.6 && !walk){
-        walk = true;
-        run = false;
-        sound_player.hamlin_walk.Play();
-        sound_player.hamlin_idle.Stop();
-      }
-      else if (animationSpeedPercent > 0.6 && !run){
-        run = true;
-        walk = false;
-        sound_player.hamlin_run.Play();
-        sound_player.hamlin_idle.Stop();
-      }
-      else if (animationSpeedPercent < 0.1 && (walk || run)){
-        walk = false;
-        run = false;
-        sound_player.hamlin_walk.Stop();
-        sound_player.hamlin_run.Stop();
-        sound_player.hamlin_idle.Play();
       }
     }
   }
@@ -276,6 +210,57 @@ public class PlayerController : MonoBehaviour
       }
     }
     return false;
+  }
+
+  // Move hamlin
+  public void move(Vector2 input, bool run)
+  {
+    // control movement
+    Vector2 inputDirection = input.normalized;
+    //calculates rotation for player as arctan(x / y)
+    //player facing forwards = 0 deg rotation; facing right = 90 deg rotation, etc
+    float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
+    transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
+
+    if (controller.enabled)
+    {
+      float targetSpeed = (run ? runSpeed : walkSpeed) * inputDirection.magnitude;
+      currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, GetModifiedSmoothTime(speedSmoothTime));
+
+      velocityY += Time.deltaTime * gravity;
+      Vector3 velocity = transform.forward * currentSpeed + Vector3.up * velocityY;
+      controller.Move(velocity * Time.deltaTime);
+      currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
+
+      if (controller.isGrounded)
+      {
+        velocityY = 0;
+      }
+      //this is how we tell the animation controller which state we're in
+      float animationSpeedPercent = (run ? currentSpeed / runSpeed : currentSpeed / walkSpeed * 0.5f);
+      anim.SetFloat("speedPercent", animationSpeedPercent, GetModifiedSmoothTime(speedSmoothTime), Time.deltaTime);
+
+      // walk and run sound
+      if (animationSpeedPercent > 0.1 && animationSpeedPercent < 0.6 && !walk){
+        walk = true;
+        run = false;
+        sound_player.hamlin_walk.Play();
+        sound_player.hamlin_idle.Stop();
+      }
+      else if (animationSpeedPercent > 0.6 && !run){
+        run = true;
+        walk = false;
+        sound_player.hamlin_run.Play();
+        sound_player.hamlin_idle.Stop();
+      }
+      else if (animationSpeedPercent < 0.1 && (walk || run)){
+        walk = false;
+        run = false;
+        sound_player.hamlin_walk.Stop();
+        sound_player.hamlin_run.Stop();
+        sound_player.hamlin_idle.Play();
+      }
+    }
   }
 
   //should work even when movement disabled
